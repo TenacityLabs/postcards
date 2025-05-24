@@ -1,4 +1,4 @@
-import { Logger } from '@/utils/logging'
+import { ServerLogger } from '@/utils/logging'
 import { NextResponse } from 'next/server'
 
 interface LoginRequest {
@@ -20,14 +20,14 @@ export async function POST(request: Request) {
 			)
 		}
 
-		Logger.info(`Login request received for email: ${email}`)
+		ServerLogger.info(`Login request received for email: ${email}`)
 
 		return NextResponse.json(
 			{ message: 'Login successful' },
 			{ status: 200 }
 		)
 	} catch (error) {
-		Logger.error(`Login error: ${error}`)
+		ServerLogger.error(`Login error: ${error}`)
 		return NextResponse.json(
 			{ error: 'Internal server error' },
 			{ status: 500 }

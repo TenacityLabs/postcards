@@ -6,7 +6,7 @@ enum LogLevel {
 	SENSITIVE = 'SENSITIVE',
 }
 
-export class Logger {
+export class ServerLogger {
 	constructor() { }
 
 	private static getTimestamp(): string {
@@ -22,27 +22,27 @@ export class Logger {
 	}
 
 	private static log(level: LogLevel, message: string) {
-		const timestamp = Logger.getTimestamp()
+		const timestamp = ServerLogger.getTimestamp()
 		console.log(`${timestamp} [${level}] ${message}`)
 	}
 
 	public static info(message: string) {
-		Logger.log(LogLevel.INFO, message)
+		ServerLogger.log(LogLevel.INFO, message)
 	}
 
 	public static warn(message: string) {
-		Logger.log(LogLevel.WARN, message)
+		ServerLogger.log(LogLevel.WARN, message)
 	}
 
 	public static error(message: string) {
-		Logger.log(LogLevel.ERROR, message)
+		ServerLogger.log(LogLevel.ERROR, message)
 	}
 
 	public static debug(message: string) {
-		Logger.log(LogLevel.DEBUG, message)
+		ServerLogger.log(LogLevel.DEBUG, message)
 	}
 
 	public static sensitive(message: string) {
-		Logger.log(LogLevel.SENSITIVE, message)
+		ServerLogger.log(LogLevel.SENSITIVE, message)
 	}
 }

@@ -1,4 +1,5 @@
 import { ServerLogger } from '@/utils/logging'
+import { connectToDatabase } from '@/utils/mongoose'
 import { NextResponse } from 'next/server'
 
 interface LoginRequest {
@@ -20,7 +21,9 @@ export async function POST(request: Request) {
 			)
 		}
 
-		ServerLogger.info(`Login request received for email: ${email}`)
+		ServerLogger.sensitive(`Login request received for email: ${email}`)
+
+		await connectToDatabase()
 
 		return NextResponse.json(
 			{ message: 'Login successful' },

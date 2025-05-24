@@ -1,7 +1,10 @@
+import { UserModel } from '@/models/User'
+import { IUser } from '@/models/User'
 import { ServerLogger } from '@/utils/logging'
+import { connectToDatabase } from '@/utils/mongoose'
 import { NextResponse } from 'next/server'
 
-interface LoginRequest {
+interface SignupRequest {
 	email: string
 	password: string
 }
@@ -9,7 +12,7 @@ interface LoginRequest {
 export async function POST(request: Request) {
 	try {
 		// Parse the request body
-		const body: LoginRequest = await request.json()
+		const body: SignupRequest = await request.json()
 		const { email, password } = body
 
 		// Validate required fields
@@ -20,14 +23,28 @@ export async function POST(request: Request) {
 			)
 		}
 
-		ServerLogger.info(`Login request received for email: ${email}`)
+		ServerLogger.sensitive(`Signup request received for email: ${email}`)
+
+		await connectToDatabase()
+		const user: IUser | null = await UserModel.findOne({ email })
+		if (user) {
+			return NextResponse.json(
+				{ error: 'User already exists' },
+				{ status: 400 }
+			)
+		}
+
+		const newUser: IUser = await UserModel.create({
+			email,
+			password,
+		})
 
 		return NextResponse.json(
-			{ message: 'Login successful' },
+			{ message: 'Signup successful', user: newUser },
 			{ status: 200 }
 		)
 	} catch (error) {
-		ServerLogger.error(`Login error: ${error}`)
+		ServerLogger.error(`Signup error: ${error}`)
 		return NextResponse.json(
 			{ error: 'Internal server error' },
 			{ status: 500 }

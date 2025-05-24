@@ -1,3 +1,4 @@
+import { IUser, UserModel } from '@/models/User'
 import { ServerLogger } from '@/utils/logging'
 import { connectToDatabase } from '@/utils/mongoose'
 import { NextResponse } from 'next/server'
@@ -24,7 +25,17 @@ export async function POST(request: Request) {
 		ServerLogger.sensitive(`Login request received for email: ${email}`)
 
 		await connectToDatabase()
+		const user: IUser | null = await UserModel.findOne({ email })
+		if (!user) {
+			return NextResponse.json(
+				{ error: 'User not found' },
+				{ status: 404 }
+			)
+		}
 
+		if (user.password !== password) {
+
+		}
 		return NextResponse.json(
 			{ message: 'Login successful' },
 			{ status: 200 }

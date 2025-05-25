@@ -1,5 +1,6 @@
 "use client"
 
+import { LOCALSTORAGE_JWT_KEY } from '@/app/constants/auth'
 import { User } from '@/types/user'
 import { ClientLogger } from '@/utils/clientLogger'
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
@@ -18,7 +19,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 	useEffect(() => {
 		const fetchUser = async () => {
 			try {
-				const token = localStorage.getItem('postcard-jwt')
+				const token = localStorage.getItem(LOCALSTORAGE_JWT_KEY)
 				if (!token) {
 					setLoading(false)
 					setUser(null)
@@ -42,6 +43,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
 				const data = await response.json()
 				setUser(data.user)
+				ClientLogger.sensitive(`User fetched: ${data.user.email}`)
 			} catch (err) {
 				ClientLogger.error(`Error fetching user: ${err}`)
 			} finally {

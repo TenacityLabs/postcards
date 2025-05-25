@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { UserProvider } from "@/context/userContext";
 
 export const metadata: Metadata = {
 	title: "Postcards",
@@ -13,7 +14,9 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body>
-				{children}
+				<UserProvider>
+					{children}
+				</UserProvider>
 			</body>
 		</html>
 	);

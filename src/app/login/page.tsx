@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { LOCALSTORAGE_JWT_KEY } from "../constants/auth";
 
 export default function Login() {
 	const [email, setEmail] = useState('')
@@ -15,6 +16,7 @@ export default function Login() {
 			.then(res => res.json())
 			.then(data => {
 				console.log(data)
+				localStorage.setItem(LOCALSTORAGE_JWT_KEY, data.token)
 			})
 			.catch(err => {
 				console.error(err)

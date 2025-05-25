@@ -1,6 +1,6 @@
 import { UserModel } from '@/models/User'
 import { IUser } from '@/models/User'
-import { ServerLogger } from '@/utils/logging'
+import { ServerLogger } from '@/utils/serverLogger'
 import { connectToDatabase } from '@/utils/mongoose'
 import { NextResponse } from 'next/server'
 import bcrypt from 'bcrypt'

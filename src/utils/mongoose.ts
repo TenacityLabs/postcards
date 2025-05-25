@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { ServerLogger } from './logging'
+import { ServerLogger } from './serverLogger'
 
 const MONGO_URI = process.env.MONGO_URI as string
 

@@ -1,12 +1,21 @@
 import { UserModel } from '@/models/User'
-import { ServerLogger } from '@/utils/logging'
+import { ServerLogger } from '@/utils/serverLogger'
 import { connectToDatabase } from '@/utils/mongoose'
 import { NextResponse } from 'next/server'
-import { verifyRequest } from '@/utils/auth'
+import { verifyToken } from '@/utils/auth'
 
 export async function GET(request: Request) {
 	try {
-		const payload = verifyRequest(request)
+		const authHeader = request.headers.get('Authorization')
+		if (!authHeader?.startsWith('Bearer ')) {
+			return NextResponse.json(
+				{ error: 'Unauthorized' },
+				{ status: 401 }
+			)
+		}
+
+		const token = authHeader.split(' ')[1]
+		const payload = verifyToken(token)
 
 		await connectToDatabase()
 		const user = await UserModel.findById(payload.userId).select('-password')

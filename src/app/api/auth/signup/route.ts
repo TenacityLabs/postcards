@@ -3,6 +3,9 @@ import { IUser } from '@/models/User'
 import { ServerLogger } from '@/utils/logging'
 import { connectToDatabase } from '@/utils/mongoose'
 import { NextResponse } from 'next/server'
+import bcrypt from 'bcrypt'
+
+const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS || '10')
 
 interface SignupRequest {
 	email: string
@@ -34,13 +37,19 @@ export async function POST(request: Request) {
 			)
 		}
 
+		// Hash the password
+		const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS)
+
 		const newUser: IUser = await UserModel.create({
 			email,
-			password,
+			password: hashedPassword,
 		})
 
+		const userResponse: IUser | null = await UserModel.findById(newUser._id)
+			.select('-password')
+
 		return NextResponse.json(
-			{ message: 'Signup successful', user: newUser },
+			{ message: 'Signup successful', user: userResponse },
 			{ status: 200 }
 		)
 	} catch (error) {

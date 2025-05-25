@@ -3,9 +3,10 @@ import { ServerLogger } from '@/utils/logging'
 import { connectToDatabase } from '@/utils/mongoose'
 import { NextResponse } from 'next/server'
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
+import jwt, { SignOptions } from 'jsonwebtoken'
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'
+const JWT_DURATION = process.env.JWT_DURATION || '7d'
 
 interface LoginRequest {
 	email: string
@@ -46,7 +47,7 @@ export async function POST(request: Request) {
 		const token = jwt.sign(
 			{ userId: user._id },
 			JWT_SECRET,
-			{ expiresIn: '7d' }
+			{ expiresIn: JWT_DURATION } as SignOptions
 		)
 
 		const userResponse = await UserModel.findById(user._id)

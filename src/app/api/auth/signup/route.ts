@@ -4,10 +4,11 @@ import { ServerLogger } from '@/utils/logging'
 import { connectToDatabase } from '@/utils/mongoose'
 import { NextResponse } from 'next/server'
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
+import jwt, { SignOptions } from 'jsonwebtoken'
 
 const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS || '10')
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'
+const JWT_DURATION = process.env.JWT_DURATION || '7d'
 
 interface SignupRequest {
 	email: string
@@ -50,7 +51,7 @@ export async function POST(request: Request) {
 		const token = jwt.sign(
 			{ userId: newUser._id },
 			JWT_SECRET,
-			{ expiresIn: '7d' } // Token expires in 7 days
+			{ expiresIn: JWT_DURATION } as SignOptions
 		)
 
 		return NextResponse.json(

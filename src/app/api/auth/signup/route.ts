@@ -4,8 +4,10 @@ import { ServerLogger } from '@/utils/logging'
 import { connectToDatabase } from '@/utils/mongoose'
 import { NextResponse } from 'next/server'
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS || '10')
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'
 
 interface SignupRequest {
 	email: string
@@ -48,8 +50,18 @@ export async function POST(request: Request) {
 		const userResponse: IUser | null = await UserModel.findById(newUser._id)
 			.select('-password')
 
+		const token = jwt.sign(
+			{ userId: newUser._id },
+			JWT_SECRET,
+			{ expiresIn: '7d' } // Token expires in 7 days
+		)
+
 		return NextResponse.json(
-			{ message: 'Signup successful', user: userResponse },
+			{
+				message: 'Signup successful',
+				user: userResponse,
+				token
+			},
 			{ status: 200 }
 		)
 	} catch (error) {

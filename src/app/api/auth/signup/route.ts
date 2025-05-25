@@ -16,11 +16,9 @@ interface SignupRequest {
 
 export async function POST(request: Request) {
 	try {
-		// Parse the request body
 		const body: SignupRequest = await request.json()
 		const { email, password } = body
 
-		// Validate required fields
 		if (!email || !password) {
 			return NextResponse.json(
 				{ error: 'Email and password are required' },
@@ -39,7 +37,6 @@ export async function POST(request: Request) {
 			)
 		}
 
-		// Hash the password
 		const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS)
 
 		const newUser: IUser = await UserModel.create({

@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { useUser } from "../context/userContext";
+import { useUser } from "@/app/context/userContext";
 import { PROTECTED_ROUTES, PUBLIC_ROUTES } from "@/constants/auth";
 
 interface AuthRouterProps {

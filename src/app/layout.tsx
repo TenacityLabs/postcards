@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { UserProvider } from "@/app/context/userContext";
-import AuthRouter from "./components/authRouter";
+import AuthRouter from "@/app/components/AuthRouter";
 
 export const metadata: Metadata = {
 	title: "Postcards",

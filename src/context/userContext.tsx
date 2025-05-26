@@ -3,10 +3,11 @@
 import { LOCALSTORAGE_JWT_KEY } from '@/app/constants/auth'
 import { User } from '@/types/user'
 import { ClientLogger } from '@/utils/clientLogger'
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
+import { createContext, useContext, useEffect, useState, ReactNode, Dispatch, SetStateAction } from 'react'
 
 interface UserContextType {
 	user: User | null
+	setUser: Dispatch<SetStateAction<User | null>>
 	loading: boolean
 }
 
@@ -58,7 +59,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
 		<UserContext.Provider
 			value={{
 				user,
-				loading
+				setUser,
+				loading,
 			}}
 		>
 			{children}

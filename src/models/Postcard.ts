@@ -14,9 +14,7 @@ const EntrySchema = new Schema<IEntry>({
 	},
 	description: {
 		type: String,
-		required: false,
-		nullable: true,
-		default: null
+		required: true,
 	},
 	imageUrl: {
 		type: String,

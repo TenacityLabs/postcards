@@ -8,7 +8,11 @@ interface JWTPayload {
 	exp: number
 }
 
-export const verifyToken = (token: string): JWTPayload => {
+export const verifyToken = (token: string | null | undefined): JWTPayload => {
+	if (!token) {
+		throw new Error('No token provided')
+	}
+
 	try {
 		const decoded = jwt.verify(token, JWT_SECRET) as JWTPayload
 		return decoded

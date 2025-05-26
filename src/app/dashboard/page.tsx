@@ -15,7 +15,7 @@ export default function Dashboard() {
 				<button onClick={logout}>Logout</button>
 			</div>
 			<div>
-				<Link href="/create/new">Create New</Link>
+				<Link href="/postcard/new">Create New</Link>
 			</div>
 		</div>
 	);

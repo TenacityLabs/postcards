@@ -1,14 +1,15 @@
 "use client"
 
-import { LOCALSTORAGE_JWT_KEY } from '@/app/constants/auth'
+import { LOCALSTORAGE_JWT_KEY } from '@/constants/auth'
 import { User } from '@/types/user'
 import { ClientLogger } from '@/utils/clientLogger'
-import { createContext, useContext, useEffect, useState, ReactNode, Dispatch, SetStateAction } from 'react'
+import { createContext, useContext, useEffect, useState, ReactNode, Dispatch, SetStateAction, useCallback } from 'react'
 
 interface UserContextType {
 	user: User | null
 	setUser: Dispatch<SetStateAction<User | null>>
 	loading: boolean
+	logout: () => void
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined)
@@ -55,12 +56,18 @@ export function UserProvider({ children }: { children: ReactNode }) {
 		fetchUser()
 	}, [])
 
+	const logout = useCallback(() => {
+		localStorage.removeItem(LOCALSTORAGE_JWT_KEY)
+		setUser(null)
+	}, [setUser])
+
 	return (
 		<UserContext.Provider
 			value={{
 				user,
 				setUser,
 				loading,
+				logout,
 			}}
 		>
 			{children}

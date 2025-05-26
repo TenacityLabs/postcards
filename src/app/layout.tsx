@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { UserProvider } from "@/context/userContext";
+import { UserProvider } from "@/app/context/userContext";
+import AuthRouter from "./components/authRouter";
 
 export const metadata: Metadata = {
 	title: "Postcards",
@@ -15,7 +16,9 @@ export default function RootLayout({
 		<html lang="en">
 			<body>
 				<UserProvider>
-					{children}
+					<AuthRouter>
+						{children}
+					</AuthRouter>
 				</UserProvider>
 			</body>
 		</html>

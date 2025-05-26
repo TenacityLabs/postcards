@@ -2,6 +2,7 @@
 
 import { FileInput } from "@/app/components/ui/FileInput";
 import { TextArea, TextInput } from "@/app/components/ui/TextInput";
+import { ClientLogger } from "@/utils/clientLogger";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -9,6 +10,11 @@ export default function CreateNewEntry() {
 	const [title, setTitle] = useState('')
 	const [description, setDescription] = useState('')
 	const [image, setImage] = useState<File | null>(null)
+
+	const handleSubmit = () => {
+		ClientLogger.info('Submitting new entry')
+
+	}
 
 	return (
 		<div>

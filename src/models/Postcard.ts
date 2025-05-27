@@ -1,9 +1,10 @@
 import mongoose, { Schema, Document } from 'mongoose'
 
 export interface IEntry extends Document {
+	_id: mongoose.Types.ObjectId
 	title: string
 	description: string
-	imageUrl: string
+	imageUrl: string | null
 	createdAt: number
 }
 
@@ -29,12 +30,6 @@ const EntrySchema = new Schema<IEntry>({
 		required: true,
 		default: () => Date.now(),
 	},
-}, {
-	timestamps: {
-		currentTime: () => Date.now(),
-		createdAt: 'createdAt',
-		updatedAt: 'updatedAt'
-	}
 })
 
 export interface IPostcard extends Document {
@@ -58,12 +53,6 @@ const PostcardSchema = new Schema<IPostcard>({
 		required: true,
 		default: () => Date.now(),
 	},
-}, {
-	timestamps: {
-		currentTime: () => Date.now(),
-		createdAt: 'createdAt',
-		updatedAt: 'updatedAt'
-	}
 })
 
 export const PostcardModel = mongoose.models.Postcard || mongoose.model<IPostcard>('Postcard', PostcardSchema)

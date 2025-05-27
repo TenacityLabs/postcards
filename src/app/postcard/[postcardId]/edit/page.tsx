@@ -9,13 +9,21 @@ import { Entry } from "@/types/postcard";
 import { getAuthHeader } from "@/utils/api";
 import { ClientLogger } from "@/utils/clientLogger";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function EditEntry() {
 	const { postcard, setPostcard, focusedEntry, setFocusedEntry } = usePostcard()
 	const [title, setTitle] = useState('')
 	const [description, setDescription] = useState('')
 	const [image, setImage] = useState<File | null>(null)
+
+	useEffect(() => {
+		if (focusedEntry) {
+			setTitle(focusedEntry.title)
+			setDescription(focusedEntry.description)
+			// Handle image
+		}
+	}, [focusedEntry])
 
 	const handleCreateEntry = () => {
 		ClientLogger.info('Creating new entry')
@@ -32,6 +40,7 @@ export default function EditEntry() {
 			.then(data => {
 				ClientLogger.info(`Entry created: ${JSON.stringify(data)}`)
 				setPostcard(data.postcard)
+				setFocusedEntry(data.postcard.entries[data.postcard.entries.length - 1])
 			})
 			.catch(err => {
 				ClientLogger.error(`Error creating entry: ${err}`)
@@ -54,22 +63,29 @@ export default function EditEntry() {
 		setImage(file)
 	}
 
-	const handleSubmit = () => {
+	const handleSubmitEntry = () => {
 		ClientLogger.info('Submitting new entry')
+		if (!postcard || !focusedEntry) {
+			ClientLogger.error('No postcard or focused entry found')
+			return
+		}
 
 		const formData = new FormData()
+		formData.append('postcardId', postcard._id)
+		formData.append('entryId', focusedEntry._id)
 		formData.append('title', title)
 		formData.append('description', description)
 		formData.append('file', image as File)
 
-		fetch('/api/postcard/create', {
+		fetch('/api/postcard/entry/edit', {
 			method: 'POST',
 			body: formData,
 			headers: getAuthHeader()
 		})
 			.then(res => res.json())
 			.then(data => {
-				ClientLogger.info(`Postcard created: ${data}`)
+				ClientLogger.info(`Postcard created: ${JSON.stringify(data)}`)
+				setPostcard(data.postcard)
 			})
 			.catch(err => {
 				ClientLogger.error(`Error creating postcard: ${err}`)
@@ -103,33 +119,41 @@ export default function EditEntry() {
 				)}
 			</div>
 			<div>
-				<div>
-					<TextInput
-						placeholder="Title"
-						value={title}
-						setValue={setTitle}
-					/>
-				</div>
-				<div>
-					<TextArea
-						placeholder="Description"
-						value={description}
-						setValue={setDescription}
-						rows={10}
-						maxLength={500}
-					/>
-				</div>
-				<div>
-					<FileInput
-						label="Upload File"
-						accept={IMAGE_TYPES.join(',')}
-						file={image}
-						onChange={handleImageChange}
-					/>
-				</div>
-				<div>
-					<button onClick={handleSubmit}>Submit</button>
-				</div>
+				{focusedEntry ? (
+					<div>
+						<div>
+							<TextInput
+								placeholder="Title"
+								value={title}
+								setValue={setTitle}
+							/>
+						</div>
+						<div>
+							<TextArea
+								placeholder="Description"
+								value={description}
+								setValue={setDescription}
+								rows={10}
+								maxLength={500}
+							/>
+						</div>
+						<div>
+							<FileInput
+								label="Upload File"
+								accept={IMAGE_TYPES.join(',')}
+								file={image}
+								onChange={handleImageChange}
+							/>
+						</div>
+						<div>
+							<button onClick={handleSubmitEntry}>Submit</button>
+						</div>
+					</div>
+				) : (
+					<div>
+						No entry found. Create one to get started.
+					</div>
+				)}
 			</div>
 		</div>
 	)

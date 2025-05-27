@@ -10,17 +10,19 @@ export interface IEntry extends Document {
 const EntrySchema = new Schema<IEntry>({
 	title: {
 		type: String,
-		required: true,
+		required: false,
+		default: '',
 	},
 	description: {
 		type: String,
-		required: true,
+		required: false,
+		default: '',
 	},
 	imageUrl: {
 		type: String,
 		required: false,
 		nullable: true,
-		default: null
+		default: null,
 	},
 	createdAt: {
 		type: Number,

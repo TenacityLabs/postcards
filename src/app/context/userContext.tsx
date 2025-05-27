@@ -45,7 +45,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
 				const data = await response.json()
 				setUser(data.user)
-				ClientLogger.sensitive(`User fetched: ${data.user.email}`)
+				ClientLogger.sensitive(`User fetched: ${JSON.stringify(data.user)}`)
 			} catch (err) {
 				ClientLogger.error(`Error fetching user: ${err}`)
 			} finally {

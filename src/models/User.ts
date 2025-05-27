@@ -3,6 +3,7 @@ import mongoose, { Schema, Document } from 'mongoose'
 export interface IUser extends Document {
 	email: string
 	password: string
+	postcards: mongoose.Types.ObjectId[]
 	createdAt: number
 }
 
@@ -14,6 +15,11 @@ const UserSchema = new Schema<IUser>({
 	password: {
 		type: String,
 		required: true,
+	},
+	postcards: {
+		type: [mongoose.Schema.Types.ObjectId],
+		ref: 'Postcard',
+		default: [],
 	},
 	createdAt: {
 		type: Number,

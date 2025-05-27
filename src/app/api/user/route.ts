@@ -3,6 +3,7 @@ import { ServerLogger } from '@/utils/serverLogger'
 import { connectToDatabase } from '@/utils/mongoose'
 import { NextResponse } from 'next/server'
 import { verifyToken } from '@/utils/auth'
+import { PostcardModel } from '@/models/Postcard'
 
 export async function GET(request: Request) {
 	try {
@@ -18,7 +19,13 @@ export async function GET(request: Request) {
 		const payload = verifyToken(token)
 
 		await connectToDatabase()
-		const user = await UserModel.findById(payload.userId).select('-password')
+		const user = await UserModel.findById(payload.userId)
+			.select('-password')
+			.populate({
+				path: 'postcards',
+				select: '-entries',
+				model: PostcardModel,
+			})
 
 		if (!user) {
 			return NextResponse.json(
@@ -27,7 +34,9 @@ export async function GET(request: Request) {
 			)
 		}
 
-		return NextResponse.json({ user }, { status: 200 })
+		return NextResponse.json({
+			user: user.toObject({ versionKey: false })
+		}, { status: 200 })
 	} catch (error) {
 		ServerLogger.error(`User fetch error: ${error}`)
 

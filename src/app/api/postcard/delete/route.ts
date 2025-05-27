@@ -8,6 +8,7 @@ import mongoose from "mongoose";
 
 export async function POST(request: NextRequest) {
 	try {
+		const { postcardId } = await request.json()
 		const { userId } = verifyRequest(request)
 		await connectToDatabase()
 
@@ -16,39 +17,35 @@ export async function POST(request: NextRequest) {
 		session.startTransaction()
 
 		try {
-			const user: IUserPopulated | null = await UserModel.findById(userId)
+			const userExists = await UserModel.exists({
+				_id: userId,
+				postcards: postcardId,
+			})
+			if (!userExists) {
+				await session.abortTransaction()
+				return NextResponse.json(
+					{ error: 'User not found or does not have ownership of this postcard' },
+					{ status: 404 }
+				)
+			}
+
+			await PostcardModel.deleteOne({ _id: postcardId }, { session })
+			const user: IUserPopulated = await UserModel.findByIdAndUpdate(
+				userId,
+				{ $pull: { postcards: postcardId } },
+				{ session, new: true }
+			)
 				.select('postcards')
 				.populate({
 					path: 'postcards',
 					select: '-entries',
 					model: PostcardModel,
 				})
-				.session(session)
-
-			if (!user) {
-				await session.abortTransaction()
-				return NextResponse.json(
-					{ error: 'User not found' },
-					{ status: 404 }
-				)
-			}
-
-			const postcard = new PostcardModel({
-				entries: [{
-					title: '',
-					description: '',
-					imageUrl: null,
-				}]
-			})
-
-			await postcard.save({ session })
-			user.postcards.push(postcard)
-			await user.save({ session })
 
 			await session.commitTransaction()
 
 			return NextResponse.json({
-				postcards: user.postcards.map(postcard => postcard.toObject({ versionKey: false })),
+				postcards: user.postcards.map((postcard) => postcard.toObject({ versionKey: false })),
 			}, { status: 200 })
 		} catch (error) {
 			// If anything fails, abort the transaction
@@ -65,4 +62,5 @@ export async function POST(request: NextRequest) {
 		)
 	}
 }
+
 

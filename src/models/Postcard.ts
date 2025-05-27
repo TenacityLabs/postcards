@@ -33,6 +33,7 @@ const EntrySchema = new Schema<IEntry>({
 })
 
 export interface IPostcard extends Document {
+	_id: mongoose.Types.ObjectId
 	entries: IEntry[]
 	createdAt: number
 	updatedAt: number

@@ -1,9 +1,17 @@
 import mongoose, { Schema, Document } from 'mongoose'
+import { IPostcard } from './Postcard'
 
 export interface IUser extends Document {
 	email: string
 	password: string
 	postcards: mongoose.Types.ObjectId[]
+	createdAt: number
+}
+
+export interface IUserPopulated extends Document {
+	email: string
+	password: string
+	postcards: IPostcard[]
 	createdAt: number
 }
 

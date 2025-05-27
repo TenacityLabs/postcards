@@ -11,10 +11,31 @@ import Link from "next/link";
 import { useState } from "react";
 
 export default function EditEntry() {
-	const { postcard } = usePostcard()
+	const { postcard, setPostcard } = usePostcard()
 	const [title, setTitle] = useState('')
 	const [description, setDescription] = useState('')
 	const [image, setImage] = useState<File | null>(null)
+
+	const handleCreateEntry = () => {
+		ClientLogger.info('Creating new entry')
+		if (!postcard) {
+			ClientLogger.error('No postcard found')
+			return
+		}
+		fetch('/api/postcard/entry/create', {
+			method: 'POST',
+			body: JSON.stringify({ postcardId: postcard._id }),
+			headers: getAuthHeader()
+		})
+			.then(res => res.json())
+			.then(data => {
+				ClientLogger.info(`Entry created: ${JSON.stringify(data)}`)
+				setPostcard(data.postcard)
+			})
+			.catch(err => {
+				ClientLogger.error(`Error creating entry: ${err}`)
+			})
+	}
 
 	const handleImageChange = (file: File | null) => {
 		if (!file) {
@@ -66,6 +87,9 @@ export default function EditEntry() {
 								<h4>{entry.title.trim() || 'Untitled'}</h4>
 							</div>
 						))}
+						<div>
+							<button onClick={handleCreateEntry}>New entry</button>
+						</div>
 					</div>
 				)}
 			</div>

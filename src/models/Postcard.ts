@@ -1,8 +1,11 @@
+import { validateDate } from '@/utils/date'
 import mongoose, { Schema, Document } from 'mongoose'
 
 export interface IEntry extends Document {
 	_id: mongoose.Types.ObjectId
 	title: string
+	// Date in format 'yyyy-mm-dd' to avoid timezone issues
+	date: string
 	description: string
 	imageUrl: string | null
 	createdAt: number
@@ -13,6 +16,16 @@ const EntrySchema = new Schema<IEntry>({
 		type: String,
 		required: false,
 		default: '',
+	},
+	date: {
+		type: String,
+		required: false,
+		nullable: true,
+		default: null,
+		validate: {
+			validator: validateDate,
+			message: 'Date must be either null or in format yyyy-mm-dd'
+		}
 	},
 	description: {
 		type: String,

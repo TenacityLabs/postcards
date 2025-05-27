@@ -3,13 +3,13 @@ import styles from './style.module.scss'
 
 interface FileInputProps {
 	label: string
+	labelText?: string
 	accept?: string
-	file: File | null
 	onChange?: (file: File | null) => void
 }
 
 export const FileInput = (props: FileInputProps) => {
-	const { file, onChange, label, accept } = props
+	const { onChange, label, labelText, accept } = props
 	const [key, setKey] = useState(0)
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,7 +22,7 @@ export const FileInput = (props: FileInputProps) => {
 	return (
 		<div>
 			<label htmlFor={label}>
-				{file?.name || 'No file selected'}
+				{labelText || 'No file selected'}
 			</label>
 			<input
 				className={styles.hidden}

@@ -1,6 +1,8 @@
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { ServerLogger } from "./serverLogger";
 
+const S3_URL_PREFIX = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/`
+
 export const s3Client = new S3Client({
 	region: process.env.AWS_REGION || "us-east-1",
 	credentials: {
@@ -22,7 +24,9 @@ export const uploadFile = async (file: File, key: string): Promise<string> => {
 	ServerLogger.info(`Uploaded file ${file.name} size ${file.size} to S3`)
 
 	// Construct the public URL
-	const url = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`
+	return `${S3_URL_PREFIX}${key}`
+}
 
-	return url
+export const checkUrlInBucket = (url: string, directory: string = '') => {
+	return url.startsWith(`${S3_URL_PREFIX}${directory}`)
 }

@@ -15,13 +15,14 @@ export default function EditEntry() {
 	const { postcard, setPostcard, focusedEntry, setFocusedEntry } = usePostcard()
 	const [title, setTitle] = useState('')
 	const [description, setDescription] = useState('')
-	const [image, setImage] = useState<File | null>(null)
+	// Allow file or image url for reuploads
+	const [image, setImage] = useState<File | string | null>(null)
 
 	useEffect(() => {
 		if (focusedEntry) {
 			setTitle(focusedEntry.title)
 			setDescription(focusedEntry.description)
-			// Handle image
+			setImage(focusedEntry.imageUrl)
 		}
 	}, [focusedEntry])
 
@@ -75,7 +76,9 @@ export default function EditEntry() {
 		formData.append('entryId', focusedEntry._id)
 		formData.append('title', title)
 		formData.append('description', description)
-		formData.append('file', image as File)
+		if (image) {
+			formData.append('file', image)
+		}
 
 		fetch('/api/postcard/entry/edit', {
 			method: 'POST',
@@ -141,7 +144,7 @@ export default function EditEntry() {
 							<FileInput
 								label="Upload File"
 								accept={IMAGE_TYPES.join(',')}
-								file={image}
+								labelText={image ? 'File uploaded' : 'No file selected'}
 								onChange={handleImageChange}
 							/>
 						</div>

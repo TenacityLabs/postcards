@@ -2,7 +2,7 @@ import { ServerLogger } from "@/utils/serverLogger";
 import { NextRequest, NextResponse } from "next/server";
 import { verifyRequest } from "@/utils/auth";
 import { connectToDatabase } from "@/utils/mongoose";
-import { uploadFile } from "@/utils/s3";
+import { checkUrlInBucket, uploadFile } from "@/utils/s3";
 import { IEntry, IPostcard, PostcardModel } from "@/models/Postcard";
 import { UserModel } from "@/models/User";
 
@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
 		const entryId = formData.get("entryId") as string
 		const title = formData.get("title") as string
 		const description = formData.get("description") as string
-		const image = formData.get("file") as File | null | 'null'
+		const image = formData.get("file") as File | string | null
 
 		if (!postcardId || !entryId || !title) {
 			return NextResponse.json({ error: "No postcard ID, entry ID, or title provided" }, { status: 400 })
@@ -34,6 +34,12 @@ export async function POST(request: NextRequest) {
 		if (image && image instanceof File) {
 			const imageFile = image as File
 			imageUrl = await uploadFile(imageFile, `uploads/${Date.now()}-${imageFile.name}`)
+		} else if (image && typeof image === 'string') {
+			if (checkUrlInBucket(image)) {
+				imageUrl = image
+			} else {
+				ServerLogger.error(`Invalid image URL does not start with S3 url prefix`)
+			}
 		}
 
 		const postcard: IPostcard | null = await PostcardModel.findById(postcardId)

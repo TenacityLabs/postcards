@@ -26,6 +26,10 @@ export default function EditEntry() {
 		}
 	}, [focusedEntry])
 
+	const handleFocusEntry = (entry: Entry) => {
+		setFocusedEntry(entry)
+	}
+
 	const handleCreateEntry = () => {
 		ClientLogger.info('Creating new entry')
 		if (!postcard) {
@@ -95,8 +99,25 @@ export default function EditEntry() {
 			})
 	}
 
-	const handleFocusEntry = (entry: Entry) => {
-		setFocusedEntry(entry)
+	const handleDeleteEntry = () => {
+		ClientLogger.info('Deleting entry')
+		if (!postcard || !focusedEntry) {
+			ClientLogger.error('No postcard or focused entry found')
+			return
+		}
+		fetch('/api/postcard/entry/delete', {
+			method: 'POST',
+			body: JSON.stringify({ postcardId: postcard._id, entryId: focusedEntry._id }),
+			headers: getAuthHeader()
+		})
+			.then(res => res.json())
+			.then(data => {
+				ClientLogger.info(`Entry deleted: ${JSON.stringify(data)}`)
+				setPostcard(data.postcard)
+			})
+			.catch(err => {
+				ClientLogger.error(`Error deleting entry: ${err}`)
+			})
 	}
 
 	return (
@@ -151,10 +172,21 @@ export default function EditEntry() {
 						<div>
 							<button onClick={handleSubmitEntry}>Submit</button>
 						</div>
+						<div>
+							<button onClick={handleDeleteEntry}>Delete</button>
+						</div>
 					</div>
 				) : (
 					<div>
-						No entry found. Create one to get started.
+						{postcard?.entries.length ? (
+							<p>
+								No entry found. Create one to get started.
+							</p>
+						) : (
+							<p>
+								Select an entry to start editing.
+							</p>
+						)}
 					</div>
 				)}
 			</div>

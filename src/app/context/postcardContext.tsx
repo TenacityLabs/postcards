@@ -55,6 +55,17 @@ export function PostcardProvider({ children }: { children: ReactNode }) {
 		fetchPostcard()
 	}, [postcardId])
 
+	useEffect(() => {
+		if (!postcard || !focusedEntry) {
+			return
+		}
+
+		const entryIndex = postcard.entries.findIndex(entry => entry._id === focusedEntry._id)
+		if (entryIndex === -1) {
+			setFocusedEntry(null)
+		}
+	}, [postcard, focusedEntry])
+
 	return (
 		<PostcardContext.Provider
 			value={{

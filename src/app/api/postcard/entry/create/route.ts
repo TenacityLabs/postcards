@@ -7,7 +7,7 @@ import { PostcardModel } from "@/models/Postcard";
 
 export async function POST(request: NextRequest) {
 	try {
-		const authPayload = verifyRequest(request)
+		const { userId } = verifyRequest(request)
 		await connectToDatabase()
 
 		const formData = await request.formData()
@@ -25,15 +25,11 @@ export async function POST(request: NextRequest) {
 			imageUrl = await uploadFile(imageFile, `uploads/${Date.now()}-${imageFile.name}`)
 		}
 
-		const postcard = await PostcardModel.create({
-			title,
-			description,
-			imageUrl,
-		})
+		// Create entry
 
 		return NextResponse.json({
 			message: "Postcard created successfully",
-			postcard
+			// postcard
 		}, { status: 200 })
 	} catch (error) {
 		ServerLogger.error(`Error creating postcard: ${error}`)

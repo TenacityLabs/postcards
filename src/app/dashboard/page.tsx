@@ -3,12 +3,13 @@
 import { useUser } from "../context/userContext";
 import { ClientLogger } from "@/utils/clientLogger";
 import { getAuthHeader } from "@/utils/api";
+import Link from "next/link";
 
 export default function Dashboard() {
 	const { user, logout } = useUser()
 
 	const handleCreatePostcard = async () => {
-		fetch('/api/postcard/new', {
+		fetch('/api/postcard/create', {
 			method: 'POST',
 			headers: getAuthHeader(),
 		})
@@ -32,6 +33,14 @@ export default function Dashboard() {
 			<div>
 				<button onClick={handleCreatePostcard}>Create New</button>
 			</div>
+
+			{user?.postcards.map((postcard) => (
+				<div key={postcard._id}>
+					<Link href={`/postcard/${postcard._id}/edit`}>
+						Postcard {new Date(postcard.createdAt).toLocaleDateString()}
+					</Link>
+				</div>
+			))}
 		</div>
 	);
 }

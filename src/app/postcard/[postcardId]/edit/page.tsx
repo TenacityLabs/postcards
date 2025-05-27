@@ -1,5 +1,6 @@
 "use client"
 
+import styles from "./styles.module.scss"
 import { FileInput } from "@/app/components/ui/FileInput";
 import { TextArea, TextInput } from "@/app/components/ui/TextInput";
 import { IMAGE_TYPES, MAX_IMAGE_SIZE } from "@/constants/file";
@@ -8,7 +9,7 @@ import { ClientLogger } from "@/utils/clientLogger";
 import Link from "next/link";
 import { useState } from "react";
 
-export default function CreateNewEntry() {
+export default function EditEntry() {
 	const [title, setTitle] = useState('')
 	const [description, setDescription] = useState('')
 	const [image, setImage] = useState<File | null>(null)
@@ -52,34 +53,41 @@ export default function CreateNewEntry() {
 	}
 
 	return (
-		<div>
-			<Link href="/dashboard">Dashboard</Link>
+		<div className={styles.container}>
 			<div>
-				<TextInput
-					placeholder="Title"
-					value={title}
-					setValue={setTitle}
-				/>
+				<Link href="/dashboard">Dashboard</Link>
 			</div>
 			<div>
-				<TextArea
-					placeholder="Description"
-					value={description}
-					setValue={setDescription}
-					rows={10}
-					maxLength={500}
-				/>
+
 			</div>
 			<div>
-				<FileInput
-					label="Upload File"
-					accept={IMAGE_TYPES.join(',')}
-					file={image}
-					onChange={handleImageChange}
-				/>
-			</div>
-			<div>
-				<button onClick={handleSubmit}>Submit</button>
+				<div>
+					<TextInput
+						placeholder="Title"
+						value={title}
+						setValue={setTitle}
+					/>
+				</div>
+				<div>
+					<TextArea
+						placeholder="Description"
+						value={description}
+						setValue={setDescription}
+						rows={10}
+						maxLength={500}
+					/>
+				</div>
+				<div>
+					<FileInput
+						label="Upload File"
+						accept={IMAGE_TYPES.join(',')}
+						file={image}
+						onChange={handleImageChange}
+					/>
+				</div>
+				<div>
+					<button onClick={handleSubmit}>Submit</button>
+				</div>
 			</div>
 		</div>
 	)

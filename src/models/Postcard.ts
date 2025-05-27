@@ -29,6 +29,12 @@ const EntrySchema = new Schema<IEntry>({
 		required: true,
 		default: () => Date.now(),
 	},
+}, {
+	timestamps: {
+		currentTime: () => Date.now(),
+		createdAt: 'createdAt',
+		updatedAt: 'updatedAt'
+	}
 })
 
 export interface IPostcard extends Document {
@@ -52,6 +58,12 @@ const PostcardSchema = new Schema<IPostcard>({
 		required: true,
 		default: () => Date.now(),
 	},
+}, {
+	timestamps: {
+		currentTime: () => Date.now(),
+		createdAt: 'createdAt',
+		updatedAt: 'updatedAt'
+	}
 })
 
 export const PostcardModel = mongoose.models.Postcard || mongoose.model<IPostcard>('Postcard', PostcardSchema)

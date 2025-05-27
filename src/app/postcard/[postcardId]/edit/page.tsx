@@ -3,6 +3,7 @@
 import styles from "./styles.module.scss"
 import { FileInput } from "@/app/components/ui/FileInput";
 import { TextArea, TextInput } from "@/app/components/ui/TextInput";
+import { usePostcard } from "@/app/context/postcardContext";
 import { IMAGE_TYPES, MAX_IMAGE_SIZE } from "@/constants/file";
 import { getAuthHeader } from "@/utils/api";
 import { ClientLogger } from "@/utils/clientLogger";
@@ -10,6 +11,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 export default function EditEntry() {
+	const { postcard } = usePostcard()
 	const [title, setTitle] = useState('')
 	const [description, setDescription] = useState('')
 	const [image, setImage] = useState<File | null>(null)
@@ -56,9 +58,16 @@ export default function EditEntry() {
 		<div className={styles.container}>
 			<div>
 				<Link href="/dashboard">Dashboard</Link>
-				<div>
-
-				</div>
+				{postcard && (
+					<div>
+						<h4>{new Date(postcard.createdAt).toLocaleString()}</h4>
+						{postcard.entries.map((entry) => (
+							<div key={entry._id}>
+								<h4>{entry.title.trim() || 'Untitled'}</h4>
+							</div>
+						))}
+					</div>
+				)}
 			</div>
 			<div>
 				<div>

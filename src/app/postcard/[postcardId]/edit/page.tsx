@@ -5,13 +5,14 @@ import { FileInput } from "@/app/components/ui/FileInput";
 import { TextArea, TextInput } from "@/app/components/ui/TextInput";
 import { usePostcard } from "@/app/context/postcardContext";
 import { IMAGE_TYPES, MAX_IMAGE_SIZE } from "@/constants/file";
+import { Entry } from "@/types/postcard";
 import { getAuthHeader } from "@/utils/api";
 import { ClientLogger } from "@/utils/clientLogger";
 import Link from "next/link";
 import { useState } from "react";
 
 export default function EditEntry() {
-	const { postcard, setPostcard } = usePostcard()
+	const { postcard, setPostcard, focusedEntry, setFocusedEntry } = usePostcard()
 	const [title, setTitle] = useState('')
 	const [description, setDescription] = useState('')
 	const [image, setImage] = useState<File | null>(null)
@@ -75,6 +76,10 @@ export default function EditEntry() {
 			})
 	}
 
+	const handleFocusEntry = (entry: Entry) => {
+		setFocusedEntry(entry)
+	}
+
 	return (
 		<div className={styles.container}>
 			<div>
@@ -83,9 +88,13 @@ export default function EditEntry() {
 					<div>
 						<h4>{new Date(postcard.createdAt).toLocaleString()}</h4>
 						{postcard.entries.map((entry) => (
-							<div key={entry._id}>
-								<h4>{entry.title.trim() || 'Untitled'}</h4>
-							</div>
+							<button
+								key={entry._id}
+								onClick={() => handleFocusEntry(entry)}
+								className={`${styles.entry} ${focusedEntry?._id === entry._id ? styles.focused : ''}`}
+							>
+								{entry.title.trim() || 'Untitled'}
+							</button>
 						))}
 						<div>
 							<button onClick={handleCreateEntry}>New entry</button>

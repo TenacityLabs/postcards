@@ -1,6 +1,6 @@
 "use client"
 
-import { Postcard } from '@/types/postcard'
+import { Entry, Postcard } from '@/types/postcard'
 import { getAuthHeader } from '@/utils/api'
 import { ClientLogger } from '@/utils/clientLogger'
 import { useParams } from 'next/navigation'
@@ -9,6 +9,8 @@ import { createContext, useContext, useEffect, useState, ReactNode, Dispatch, Se
 interface PostcardContextType {
 	postcard: Postcard | null
 	setPostcard: Dispatch<SetStateAction<Postcard | null>>
+	focusedEntry: Entry | null
+	setFocusedEntry: Dispatch<SetStateAction<Entry | null>>
 	loading: boolean
 }
 
@@ -18,6 +20,7 @@ export function PostcardProvider({ children }: { children: ReactNode }) {
 	const { postcardId } = useParams()
 	const [postcard, setPostcard] = useState<Postcard | null>(null)
 	const [loading, setLoading] = useState(true)
+	const [focusedEntry, setFocusedEntry] = useState<Entry | null>(null)
 
 	useEffect(() => {
 		const fetchPostcard = async () => {
@@ -37,6 +40,11 @@ export function PostcardProvider({ children }: { children: ReactNode }) {
 				const data = await response.json()
 				ClientLogger.info(`Postcard fetched: ${JSON.stringify(data)}`)
 				setPostcard(data.postcard)
+				if (data.postcard.entries.length > 0) {
+					setFocusedEntry(data.postcard.entries[0])
+				} else {
+					setFocusedEntry(null)
+				}
 			} catch (error) {
 				ClientLogger.error(`Error fetching postcard: ${error}`)
 			} finally {
@@ -52,6 +60,8 @@ export function PostcardProvider({ children }: { children: ReactNode }) {
 			value={{
 				postcard,
 				setPostcard,
+				focusedEntry,
+				setFocusedEntry,
 				loading,
 			}}
 		>

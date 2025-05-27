@@ -56,9 +56,9 @@ export default function EditEntry() {
 		<div className={styles.container}>
 			<div>
 				<Link href="/dashboard">Dashboard</Link>
-			</div>
-			<div>
+				<div>
 
+				</div>
 			</div>
 			<div>
 				<div>

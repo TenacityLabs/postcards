@@ -3,6 +3,7 @@ import { connectToDatabase } from '@/utils/mongoose'
 import { NextResponse } from 'next/server'
 import { verifyRequest } from '@/utils/auth'
 import { PostcardModel } from '@/models/Postcard'
+import { UserModel } from '@/models/User'
 
 export async function GET(request: Request) {
 	try {
@@ -19,6 +20,11 @@ export async function GET(request: Request) {
 			)
 		}
 		const postcard = await PostcardModel.findById(postcardId)
+			.populate({
+				path: 'user',
+				select: 'firstName lastName',
+				model: UserModel,
+			})
 
 		if (!postcard) {
 			return NextResponse.json(

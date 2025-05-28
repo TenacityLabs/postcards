@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
 		try {
 			await PostcardModel.deleteOne({
 				_id: postcardId,
-				userId: userId,
+				user: userId,
 			}, { session })
 			const user: IUserPopulated = await UserModel.findByIdAndUpdate(
 				userId,

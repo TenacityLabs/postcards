@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
 
 		const postcard: IPostcard | null = await PostcardModel.findOne({
 			_id: postcardId,
-			userId: userId,
+			user: userId,
 		})
 		if (!postcard) {
 			return NextResponse.json({ error: "Postcard not found" }, { status: 404 })

@@ -13,16 +13,18 @@ const JWT_DURATION = process.env.JWT_DURATION || '7d'
 interface SignupRequest {
 	email: string
 	password: string
+	firstName: string
+	lastName: string
 }
 
 export async function POST(request: Request) {
 	try {
 		const body: SignupRequest = await request.json()
-		const { email, password } = body
+		const { email, password, firstName, lastName } = body
 
-		if (!email || !password) {
+		if (!email || !password || !firstName || !lastName) {
 			return NextResponse.json(
-				{ error: 'Email and password are required' },
+				{ error: 'Email, password, first name, and last name are required' },
 				{ status: 400 }
 			)
 		}
@@ -43,6 +45,8 @@ export async function POST(request: Request) {
 		const newUser: IUser = await UserModel.create({
 			email,
 			password: hashedPassword,
+			firstName,
+			lastName,
 		})
 
 		const userResponse: IUser | null = await UserModel.findById(newUser._id)

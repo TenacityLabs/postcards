@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
 		const postcard = await PostcardModel.findOneAndUpdate(
 			{
 				_id: postcardId,
-				userId: userId,
+				user: userId,
 			},
 			{
 				$push: {

@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
 			}
 
 			const postcard = new PostcardModel({
-				userId,
+				user: userId,
 				entries: [{
 					title: '',
 					description: '',

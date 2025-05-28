@@ -4,6 +4,7 @@ import { verifyRequest } from "@/utils/auth";
 import { connectToDatabase } from "@/utils/mongoose";
 import { checkUrlInBucket, uploadFile } from "@/utils/s3";
 import { IEntry, IPostcard, PostcardModel } from "@/models/Postcard";
+import { validateDate } from "@/utils/date";
 
 export async function POST(request: NextRequest) {
 	try {
@@ -16,9 +17,13 @@ export async function POST(request: NextRequest) {
 		const title = formData.get("title") as string
 		const description = formData.get("description") as string
 		const image = formData.get("file") as File | string | null
+		const date = formData.get("date") as string | null
 
 		if (!postcardId || !entryId || !title) {
 			return NextResponse.json({ error: "No postcard ID, entry ID, or title provided" }, { status: 400 })
+		}
+		if (date && !validateDate(date)) {
+			return NextResponse.json({ error: "Invalid date" }, { status: 400 })
 		}
 
 		const postcard: IPostcard | null = await PostcardModel.findOne({
@@ -51,6 +56,9 @@ export async function POST(request: NextRequest) {
 		entry.title = title
 		entry.description = description
 		entry.imageUrl = imageUrl
+		if (date) {
+			entry.date = date
+		}
 		postcard.updatedAt = Date.now()
 		await postcard.save()
 

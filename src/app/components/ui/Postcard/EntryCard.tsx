@@ -1,5 +1,7 @@
 import { Entry, PostcardDate } from "@/types/postcard"
 import styles from "./styles.module.scss"
+import { MONTHS } from "@/constants/date"
+import Image from "next/image"
 
 const cardColors = [
 	styles.cardColor0,
@@ -19,10 +21,30 @@ interface EntryCardProps {
 
 export default function EntryCard(props: EntryCardProps) {
 	const { entry } = props
+	const { title, date, description, imageUrl, cardColor } = entry
+
+	const isCardCaption = imageUrl && !date && !description
 
 	return (
-		<div className={`${styles.card} ${cardColors[entry.cardColor]}`}>
-			<EntryCardTitle title={entry.title} date={entry.date} />
+		<div className={`${styles.card} ${cardColors[cardColor]} ${isCardCaption ? styles.captionCard : ""}`}>
+			<EntryCardTitle title={title} date={date} />
+			{description && (
+				<p className={styles.description}>
+					{description}
+				</p>
+			)}
+			{imageUrl && (
+				<div className={styles.imageContainer}>
+					<Image
+						src={imageUrl}
+						alt={title}
+						width={0}
+						height={0}
+						sizes="100vw"
+						style={{ width: '100%', height: 'auto' }}
+					/>
+				</div>
+			)}
 		</div>
 	)
 }
@@ -39,7 +61,7 @@ function EntryCardTitle(props: EntryCardTitleProps) {
 		return (
 			<div className={styles.titleWithDate}>
 				<h3>{title}</h3>
-				<span>{date.month} {date.day}, {date.year}</span>
+				<span>{MONTHS[date.month - 1]} {date.day}, {date.year}</span>
 			</div>
 		)
 	} else {

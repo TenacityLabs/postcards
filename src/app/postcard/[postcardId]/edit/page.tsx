@@ -91,6 +91,9 @@ export default function EditEntry() {
 		if (image) {
 			formData.append('file', image)
 		}
+		if (date) {
+			formData.append('date', date.toString())
+		}
 
 		fetch('/api/postcard/entry/edit', {
 			method: 'POST',

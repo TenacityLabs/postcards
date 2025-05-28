@@ -36,3 +36,15 @@
 		}
 	}
 }
+
+.entries {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 24px;
+}
+
+.entryColumn {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+}

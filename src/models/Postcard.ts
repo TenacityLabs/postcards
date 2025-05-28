@@ -1,5 +1,18 @@
+import { CARD_COLORS, TAPE_CHANCE, TAPE_PATTERNS } from '@/constants/postcard'
 import { validateDate } from '@/utils/date'
 import mongoose, { Schema, Document } from 'mongoose'
+
+const generateRandomTapePattern = () => {
+	if (Math.random() < TAPE_CHANCE) {
+		return Math.floor(Math.random() * TAPE_PATTERNS)
+	} else {
+		return -1
+	}
+}
+
+const generateRandomCardColor = () => {
+	return Math.floor(Math.random() * CARD_COLORS)
+}
 
 export interface IEntry extends Document {
 	_id: mongoose.Types.ObjectId
@@ -8,6 +21,8 @@ export interface IEntry extends Document {
 	date: string
 	description: string
 	imageUrl: string | null
+	tapePattern: number
+	cardColor: number
 	createdAt: number
 }
 
@@ -37,6 +52,16 @@ const EntrySchema = new Schema<IEntry>({
 		required: false,
 		nullable: true,
 		default: null,
+	},
+	tapePattern: {
+		type: Number,
+		required: true,
+		default: generateRandomTapePattern,
+	},
+	cardColor: {
+		type: Number,
+		required: true,
+		default: generateRandomCardColor,
 	},
 	createdAt: {
 		type: Number,

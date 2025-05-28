@@ -15,6 +15,8 @@ export interface Entry {
 	date: PostcardDate | null
 	description: string
 	imageUrl: string | null
+	tapePattern: number
+	cardColor: number
 	createdAt: number
 }
 

@@ -1,0 +1,68 @@
+@use '@/app/system.scss' as *;
+
+.card {
+	width: 100%;
+	padding: 24px;
+	border-radius: 10px;
+}
+
+.title,
+.titleWithDate {
+	&>h3 {
+		color: $neutral-950;
+		text-align: center;
+		font-family: $figtree;
+		font-size: 24px;
+		font-weight: 700;
+		line-height: normal;
+	}
+}
+
+.titleWithDate {
+	display: flex;
+	justify-content: space-between;
+
+	&>span {
+		color: $neutral-700;
+		font-family: $figtree;
+		font-size: 16px;
+		font-weight: 700;
+		line-height: normal;
+	}
+}
+
+.cardColor0 {
+	background-color: $card-0;
+}
+
+.cardColor1 {
+	background-color: $card-1;
+}
+
+.cardColor2 {
+	background-color: $card-2;
+}
+
+.cardColor3 {
+	background-color: $card-3;
+}
+
+.cardColor4 {
+	background-color: $card-4;
+}
+
+.cardColor5 {
+	background-color: $card-5;
+}
+
+.cardColor6 {
+	background-color: $card-6;
+}
+
+.cardColor7 {
+	background-color: $card-7;
+}
+
+.cardColor8 {
+	background-color: $card-8;
+}

@@ -1,0 +1,26 @@
+.container {
+	background: #f0f0f0;
+	width: 500px;
+}
+
+.header {
+	display: flex;
+}
+
+.calendar {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+}
+
+.dayLabel {
+	font-weight: bold;
+}
+
+.day {
+	cursor: pointer;
+}
+
+.selected {
+	background: #000;
+	color: #fff;
+}

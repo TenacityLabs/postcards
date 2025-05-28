@@ -1,11 +1,12 @@
 "use client"
 
+import { DateInput } from "@/app/components/ui/DateInput";
 import styles from "./styles.module.scss"
 import { FileInput } from "@/app/components/ui/FileInput";
 import { TextArea, TextInput } from "@/app/components/ui/TextInput";
 import { usePostcard } from "@/app/context/postcardContext";
 import { IMAGE_TYPES, MAX_IMAGE_SIZE } from "@/constants/file";
-import { Entry } from "@/types/postcard";
+import { Entry, PostcardDate } from "@/types/postcard";
 import { getAuthHeader } from "@/utils/api";
 import { ClientLogger } from "@/utils/clientLogger";
 import Link from "next/link";
@@ -14,6 +15,7 @@ import { useEffect, useState } from "react";
 export default function EditEntry() {
 	const { postcard, setPostcard, focusedEntry, setFocusedEntry } = usePostcard()
 	const [title, setTitle] = useState('')
+	const [date, setDate] = useState<PostcardDate | null>(null)
 	const [description, setDescription] = useState('')
 	// Allow file or image url for reuploads
 	const [image, setImage] = useState<File | string | null>(null)
@@ -21,6 +23,7 @@ export default function EditEntry() {
 	useEffect(() => {
 		if (focusedEntry) {
 			setTitle(focusedEntry.title)
+			setDate(focusedEntry.date)
 			setDescription(focusedEntry.description)
 			setImage(focusedEntry.imageUrl)
 		}
@@ -150,6 +153,13 @@ export default function EditEntry() {
 								placeholder="Title"
 								value={title}
 								setValue={setTitle}
+							/>
+						</div>
+						<div>
+							<DateInput
+								selectedDate={date}
+								setSelectedDate={setDate}
+								clearSelectedDate={() => setDate(null)}
 							/>
 						</div>
 						<div>

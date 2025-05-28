@@ -1,6 +1,6 @@
 "use client"
 
-import { Entry, Postcard } from '@/types/postcard'
+import { Entry, Postcard, PostcardDate } from '@/types/postcard'
 import { getAuthHeader } from '@/utils/api'
 import { ClientLogger } from '@/utils/clientLogger'
 import { useParams } from 'next/navigation'
@@ -39,9 +39,13 @@ export function PostcardProvider({ children }: { children: ReactNode }) {
 				})
 				const data = await response.json()
 				ClientLogger.info(`Postcard fetched: ${JSON.stringify(data)}`)
-				setPostcard(data.postcard)
-				if (data.postcard.entries.length > 0) {
-					setFocusedEntry(data.postcard.entries[0])
+				const postcard: Postcard = data.postcard
+				postcard.entries.forEach(entry => {
+					entry.date = entry.date ? new PostcardDate(entry.date as unknown as string) : null
+				})
+				setPostcard(postcard)
+				if (postcard.entries.length > 0) {
+					setFocusedEntry(postcard.entries[0])
 				} else {
 					setFocusedEntry(null)
 				}

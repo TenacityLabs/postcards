@@ -1,4 +1,4 @@
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { DeleteObjectsCommand, ListObjectsV2Command, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { ServerLogger } from "./serverLogger";
 
 const S3_URL_PREFIX = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/`
@@ -25,6 +25,38 @@ export const uploadFile = async (file: File, key: string): Promise<string> => {
 
 	// Construct the public URL
 	return `${S3_URL_PREFIX}${key}`
+}
+
+export const deleteAllInPrefix = async (prefix: string) => {
+	let continuationToken: string | undefined
+	do {
+		const command = new ListObjectsV2Command({
+			Bucket: process.env.AWS_BUCKET_NAME,
+			Prefix: prefix,
+			ContinuationToken: continuationToken,
+		})
+
+		const listResponse = await s3Client.send(command)
+		const objects = listResponse.Contents ?? []
+		const keysToDelete = objects.map((object) => ({ Key: object.Key }))
+			.filter((obj): obj is { Key: string } => obj.Key !== undefined)
+
+		if (keysToDelete.length > 0) {
+			const deleteCommand = new DeleteObjectsCommand({
+				Bucket: process.env.AWS_BUCKET_NAME,
+				Delete: {
+					Objects: keysToDelete,
+				},
+			})
+
+			await s3Client.send(deleteCommand)
+			ServerLogger.info(`Deleted ${keysToDelete.length} objects in prefix ${prefix}`)
+		}
+
+		continuationToken = listResponse.IsTruncated ? listResponse.NextContinuationToken : undefined
+	} while (continuationToken)
+
+	ServerLogger.info(`Deleted all objects in prefix ${prefix}`)
 }
 
 export const checkUrlInBucket = (url: string, directory: string = '') => {

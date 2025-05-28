@@ -1,7 +1,9 @@
 import { validateDate } from "@/utils/date"
+import { User } from "./user"
 
 export interface Postcard {
 	_id: string
+	user: User
 	entries: Entry[]
 	createdAt: number
 	updatedAt: number

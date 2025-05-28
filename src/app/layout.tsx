@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import "./globals.scss";
 import { UserProvider } from "@/app/context/userContext";
 import AuthRouter from "@/app/components/AuthRouter";
 

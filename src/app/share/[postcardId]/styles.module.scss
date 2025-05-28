@@ -1,0 +1,38 @@
+@use '@/app/system.scss' as *;
+
+.page {
+	background-color: $paper;
+	background-image: radial-gradient(circle, rgba($neutral-700, 0.25), transparent 2px);
+	background-size: 36px 36px;
+
+	min-height: 100vh;
+
+	display: flex;
+	justify-content: center;
+}
+
+.container {
+	margin-top: 48px;
+	width: 100%;
+	max-width: 1440px;
+}
+
+.header {
+	&>.date {
+		color: $neutral-600;
+		font-size: 18px;
+		font-weight: 700;
+		line-height: normal;
+	}
+
+	&>.title {
+		color: $neutral-900;
+		font-size: 48px;
+		font-weight: 400;
+		line-height: normal;
+
+		&>b {
+			font-weight: 700;
+		}
+	}
+}

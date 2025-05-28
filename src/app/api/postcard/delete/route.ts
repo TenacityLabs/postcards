@@ -5,6 +5,7 @@ import { connectToDatabase } from "@/utils/mongoose";
 import { PostcardModel } from "@/models/Postcard";
 import { IUserPopulated, UserModel } from "@/models/User";
 import mongoose from "mongoose";
+import { deleteAllInPrefix } from "@/utils/s3";
 
 export async function POST(request: NextRequest) {
 	try {
@@ -42,6 +43,7 @@ export async function POST(request: NextRequest) {
 					model: PostcardModel,
 				})
 
+			await deleteAllInPrefix(`uploads/${postcardId}/`)
 			await session.commitTransaction()
 
 			return NextResponse.json({
@@ -55,12 +57,10 @@ export async function POST(request: NextRequest) {
 			session.endSession()
 		}
 	} catch (error) {
-		ServerLogger.error(`Error creating postcard: ${error}`)
+		ServerLogger.error(`Error deleting postcard: ${error}`)
 		return NextResponse.json(
 			{ error: 'Internal server error' },
 			{ status: 500 }
 		)
 	}
 }
-
-

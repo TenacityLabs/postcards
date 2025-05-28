@@ -33,8 +33,8 @@ export async function POST(request: NextRequest) {
 		let imageUrl: string | null = null
 		if (image && image instanceof File) {
 			const imageFile = image as File
-			const fileExtension = imageFile.name.split('.').pop() || ''
-			const key = `uploads/${postcardId}/${entryId}-${Date.now()}${fileExtension ? `.${fileExtension}` : ''}`
+			const fileExtension = `.${imageFile.name.split('.').pop() || ''}`
+			const key = `uploads/${postcardId}/${entryId}-${Date.now()}${fileExtension}`
 			imageUrl = await uploadFile(imageFile, key)
 		} else if (image && typeof image === 'string') {
 			if (checkUrlInBucket(image)) {
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
 			postcard: postcard.toJSON({ versionKey: false })
 		}, { status: 200 })
 	} catch (error) {
-		ServerLogger.error(`Error creating postcard: ${error}`)
-		return NextResponse.json({ error: "Failed to create postcard" }, { status: 500 })
+		ServerLogger.error(`Error editing postcard entry: ${error}`)
+		return NextResponse.json({ error: "Failed to edit postcard entry" }, { status: 500 })
 	}
 }

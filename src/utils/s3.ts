@@ -1,4 +1,4 @@
-import { DeleteObjectsCommand, ListObjectsV2Command, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { DeleteObjectCommand, DeleteObjectsCommand, ListObjectsV2Command, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { ServerLogger } from "./serverLogger";
 
 const S3_URL_PREFIX = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/`
@@ -25,6 +25,15 @@ export const uploadFile = async (file: File, key: string): Promise<string> => {
 
 	// Construct the public URL
 	return `${S3_URL_PREFIX}${key}`
+}
+
+export const deleteFile = async (key: string) => {
+	const command = new DeleteObjectCommand({
+		Bucket: process.env.AWS_BUCKET_NAME,
+		Key: key,
+	})
+	await s3Client.send(command)
+	ServerLogger.info(`Deleted file ${key} from S3`)
 }
 
 export const deleteAllInPrefix = async (prefix: string) => {
@@ -57,6 +66,13 @@ export const deleteAllInPrefix = async (prefix: string) => {
 	} while (continuationToken)
 
 	ServerLogger.info(`Deleted all objects in prefix ${prefix}`)
+}
+
+export const extractKeyFromUrl = (url: string) => {
+	if (!url.startsWith(S3_URL_PREFIX)) {
+		throw new Error("URL does not start with S3 URL prefix")
+	}
+	return url.split(S3_URL_PREFIX)[1]
 }
 
 export const checkUrlInBucket = (url: string, directory: string = '') => {

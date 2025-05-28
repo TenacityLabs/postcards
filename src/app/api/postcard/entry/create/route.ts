@@ -51,8 +51,7 @@ export async function POST(request: NextRequest) {
 			postcard: postcard.toObject({ versionKey: false }),
 		}, { status: 200 })
 	} catch (error) {
-		ServerLogger.error(`Error creating postcard: ${error}`)
-		return NextResponse.json({ error: "Failed to create postcard" }, { status: 500 })
+		ServerLogger.error(`Error creating postcard entry: ${error}`)
+		return NextResponse.json({ error: "Failed to create postcard entry" }, { status: 500 })
 	}
 }
-

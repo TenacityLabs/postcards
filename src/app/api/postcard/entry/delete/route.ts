@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyRequest } from "@/utils/auth";
 import { connectToDatabase } from "@/utils/mongoose";
 import { IPostcard, PostcardModel } from "@/models/Postcard";
-import { UserModel } from "@/models/User";
 import { deleteFile, extractKeyFromUrl } from "@/utils/s3";
 
 export async function POST(request: NextRequest) {
@@ -16,16 +15,9 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json({ error: "No postcard ID provided" }, { status: 400 })
 		}
 
-		const user = await UserModel.exists({
-			_id: userId,
-			postcards: postcardId,
-		})
-		if (!user) {
-			return NextResponse.json({ error: "User not found or does not have ownership of this postcard" }, { status: 404 })
-		}
-
 		const postcard: IPostcard | null = await PostcardModel.findOne({
 			_id: postcardId,
+			userId: userId,
 		})
 		if (!postcard) {
 			return NextResponse.json({ error: "Postcard not found" }, { status: 404 })

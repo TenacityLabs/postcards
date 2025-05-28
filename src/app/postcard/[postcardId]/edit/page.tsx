@@ -11,6 +11,7 @@ import { getAuthHeader } from "@/utils/api";
 import { ClientLogger } from "@/utils/clientLogger";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { POSTCARD_SHARE_LINK_PREFIX } from "@/constants/postcard";
 
 export default function EditEntry() {
 	const { postcard, setPostcard, focusedEntry, setFocusedEntry } = usePostcard()
@@ -53,6 +54,10 @@ export default function EditEntry() {
 			.catch(err => {
 				ClientLogger.error(`Error creating entry: ${err}`)
 			})
+	}
+
+	const handleCopyShareLink = () => {
+		navigator.clipboard.writeText(`${POSTCARD_SHARE_LINK_PREFIX}${postcard?._id}`)
 	}
 
 	const handleImageChange = (file: File | null) => {
@@ -141,6 +146,9 @@ export default function EditEntry() {
 						))}
 						<div>
 							<button onClick={handleCreateEntry}>New entry</button>
+						</div>
+						<div>
+							<button onClick={handleCopyShareLink}>Copy share link</button>
 						</div>
 					</div>
 				)}

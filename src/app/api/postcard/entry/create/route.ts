@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyRequest } from "@/utils/auth";
 import { connectToDatabase } from "@/utils/mongoose";
 import { PostcardModel } from "@/models/Postcard";
-import { UserModel } from "@/models/User";
 
 export async function POST(request: NextRequest) {
 	try {
@@ -15,22 +14,17 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json({ error: "No postcard ID provided" }, { status: 400 })
 		}
 
-		const user = await UserModel.exists({
-			_id: userId,
-			postcards: postcardId,
-		})
-		if (!user) {
-			return NextResponse.json({ error: "User not found or does not have ownership of this postcard" }, { status: 404 })
-		}
-
 		const entry = {
 			title: '',
 			description: '',
 			imageUrl: null,
 		}
 
-		const postcard = await PostcardModel.findByIdAndUpdate(
-			postcardId,
+		const postcard = await PostcardModel.findOneAndUpdate(
+			{
+				_id: postcardId,
+				userId: userId,
+			},
 			{
 				$push: {
 					entries: entry

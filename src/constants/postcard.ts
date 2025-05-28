@@ -1,0 +1,1 @@
+export const POSTCARD_SHARE_LINK_PREFIX = process.env.NEXT_PUBLIC_BASE_URL + '/share/'

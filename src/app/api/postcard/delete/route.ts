@@ -18,19 +18,10 @@ export async function POST(request: NextRequest) {
 		session.startTransaction()
 
 		try {
-			const userExists = await UserModel.exists({
-				_id: userId,
-				postcards: postcardId,
-			})
-			if (!userExists) {
-				await session.abortTransaction()
-				return NextResponse.json(
-					{ error: 'User not found or does not have ownership of this postcard' },
-					{ status: 404 }
-				)
-			}
-
-			await PostcardModel.deleteOne({ _id: postcardId }, { session })
+			await PostcardModel.deleteOne({
+				_id: postcardId,
+				userId: userId,
+			}, { session })
 			const user: IUserPopulated = await UserModel.findByIdAndUpdate(
 				userId,
 				{ $pull: { postcards: postcardId } },

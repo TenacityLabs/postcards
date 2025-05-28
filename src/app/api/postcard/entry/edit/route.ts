@@ -4,7 +4,6 @@ import { verifyRequest } from "@/utils/auth";
 import { connectToDatabase } from "@/utils/mongoose";
 import { checkUrlInBucket, uploadFile } from "@/utils/s3";
 import { IEntry, IPostcard, PostcardModel } from "@/models/Postcard";
-import { UserModel } from "@/models/User";
 
 export async function POST(request: NextRequest) {
 	try {
@@ -22,12 +21,12 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json({ error: "No postcard ID, entry ID, or title provided" }, { status: 400 })
 		}
 
-		const user = await UserModel.exists({
-			_id: userId,
-			postcards: postcardId,
+		const postcard: IPostcard | null = await PostcardModel.findOne({
+			_id: postcardId,
+			userId: userId,
 		})
-		if (!user) {
-			return NextResponse.json({ error: "User not found or does not have ownership of this postcard" }, { status: 404 })
+		if (!postcard) {
+			return NextResponse.json({ error: "Postcard not found" }, { status: 404 })
 		}
 
 		let imageUrl: string | null = null
@@ -42,11 +41,6 @@ export async function POST(request: NextRequest) {
 			} else {
 				ServerLogger.error(`Invalid image URL does not start with S3 url prefix`)
 			}
-		}
-
-		const postcard: IPostcard | null = await PostcardModel.findById(postcardId)
-		if (!postcard) {
-			return NextResponse.json({ error: "Postcard not found" }, { status: 404 })
 		}
 
 		const entry = postcard.entries.find((entry: IEntry) => entry._id.toString() === entryId)

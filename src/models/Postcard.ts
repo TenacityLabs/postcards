@@ -1,5 +1,6 @@
 import { validateDate } from '@/utils/date'
 import mongoose, { Schema, Document } from 'mongoose'
+import { UserModel } from './User'
 
 export interface IEntry extends Document {
 	_id: mongoose.Types.ObjectId
@@ -47,12 +48,20 @@ const EntrySchema = new Schema<IEntry>({
 
 export interface IPostcard extends Document {
 	_id: mongoose.Types.ObjectId
+	userId: mongoose.Types.ObjectId
 	entries: IEntry[]
 	createdAt: number
 	updatedAt: number
 }
 
 const PostcardSchema = new Schema<IPostcard>({
+	// This is a two way relationship, so we need to make sure the user is immutable
+	userId: {
+		type: mongoose.Schema.Types.ObjectId,
+		required: true,
+		ref: UserModel,
+		immutable: true,
+	},
 	entries: {
 		type: [EntrySchema],
 		required: true,

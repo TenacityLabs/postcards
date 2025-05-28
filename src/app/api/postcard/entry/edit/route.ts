@@ -33,7 +33,9 @@ export async function POST(request: NextRequest) {
 		let imageUrl: string | null = null
 		if (image && image instanceof File) {
 			const imageFile = image as File
-			imageUrl = await uploadFile(imageFile, `uploads/${Date.now()}-${imageFile.name}`)
+			const fileExtension = imageFile.name.split('.').pop() || ''
+			const key = `uploads/${postcardId}/${entryId}-${Date.now()}${fileExtension ? `.${fileExtension}` : ''}`
+			imageUrl = await uploadFile(imageFile, key)
 		} else if (image && typeof image === 'string') {
 			if (checkUrlInBucket(image)) {
 				imageUrl = image

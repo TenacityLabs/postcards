@@ -1,5 +1,5 @@
 import { GetUserResponse, LoginRequest, LoginResponse, SignupRequest, SignupResponse } from "./api/auth"
-import { CreateEntryRequest, CreateEntryResponse, CreatePostcardResponse, DeleteEntryRequest, DeleteEntryResponse, DeletePostcardRequest, DeletePostcardResponse, EditEntryRequest, EditEntryResponse, GetPostcardResponse } from "./api/postcard"
+import { CreateEntryRequest, CreateEntryResponse, CreatePostcardResponse, DeleteEntryRequest, DeleteEntryResponse, DeletePostcardRequest, DeletePostcardResponse, EditEntryRequest, EditEntryResponse, GetPostcardRequest, GetPostcardResponse } from "./api/postcard"
 
 export enum APIMethods {
 	GET = 'GET',
@@ -42,7 +42,7 @@ export interface ApiDataDefinitions {
 	[APIEndpoints.Signup]: ApiDataDefinition<APIMethods.POST, SignupRequest, SignupResponse>
 	[APIEndpoints.GetUser]: ApiDataDefinition<APIMethods.GET, undefined, GetUserResponse>
 
-	[APIEndpoints.GetPostcard]: ApiDataDefinition<APIMethods.GET, undefined, GetPostcardResponse>
+	[APIEndpoints.GetPostcard]: ApiDataDefinition<APIMethods.GET, GetPostcardRequest, GetPostcardResponse>
 	[APIEndpoints.CreatePostcard]: ApiDataDefinition<APIMethods.POST, undefined, CreatePostcardResponse>
 	[APIEndpoints.DeletePostcard]: ApiDataDefinition<APIMethods.POST, DeletePostcardRequest, DeletePostcardResponse>
 

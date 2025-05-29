@@ -5,6 +5,9 @@ import { useState } from "react";
 import { LOCALSTORAGE_JWT_KEY } from "../../constants/auth";
 import { ClientLogger } from "@/utils/clientLogger";
 import { useUser } from "../context/userContext";
+import { APIMethods } from "@/types/api";
+import { APIEndpoints } from "@/types/api";
+import { sendAPIRequest } from "@/utils/api";
 
 export default function Signup() {
 	const { setUser } = useUser()
@@ -13,19 +16,18 @@ export default function Signup() {
 	const [firstName, setFirstName] = useState('')
 	const [lastName, setLastName] = useState('')
 
-	const handleSignup = () => {
-		fetch('/api/auth/signup', {
-			method: 'POST',
-			body: JSON.stringify({ email, password, firstName, lastName }),
-		})
-			.then(res => res.json())
-			.then(data => {
-				localStorage.setItem(LOCALSTORAGE_JWT_KEY, data.token)
-				setUser(data.user)
-			})
-			.catch(err => {
-				ClientLogger.error(err)
-			})
+	const handleSignup = async () => {
+		try {
+			const response = await sendAPIRequest(
+				APIEndpoints.Signup,
+				APIMethods.POST,
+				{ email, password, firstName, lastName }
+			)
+			localStorage.setItem(LOCALSTORAGE_JWT_KEY, response.token)
+			setUser(response.user)
+		} catch (error) {
+			ClientLogger.error(error)
+		}
 	}
 
 	return (

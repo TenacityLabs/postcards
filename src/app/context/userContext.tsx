@@ -1,7 +1,9 @@
 "use client"
 
 import { LOCALSTORAGE_JWT_KEY } from '@/constants/auth'
+import { APIEndpoints, APIMethods } from '@/types/api'
 import { User } from '@/types/user'
+import { sendAPIRequest } from '@/utils/api'
 import { ClientLogger } from '@/utils/clientLogger'
 import { createContext, useContext, useEffect, useState, ReactNode, Dispatch, SetStateAction, useCallback } from 'react'
 
@@ -28,25 +30,18 @@ export function UserProvider({ children }: { children: ReactNode }) {
 					return
 				}
 
-				const response = await fetch('/api/user', {
-					headers: {
-						'Authorization': `Bearer ${token}`
-					}
-				})
+				const response = await sendAPIRequest(
+					APIEndpoints.GetUser,
+					APIMethods.GET,
+					undefined
+				)
 
-				if (!response.ok) {
-					if (response.status === 401) {
-						// Token expired or invalid
-						localStorage.removeItem('token')
-						setUser(null)
-					}
-					throw new Error('Failed to fetch user')
-				}
-
-				const data = await response.json()
-				setUser(data.user)
-				ClientLogger.sensitive(`User fetched: ${JSON.stringify(data.user)}`)
+				setUser(response.user)
+				ClientLogger.sensitive(`User fetched: ${JSON.stringify(response.user)}`)
 			} catch (err) {
+				// Token expired or invalid
+				localStorage.removeItem('token')
+				setUser(null)
 				ClientLogger.error(`Error fetching user: ${err}`)
 			} finally {
 				setLoading(false)

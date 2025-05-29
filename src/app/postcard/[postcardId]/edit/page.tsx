@@ -7,11 +7,13 @@ import { TextArea, TextInput } from "@/app/components/ui/TextInput";
 import { usePostcard } from "@/app/context/postcardContext";
 import { IMAGE_TYPES, MAX_IMAGE_SIZE } from "@/constants/file";
 import { Entry, PostcardDate } from "@/types/postcard";
-import { getAuthHeader } from "@/utils/api";
+import { sendAPIRequest } from "@/utils/api";
 import { ClientLogger } from "@/utils/clientLogger";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { POSTCARD_SHARE_LINK_PREFIX } from "@/constants/postcard";
+import { APIEndpoints } from "@/types/api";
+import { APIMethods } from "@/types/api";
 
 export default function EditEntry() {
 	const { postcard, setPostcard, focusedEntry, setFocusedEntry } = usePostcard()
@@ -34,26 +36,30 @@ export default function EditEntry() {
 		setFocusedEntry(entry)
 	}
 
-	const handleCreateEntry = () => {
+	const handleCreateEntry = async () => {
 		ClientLogger.info('Creating new entry')
 		if (!postcard) {
 			ClientLogger.error('No postcard found')
 			return
 		}
-		fetch('/api/postcard/entry/create', {
-			method: 'POST',
-			body: JSON.stringify({ postcardId: postcard._id }),
-			headers: getAuthHeader()
-		})
-			.then(res => res.json())
-			.then(data => {
-				ClientLogger.info(`Entry created: ${JSON.stringify(data)}`)
-				setPostcard(data.postcard)
-				setFocusedEntry(data.postcard.entries[data.postcard.entries.length - 1])
-			})
-			.catch(err => {
-				ClientLogger.error(`Error creating entry: ${err}`)
-			})
+		try {
+			const response = await sendAPIRequest(
+				APIEndpoints.CreateEntry,
+				APIMethods.POST,
+				{
+					postcardId: postcard._id
+				}
+			)
+			ClientLogger.info(`Entry created: ${JSON.stringify(response)}`)
+			setPostcard(response.postcard)
+			if (response.postcard.entries.length > 0) {
+				setFocusedEntry(response.postcard.entries[response.postcard.entries.length - 1])
+			} else {
+				setFocusedEntry(null)
+			}
+		} catch (error) {
+			ClientLogger.error(error)
+		}
 	}
 
 	const handleCopyShareLink = () => {
@@ -76,59 +82,53 @@ export default function EditEntry() {
 		setImage(file)
 	}
 
-	const handleSubmitEntry = () => {
+	const handleSubmitEntry = async () => {
 		ClientLogger.info('Submitting new entry')
 		if (!postcard || !focusedEntry) {
 			ClientLogger.error('No postcard or focused entry found')
 			return
 		}
 
-		const formData = new FormData()
-		formData.append('postcardId', postcard._id)
-		formData.append('entryId', focusedEntry._id)
-		formData.append('title', title)
-		formData.append('description', description)
-		if (image) {
-			formData.append('file', image)
+		try {
+			const response = await sendAPIRequest(
+				APIEndpoints.EditEntry,
+				APIMethods.POST,
+				{
+					postcardId: postcard._id,
+					entryId: focusedEntry._id,
+					title,
+					description,
+					file: image,
+					date: date ? date.toString() : null
+				}
+			)
+			ClientLogger.info(`Postcard created: ${JSON.stringify(response)}`)
+			setPostcard(response.postcard)
+		} catch (error) {
+			ClientLogger.error(error)
 		}
-		if (date) {
-			formData.append('date', date.toString())
-		}
-
-		fetch('/api/postcard/entry/edit', {
-			method: 'POST',
-			body: formData,
-			headers: getAuthHeader()
-		})
-			.then(res => res.json())
-			.then(data => {
-				ClientLogger.info(`Postcard created: ${JSON.stringify(data)}`)
-				setPostcard(data.postcard)
-			})
-			.catch(err => {
-				ClientLogger.error(`Error creating postcard: ${err}`)
-			})
 	}
 
-	const handleDeleteEntry = () => {
+	const handleDeleteEntry = async () => {
 		ClientLogger.info('Deleting entry')
 		if (!postcard || !focusedEntry) {
 			ClientLogger.error('No postcard or focused entry found')
 			return
 		}
-		fetch('/api/postcard/entry/delete', {
-			method: 'POST',
-			body: JSON.stringify({ postcardId: postcard._id, entryId: focusedEntry._id }),
-			headers: getAuthHeader()
-		})
-			.then(res => res.json())
-			.then(data => {
-				ClientLogger.info(`Entry deleted: ${JSON.stringify(data)}`)
-				setPostcard(data.postcard)
-			})
-			.catch(err => {
-				ClientLogger.error(`Error deleting entry: ${err}`)
-			})
+		try {
+			const response = await sendAPIRequest(
+				APIEndpoints.DeleteEntry,
+				APIMethods.POST,
+				{
+					postcardId: postcard._id,
+					entryId: focusedEntry._id
+				}
+			)
+			ClientLogger.info(`Entry deleted: ${JSON.stringify(response)}`)
+			setPostcard(response.postcard)
+		} catch (error) {
+			ClientLogger.error(error)
+		}
 	}
 
 	return (

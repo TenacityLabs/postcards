@@ -1,7 +1,8 @@
 "use client"
 
+import { APIEndpoints, APIMethods } from '@/types/api'
 import { Entry, Postcard, PostcardDate } from '@/types/postcard'
-import { getAuthHeader } from '@/utils/api'
+import { sendAPIRequest } from '@/utils/api'
 import { ClientLogger } from '@/utils/clientLogger'
 import { useParams } from 'next/navigation'
 import { createContext, useContext, useEffect, useState, ReactNode, Dispatch, SetStateAction } from 'react'
@@ -29,17 +30,16 @@ export function PostcardProvider({ children }: { children: ReactNode }) {
 			}
 
 			try {
-				const param = {
-					postcardId: postcardId as string,
-				}
-				const query = new URLSearchParams(param).toString()
-				const response = await fetch(`/api/postcard?${query}`, {
-					method: 'GET',
-					headers: getAuthHeader(),
-				})
-				const data = await response.json()
-				ClientLogger.info(`Postcard fetched: ${JSON.stringify(data)}`)
-				const postcard: Postcard = data.postcard
+				const response = await sendAPIRequest(
+					APIEndpoints.GetPostcard,
+					APIMethods.GET,
+					{
+						postcardId: postcardId as string,
+					},
+				)
+
+				ClientLogger.info(`Postcard fetched: ${JSON.stringify(response)}`)
+				const postcard: Postcard = response.postcard
 				postcard.entries.forEach(entry => {
 					entry.date = entry.date ? new PostcardDate(entry.date as unknown as string) : null
 				})

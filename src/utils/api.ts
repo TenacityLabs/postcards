@@ -1,9 +1,14 @@
 import { LOCALSTORAGE_JWT_KEY } from "@/constants/auth"
-import { APIEndpoints, APIMethod, APIRequest, APIResponse, RawObject } from "@/types/api"
+import { APIEndpoints, APIMethod, APIMethods, APIRequest, APIResponse, RawObject } from "@/types/api"
 import axios from "axios"
 
 export const getAuthHeader = () => {
 	const token = localStorage.getItem(LOCALSTORAGE_JWT_KEY)
+	if (!token) {
+		return {
+			Authorization: '',
+		}
+	}
 
 	return {
 		Authorization: `Bearer ${token}`,
@@ -33,7 +38,11 @@ export const sendAPIRequest = async <T extends APIEndpoints>(endpoint: T, method
 	const response = await axios.request<APIResponse<T>>({
 		method,
 		url: endpoint,
-		data: isFormDataEndpoint ? objectToFormData(request as unknown as RawObject) : request,
+		...(method === APIMethods.GET ?
+			{ params: request } :
+			{ data: isFormDataEndpoint ? objectToFormData(request as unknown as RawObject) : request }
+		),
+		headers: getAuthHeader(),
 	})
 
 	return response.data;

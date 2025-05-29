@@ -4,6 +4,7 @@ import { connectToDatabase } from '@/utils/mongoose'
 import { NextResponse } from 'next/server'
 import bcrypt from 'bcrypt'
 import jwt, { SignOptions } from 'jsonwebtoken'
+import { APIEndpoints, APIResponse, ErrorResponse } from '@/types/api'
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'
 const JWT_DURATION = process.env.JWT_DURATION || '7d'
@@ -13,14 +14,14 @@ interface LoginRequest {
 	password: string
 }
 
-export async function POST(request: Request) {
+export async function POST(request: Request): Promise<NextResponse<APIResponse<APIEndpoints.Login> | ErrorResponse>> {
 	try {
 		const body: LoginRequest = await request.json()
 		const { email, password } = body
 
 		if (!email || !password) {
 			return NextResponse.json(
-				{ error: 'Email and password are required' },
+				{ message: 'Email and password are required' },
 				{ status: 400 }
 			)
 		}
@@ -31,7 +32,7 @@ export async function POST(request: Request) {
 		const user: IUser | null = await UserModel.findOne({ email })
 		if (!user) {
 			return NextResponse.json(
-				{ error: 'Invalid email or password' },
+				{ message: 'Invalid email or password' },
 				{ status: 401 }
 			)
 		}
@@ -39,7 +40,7 @@ export async function POST(request: Request) {
 		const isPasswordValid = await bcrypt.compare(password, user.password)
 		if (!isPasswordValid) {
 			return NextResponse.json(
-				{ error: 'Invalid email or password' },
+				{ message: 'Invalid email or password' },
 				{ status: 401 }
 			)
 		}
@@ -55,7 +56,6 @@ export async function POST(request: Request) {
 
 		return NextResponse.json(
 			{
-				message: 'Login successful',
 				user: userResponse,
 				token
 			},
@@ -64,7 +64,7 @@ export async function POST(request: Request) {
 	} catch (error) {
 		ServerLogger.error(`Login error: ${error}`)
 		return NextResponse.json(
-			{ error: 'Internal server error' },
+			{ message: 'Internal server error' },
 			{ status: 500 }
 		)
 	}

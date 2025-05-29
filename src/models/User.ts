@@ -2,6 +2,7 @@ import mongoose, { Schema, Document } from 'mongoose'
 import { IPostcard } from './Postcard'
 
 export interface IUser extends Document {
+	_id: mongoose.Types.ObjectId
 	email: string
 	firstName: string
 	lastName: string

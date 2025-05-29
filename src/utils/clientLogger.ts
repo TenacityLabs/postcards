@@ -1,3 +1,5 @@
+import { AxiosError } from "axios"
+
 enum LogLevel {
 	INFO = 'INFO',
 	WARN = 'WARN',
@@ -34,8 +36,14 @@ export class ClientLogger {
 		ClientLogger.log(LogLevel.WARN, message)
 	}
 
-	public static error(message: string) {
-		ClientLogger.log(LogLevel.ERROR, message)
+	public static error(error: unknown) {
+		if (error instanceof AxiosError) {
+			ClientLogger.log(LogLevel.ERROR, error.response?.data.message)
+		} else if (error instanceof Error) {
+			ClientLogger.log(LogLevel.ERROR, error.message)
+		} else {
+			ClientLogger.log(LogLevel.ERROR, JSON.stringify(error))
+		}
 	}
 
 	public static debug(message: string) {

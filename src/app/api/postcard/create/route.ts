@@ -5,8 +5,9 @@ import { connectToDatabase } from "@/utils/mongoose";
 import { PostcardModel } from "@/models/Postcard";
 import { IUserPopulated, UserModel } from "@/models/User";
 import mongoose from "mongoose";
+import { APIEndpoints, APIResponse, ErrorResponse } from "@/types/api";
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest): Promise<NextResponse<APIResponse<APIEndpoints.CreatePostcard> | ErrorResponse>> {
 	try {
 		const { userId } = verifyRequest(request)
 		await connectToDatabase()
@@ -28,7 +29,7 @@ export async function POST(request: NextRequest) {
 			if (!user) {
 				await session.abortTransaction()
 				return NextResponse.json(
-					{ error: 'User not found' },
+					{ message: 'User not found' },
 					{ status: 404 }
 				)
 			}
@@ -61,7 +62,7 @@ export async function POST(request: NextRequest) {
 	} catch (error) {
 		ServerLogger.error(`Error creating postcard: ${error}`)
 		return NextResponse.json(
-			{ error: 'Internal server error' },
+			{ message: 'Internal server error' },
 			{ status: 500 }
 		)
 	}

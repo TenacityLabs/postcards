@@ -33,7 +33,7 @@ interface ApiDataDefinition<
 	response: APIResponse
 }
 
-interface ErrorResponse {
+export interface ErrorResponse {
 	message: string
 }
 
@@ -52,7 +52,7 @@ export interface ApiDataDefinitions {
 }
 
 export type APIRequest<T extends APIEndpoints> = ApiDataDefinitions[T]['request'];
-export type APIResponse<T extends APIEndpoints> = ApiDataDefinitions[T]['response'] | ErrorResponse;
+export type APIResponse<T extends APIEndpoints> = ApiDataDefinitions[T]['response'];
 export type APIMethod<T extends APIEndpoints> = ApiDataDefinitions[T]['method'];
 
 export type RawObject = Record<string, string | number | boolean | File | null | undefined>;

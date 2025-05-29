@@ -4,8 +4,9 @@ import { NextResponse } from 'next/server'
 import { verifyRequest } from '@/utils/auth'
 import { PostcardModel } from '@/models/Postcard'
 import { UserModel } from '@/models/User'
+import { APIEndpoints, APIResponse, ErrorResponse } from '@/types/api'
 
-export async function GET(request: Request) {
+export async function GET(request: Request): Promise<NextResponse<APIResponse<APIEndpoints.GetPostcard> | ErrorResponse>> {
 	try {
 		verifyRequest(request)
 		const searchParams = new URL(request.url).searchParams
@@ -15,7 +16,7 @@ export async function GET(request: Request) {
 
 		if (!postcardId) {
 			return NextResponse.json(
-				{ error: 'Postcard ID is required' },
+				{ message: 'Postcard ID is required' },
 				{ status: 400 }
 			)
 		}
@@ -28,7 +29,7 @@ export async function GET(request: Request) {
 
 		if (!postcard) {
 			return NextResponse.json(
-				{ error: 'Postcard not found' },
+				{ message: 'Postcard not found' },
 				{ status: 404 }
 			)
 		}
@@ -43,13 +44,13 @@ export async function GET(request: Request) {
 		// We will handle token refreshes later
 		if (error instanceof Error && error.message.includes('expired')) {
 			return NextResponse.json(
-				{ error: 'Token has expired' },
+				{ message: 'Token has expired' },
 				{ status: 401 }
 			)
 		}
 
 		return NextResponse.json(
-			{ error: 'Internal server error' },
+			{ message: 'Internal server error' },
 			{ status: 500 }
 		)
 	}

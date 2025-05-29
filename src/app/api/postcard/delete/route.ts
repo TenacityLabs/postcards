@@ -6,8 +6,9 @@ import { PostcardModel } from "@/models/Postcard";
 import { IUserPopulated, UserModel } from "@/models/User";
 import mongoose from "mongoose";
 import { deleteAllInPrefix } from "@/utils/s3";
+import { APIEndpoints, APIResponse, ErrorResponse } from "@/types/api";
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest): Promise<NextResponse<APIResponse<APIEndpoints.DeletePostcard> | ErrorResponse>> {
 	try {
 		const { postcardId } = await request.json()
 		const { userId } = verifyRequest(request)
@@ -50,7 +51,7 @@ export async function POST(request: NextRequest) {
 	} catch (error) {
 		ServerLogger.error(`Error deleting postcard: ${error}`)
 		return NextResponse.json(
-			{ error: 'Internal server error' },
+			{ message: 'Internal server error' },
 			{ status: 500 }
 		)
 	}

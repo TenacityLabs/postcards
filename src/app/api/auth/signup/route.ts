@@ -5,26 +5,21 @@ import { connectToDatabase } from '@/utils/mongoose'
 import { NextResponse } from 'next/server'
 import bcrypt from 'bcrypt'
 import jwt, { SignOptions } from 'jsonwebtoken'
+import { APIEndpoints, APIResponse, ErrorResponse } from '@/types/api'
+import { SignupRequest } from '@/types/api/auth'
 
 const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS || '10')
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'
 const JWT_DURATION = process.env.JWT_DURATION || '7d'
 
-interface SignupRequest {
-	email: string
-	password: string
-	firstName: string
-	lastName: string
-}
-
-export async function POST(request: Request) {
+export async function POST(request: Request): Promise<NextResponse<APIResponse<APIEndpoints.Signup> | ErrorResponse>> {
 	try {
 		const body: SignupRequest = await request.json()
 		const { email, password, firstName, lastName } = body
 
 		if (!email || !password || !firstName || !lastName) {
 			return NextResponse.json(
-				{ error: 'Email, password, first name, and last name are required' },
+				{ message: 'Email, password, first name, and last name are required' },
 				{ status: 400 }
 			)
 		}
@@ -35,7 +30,7 @@ export async function POST(request: Request) {
 		const user: IUser | null = await UserModel.findOne({ email })
 		if (user) {
 			return NextResponse.json(
-				{ error: 'User already exists' },
+				{ message: 'User already exists' },
 				{ status: 400 }
 			)
 		}
@@ -52,6 +47,13 @@ export async function POST(request: Request) {
 		const userResponse: IUser | null = await UserModel.findById(newUser._id)
 			.select('-password')
 
+		if (!userResponse) {
+			return NextResponse.json(
+				{ message: 'Failed to create user' },
+				{ status: 500 }
+			)
+		}
+
 		const token = jwt.sign(
 			{ userId: newUser._id },
 			JWT_SECRET,
@@ -60,8 +62,7 @@ export async function POST(request: Request) {
 
 		return NextResponse.json(
 			{
-				message: 'Signup successful',
-				user: userResponse,
+				user: userResponse.toObject({ versionKey: false }),
 				token
 			},
 			{ status: 200 }
@@ -69,7 +70,7 @@ export async function POST(request: Request) {
 	} catch (error) {
 		ServerLogger.error(`Signup error: ${error}`)
 		return NextResponse.json(
-			{ error: 'Internal server error' },
+			{ message: 'Internal server error' },
 			{ status: 500 }
 		)
 	}

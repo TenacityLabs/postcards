@@ -4,15 +4,19 @@ import { verifyRequest } from "@/utils/auth";
 import { connectToDatabase } from "@/utils/mongoose";
 import { IPostcard, PostcardModel } from "@/models/Postcard";
 import { deleteFile, extractKeyFromUrl } from "@/utils/s3";
+import { APIEndpoints, APIResponse, ErrorResponse } from "@/types/api";
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest): Promise<NextResponse<APIResponse<APIEndpoints.DeleteEntry> | ErrorResponse>> {
 	try {
 		const { postcardId, entryId } = await request.json()
 		const { userId } = verifyRequest(request)
 		await connectToDatabase()
 
 		if (!postcardId) {
-			return NextResponse.json({ error: "No postcard ID provided" }, { status: 400 })
+			return NextResponse.json(
+				{ message: "No postcard ID provided" },
+				{ status: 400 }
+			)
 		}
 
 		const postcard: IPostcard | null = await PostcardModel.findOne({
@@ -20,11 +24,17 @@ export async function POST(request: NextRequest) {
 			user: userId,
 		})
 		if (!postcard) {
-			return NextResponse.json({ error: "Postcard not found" }, { status: 404 })
+			return NextResponse.json(
+				{ message: "Postcard not found" },
+				{ status: 404 }
+			)
 		}
 		const entry = postcard.entries.find((e) => e._id.toString() === entryId)
 		if (!entry) {
-			return NextResponse.json({ error: "Entry not found" }, { status: 404 })
+			return NextResponse.json(
+				{ message: "Entry not found" },
+				{ status: 404 }
+			)
 		}
 		if (entry.imageUrl) {
 			const key = extractKeyFromUrl(entry.imageUrl)
@@ -40,6 +50,9 @@ export async function POST(request: NextRequest) {
 		}, { status: 200 })
 	} catch (error) {
 		ServerLogger.error(`Error deleting postcard entry: ${error}`)
-		return NextResponse.json({ error: "Failed to delete postcard entry" }, { status: 500 })
+		return NextResponse.json(
+			{ message: "Failed to delete postcard entry" },
+			{ status: 500 }
+		)
 	}
 }

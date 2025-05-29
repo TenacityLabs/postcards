@@ -4,13 +4,14 @@ import { connectToDatabase } from '@/utils/mongoose'
 import { NextResponse } from 'next/server'
 import { verifyToken } from '@/utils/auth'
 import { PostcardModel } from '@/models/Postcard'
+import { APIEndpoints, APIResponse, ErrorResponse } from '@/types/api'
 
-export async function GET(request: Request) {
+export async function GET(request: Request): Promise<NextResponse<APIResponse<APIEndpoints.GetUser> | ErrorResponse>> {
 	try {
 		const authHeader = request.headers.get('Authorization')
 		if (!authHeader?.startsWith('Bearer ')) {
 			return NextResponse.json(
-				{ error: 'Unauthorized' },
+				{ message: 'Unauthorized' },
 				{ status: 401 }
 			)
 		}
@@ -29,7 +30,7 @@ export async function GET(request: Request) {
 
 		if (!user) {
 			return NextResponse.json(
-				{ error: 'User not found' },
+				{ message: 'User not found' },
 				{ status: 404 }
 			)
 		}
@@ -44,13 +45,13 @@ export async function GET(request: Request) {
 		// We will handle token refreshes later
 		if (error instanceof Error && error.message.includes('expired')) {
 			return NextResponse.json(
-				{ error: 'Token has expired' },
+				{ message: 'Token has expired' },
 				{ status: 401 }
 			)
 		}
 
 		return NextResponse.json(
-			{ error: 'Internal server error' },
+			{ message: 'Internal server error' },
 			{ status: 500 }
 		)
 	}

@@ -1,14 +1,13 @@
 import { ServerLogger } from '@/utils/serverLogger'
 import { connectToDatabase } from '@/utils/mongoose'
 import { NextResponse } from 'next/server'
-import { verifyRequest } from '@/utils/auth'
 import { PostcardModel } from '@/models/Postcard'
 import { UserModel } from '@/models/User'
 import { APIEndpoints, APIResponse, ErrorResponse } from '@/types/api'
 
+// This route is public, we assume if you have the postcard id, you have access to see it
 export async function GET(request: Request): Promise<NextResponse<APIResponse<APIEndpoints.GetPostcard> | ErrorResponse>> {
 	try {
-		verifyRequest(request)
 		const searchParams = new URL(request.url).searchParams
 		const postcardId = searchParams.get('postcardId')
 

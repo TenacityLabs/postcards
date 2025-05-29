@@ -18,9 +18,9 @@ export enum APIEndpoints {
 	DeletePostcard = '/api/postcard/delete',
 
 	// Entry
-	CreateEntry = '/api/entry/create',
-	DeleteEntry = '/api/entry/delete',
-	EditEntry = '/api/entry/edit',
+	CreateEntry = '/api/postcard/entry/create',
+	DeleteEntry = '/api/postcard/entry/delete',
+	EditEntry = '/api/postcard/entry/edit',
 }
 
 interface ApiDataDefinition<

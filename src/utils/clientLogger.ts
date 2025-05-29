@@ -37,6 +37,7 @@ export class ClientLogger {
 	}
 
 	public static error(error: unknown) {
+		console.error(error)
 		if (error instanceof AxiosError) {
 			ClientLogger.log(LogLevel.ERROR, error.response?.data.message)
 		} else if (error instanceof Error) {

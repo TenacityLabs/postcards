@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
 		const image = formData.get("file") as File | string | null
 		const date = formData.get("date") as string | null
 
-		if (!postcardId || !entryId || !title) {
+		if (!postcardId || !entryId) {
 			return NextResponse.json({ error: "No postcard ID, entry ID, or title provided" }, { status: 400 })
 		}
 		if (date && !validateDate(date)) {

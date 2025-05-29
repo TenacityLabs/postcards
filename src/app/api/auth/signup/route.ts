@@ -7,6 +7,7 @@ import bcrypt from 'bcrypt'
 import jwt, { SignOptions } from 'jsonwebtoken'
 import { APIEndpoints, APIResponse, ErrorResponse } from '@/types/api'
 import { SignupRequest } from '@/types/api/auth'
+import { PostcardModel } from '@/models/Postcard'
 
 const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS || '10')
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'
@@ -44,8 +45,13 @@ export async function POST(request: Request): Promise<NextResponse<APIResponse<A
 			lastName,
 		})
 
-		const userResponse: IUser | null = await UserModel.findById(newUser._id)
+		const userResponse = await UserModel.findById(newUser._id)
 			.select('-password')
+			.populate({
+				path: 'postcards',
+				select: '-entries',
+				model: PostcardModel,
+			})
 
 		if (!userResponse) {
 			return NextResponse.json(

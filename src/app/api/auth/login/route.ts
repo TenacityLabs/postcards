@@ -5,6 +5,7 @@ import { NextResponse } from 'next/server'
 import bcrypt from 'bcrypt'
 import jwt, { SignOptions } from 'jsonwebtoken'
 import { APIEndpoints, APIResponse, ErrorResponse } from '@/types/api'
+import { PostcardModel } from '@/models/Postcard'
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'
 const JWT_DURATION = process.env.JWT_DURATION || '7d'
@@ -53,6 +54,11 @@ export async function POST(request: Request): Promise<NextResponse<APIResponse<A
 
 		const userResponse = await UserModel.findById(user._id)
 			.select('-password')
+			.populate({
+				path: 'postcards',
+				select: '-entries',
+				model: PostcardModel,
+			})
 
 		return NextResponse.json(
 			{

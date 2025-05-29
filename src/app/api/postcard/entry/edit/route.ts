@@ -6,6 +6,7 @@ import { checkUrlInBucket, uploadFile } from "@/utils/s3";
 import { IEntry, IPostcard, PostcardModel } from "@/models/Postcard";
 import { validateDate } from "@/utils/date";
 import { APIEndpoints, APIResponse, ErrorResponse } from "@/types/api";
+import { IMAGE_MIME_TYPES } from "@/constants/file";
 
 export async function POST(request: NextRequest): Promise<NextResponse<APIResponse<APIEndpoints.EditEntry> | ErrorResponse>> {
 	try {
@@ -46,10 +47,15 @@ export async function POST(request: NextRequest): Promise<NextResponse<APIRespon
 
 		let imageUrl: string | null = null
 		if (image && image instanceof File) {
-			const imageFile = image as File
-			const fileExtension = `.${imageFile.name.split('.').pop() || ''}`
+			if (!IMAGE_MIME_TYPES.includes(image.type)) {
+				return NextResponse.json(
+					{ message: `Invalid file type, image is of mimetype ${image.type}` },
+					{ status: 400 }
+				)
+			}
+			const fileExtension = `.${image.name.split('.').pop() || ''}`
 			const key = `uploads/${postcardId}/${entryId}-${Date.now()}${fileExtension}`
-			imageUrl = await uploadFile(imageFile, key)
+			imageUrl = await uploadFile(image, key)
 		} else if (image && typeof image === 'string') {
 			if (checkUrlInBucket(image)) {
 				imageUrl = image

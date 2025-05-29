@@ -5,7 +5,7 @@ import styles from "./styles.module.scss"
 import { FileInput } from "@/app/components/ui/FileInput";
 import { TextArea, TextInput } from "@/app/components/ui/TextInput";
 import { usePostcard } from "@/app/context/postcardContext";
-import { IMAGE_TYPES, MAX_IMAGE_SIZE } from "@/constants/file";
+import { IMAGE_MIME_TYPES, MAX_IMAGE_SIZE } from "@/constants/file";
 import { Entry, PostcardDate } from "@/types/postcard";
 import { sendAPIRequest } from "@/utils/api";
 import { ClientLogger } from "@/utils/clientLogger";
@@ -71,7 +71,7 @@ export default function EditEntry() {
 			setImage(null)
 			return
 		}
-		if (!IMAGE_TYPES.includes(file.type)) {
+		if (!IMAGE_MIME_TYPES.includes(file.type)) {
 			ClientLogger.error(`Invalid file type: ${file.type}`)
 			return
 		}
@@ -185,7 +185,7 @@ export default function EditEntry() {
 						<div>
 							<FileInput
 								label="Upload File"
-								accept={IMAGE_TYPES.join(',')}
+								accept={IMAGE_MIME_TYPES.join(',')}
 								labelText={image ? 'File uploaded' : 'No file selected'}
 								onChange={handleImageChange}
 							/>

@@ -1,7 +1,6 @@
-export const IMAGE_TYPES = [
+export const IMAGE_MIME_TYPES = [
 	'image/png',
 	'image/jpeg',
-	'image/jpg',
 ]
 
 export const ONE_KB = 1024

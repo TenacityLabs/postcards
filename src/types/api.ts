@@ -1,4 +1,3 @@
-import axios from "axios"
 import { GetUserResponse, LoginRequest, LoginResponse, SignupRequest, SignupResponse } from "./api/auth"
 import { CreateEntryRequest, CreateEntryResponse, CreatePostcardResponse, DeleteEntryRequest, DeleteEntryResponse, DeletePostcardRequest, DeletePostcardResponse, EditEntryRequest, EditEntryResponse, GetPostcardResponse } from "./api/postcard"
 
@@ -56,33 +55,4 @@ export type APIRequest<T extends APIEndpoints> = ApiDataDefinitions[T]['request'
 export type APIResponse<T extends APIEndpoints> = ApiDataDefinitions[T]['response'] | ErrorResponse;
 export type APIMethod<T extends APIEndpoints> = ApiDataDefinitions[T]['method'];
 
-type RawObject = Record<string, string | number | boolean | File | null | undefined>;
-
-const objectToFormData = (obj: RawObject) => {
-	const formData = new FormData();
-	for (const key in obj) {
-		if (obj[key] === null || obj[key] === undefined) {
-			continue;
-		}
-		if (obj[key] instanceof File) {
-			formData.append(key, obj[key]);
-		} else {
-			formData.append(key, obj[key].toString());
-		}
-	}
-	return formData;
-}
-
-const FORM_DATA_ENDPOINTS = [APIEndpoints.EditEntry]
-
-export const sendAPIRequest = async <T extends APIEndpoints>(endpoint: T, method: APIMethod<T>, request: APIRequest<T>): Promise<APIResponse<T>> => {
-	const isFormDataEndpoint = FORM_DATA_ENDPOINTS.includes(endpoint);
-
-	const response = await axios.request<APIResponse<T>>({
-		method,
-		url: endpoint,
-		data: isFormDataEndpoint ? objectToFormData(request as unknown as RawObject) : request,
-	})
-
-	return response.data;
-}
+export type RawObject = Record<string, string | number | boolean | File | null | undefined>;

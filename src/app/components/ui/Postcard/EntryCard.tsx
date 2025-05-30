@@ -2,6 +2,7 @@ import { Entry, PostcardDate } from "@/types/postcard"
 import styles from "./styles.module.scss"
 import { MONTHS } from "@/constants/date"
 import Image from "next/image"
+import { useMemo } from "react"
 
 const cardColors = [
 	styles.cardColor0,
@@ -21,12 +22,37 @@ interface EntryCardProps {
 
 export default function EntryCard(props: EntryCardProps) {
 	const { entry } = props
-	const { title, date, description, imageUrl, cardColor } = entry
+	const { title, date, description, imageUrl, tapePattern, cardColor } = entry
 
-	const isCardCaption = imageUrl && !date && !description
+
+	const hasTape = tapePattern !== -1
+	const cardClass = useMemo(() => {
+		const isCardCaption = imageUrl && !date && !description
+
+		let cardClass = `${styles.card} ${cardColors[cardColor]}`
+		if (isCardCaption) {
+			cardClass += ` ${styles.captionCard}`
+		}
+		if (hasTape) {
+			cardClass += ` ${styles.tapeCard}`
+		}
+		return cardClass
+	}, [imageUrl, date, description, hasTape, cardColor])
 
 	return (
-		<div className={`${styles.card} ${cardColors[cardColor]} ${isCardCaption ? styles.captionCard : ""}`}>
+		<div className={cardClass}>
+			{hasTape && (
+				<div className={styles.tape}>
+					<Image
+						src={`/images/tape/tape-${tapePattern}.png`}
+						alt="Tape"
+						width={0}
+						height={0}
+						sizes="100vw"
+						style={{ width: 'auto', height: '36px' }}
+					/>
+				</div>
+			)}
 			<EntryCardTitle title={title} date={date} />
 			{description && (
 				<p className={styles.description}>

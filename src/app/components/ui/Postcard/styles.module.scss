@@ -18,6 +18,18 @@
 	gap: 18px;
 }
 
+.tapeCard {
+	margin-top: 24px;
+	position: relative;
+
+	&>.tape {
+		position: absolute;
+		top: 0;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+}
+
 .title,
 .titleWithDate {
 	width: 100%;

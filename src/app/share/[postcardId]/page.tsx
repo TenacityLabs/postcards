@@ -5,6 +5,7 @@ import PostcardHeader from "./header"
 import styles from "./styles.module.scss"
 import EntryCard from "@/app/components/ui/Postcard/EntryCard"
 import Masonry from "react-masonry-css"
+import PostcardFooter from "./footer"
 
 const breakpointColsObj = {
 	default: 3,
@@ -35,6 +36,7 @@ export default function SharePostcard() {
 						<EntryCard key={entry._id} entry={entry} />
 					))}
 				</Masonry>
+				<PostcardFooter />
 			</div>
 		</div>
 	)

@@ -1,5 +1,5 @@
 @use './system.scss' as *;
-@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800;900&display=swap');
 
 *,
 *::before,
@@ -11,4 +11,10 @@
 
 body {
 	font-family: $figtree;
+}
+
+button,
+input,
+textarea {
+	font-family: inherit;
 }

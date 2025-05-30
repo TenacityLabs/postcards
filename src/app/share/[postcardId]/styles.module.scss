@@ -12,7 +12,7 @@
 }
 
 .container {
-	margin-top: 48px;
+	margin: 48px 0;
 	width: fit-content;
 }
 
@@ -50,5 +50,32 @@
 
 	&>* {
 		margin-bottom: 24px; // gap between cards
+	}
+}
+
+.footer {
+	margin-top: 48px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 24px;
+}
+
+.createLink {
+	padding: 10px 24px;
+	border-radius: 10px;
+	border: 1px solid rgba($neutral-700, 0.1);
+	background-color: $neutral-800;
+	text-decoration: none;
+
+	color: $neutral-100;
+	font-size: 21px;
+	font-weight: 700;
+	line-height: normal;
+
+	transition: background-color 0.1s ease-in-out;
+
+	&:hover {
+		background-color: $neutral-700;
 	}
 }

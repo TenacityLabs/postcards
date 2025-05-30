@@ -14,6 +14,14 @@ const generateRandomCardColor = () => {
 	return Math.floor(Math.random() * CARD_COLORS)
 }
 
+// Generate something between 0.5 and 2.0 in either direction
+const generateRandomRotation = () => {
+	const direction = Math.random() < 0.5 ? 1 : -1
+	const rotation = 0.5 + (Math.random() * 1.5)
+	const result = rotation * direction
+	return Math.round(result * 100) / 100
+}
+
 export interface IEntry extends Document {
 	_id: mongoose.Types.ObjectId
 	title: string
@@ -23,6 +31,7 @@ export interface IEntry extends Document {
 	imageUrl: string | null
 	tapePattern: number
 	cardColor: number
+	hoverRotation: number
 	createdAt: number
 }
 
@@ -62,6 +71,11 @@ const EntrySchema = new Schema<IEntry>({
 		type: Number,
 		required: true,
 		default: generateRandomCardColor,
+	},
+	hoverRotation: {
+		type: Number,
+		required: true,
+		default: generateRandomRotation,
 	},
 	createdAt: {
 		type: Number,

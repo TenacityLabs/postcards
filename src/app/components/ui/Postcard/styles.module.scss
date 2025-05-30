@@ -34,6 +34,22 @@
 	}
 }
 
+.growOnHover {
+	transition: transform 0.2s ease-in-out;
+
+	&:hover {
+		transform: scale(1.02);
+	}
+}
+
+.tiltOnHover {
+	transition: transform 0.2s ease-in-out;
+
+	&:hover {
+		transform: rotate(var(--hover-rotation));
+	}
+}
+
 .title,
 .titleWithDate {
 	width: 100%;

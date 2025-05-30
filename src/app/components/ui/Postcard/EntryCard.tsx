@@ -22,7 +22,7 @@ interface EntryCardProps {
 
 export default function EntryCard(props: EntryCardProps) {
 	const { entry } = props
-	const { title, date, description, imageUrl, tapePattern, cardColor } = entry
+	const { title, date, description, imageUrl, tapePattern, cardColor, hoverRotation } = entry
 
 
 	const hasTape = tapePattern !== -1
@@ -33,14 +33,27 @@ export default function EntryCard(props: EntryCardProps) {
 		if (isCardCaption) {
 			cardClass += ` ${styles.captionCard}`
 		}
+
 		if (hasTape) {
+			// No animations if it has a tape
 			cardClass += ` ${styles.tapeCard}`
 		}
+		else if (description) {
+			// Grow on hover if it has a description
+			cardClass += ` ${styles.growOnHover}`
+		} else {
+			// Rotate on hover if it has no description
+			cardClass += ` ${styles.tiltOnHover}`
+		}
+
 		return cardClass
 	}, [imageUrl, date, description, hasTape, cardColor])
 
 	return (
-		<div className={cardClass}>
+		<div
+			className={cardClass}
+			style={{ '--hover-rotation': `${hoverRotation}deg` } as React.CSSProperties}
+		>
 			{hasTape && (
 				<div className={styles.tape}>
 					<Image

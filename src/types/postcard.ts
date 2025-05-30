@@ -17,6 +17,7 @@ export interface Entry {
 	imageUrl: string | null
 	tapePattern: number
 	cardColor: number
+	hoverRotation: number
 	createdAt: number
 }
 

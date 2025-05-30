@@ -8,8 +8,8 @@ import Masonry from "react-masonry-css"
 
 const breakpointColsObj = {
 	default: 3,
-	1024: 2,
-	640: 1,
+	1500: 2,
+	1000: 1,
 }
 
 export default function SharePostcard() {

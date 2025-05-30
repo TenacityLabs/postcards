@@ -13,8 +13,7 @@
 
 .container {
 	margin-top: 48px;
-	width: 100%;
-	max-width: 1440px;
+	width: fit-content;
 }
 
 .header {
@@ -40,13 +39,16 @@
 }
 
 .entries {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	display: flex;
 	gap: 24px;
+	width: fit-content;
 }
 
 .entryColumn {
-	display: flex;
-	flex-direction: column;
-	gap: 24px;
+	background-clip: padding-box;
+	width: 432px !important;
+
+	&>* {
+		margin-bottom: 24px; // gap between cards
+	}
 }

@@ -4,6 +4,13 @@ import { usePostcard } from "@/app/context/postcardContext"
 import PostcardHeader from "./header"
 import styles from "./styles.module.scss"
 import EntryCard from "@/app/components/ui/Postcard/EntryCard"
+import Masonry from "react-masonry-css"
+
+const breakpointColsObj = {
+	default: 3,
+	1024: 2,
+	640: 1,
+}
 
 export default function SharePostcard() {
 	const { postcard, loading: postcardLoading } = usePostcard()
@@ -19,13 +26,15 @@ export default function SharePostcard() {
 		<div className={styles.page}>
 			<div className={styles.container}>
 				<PostcardHeader />
-				<div className={styles.entries}>
-					<div className={styles.entryColumn}>
-						{postcard.entries.map((entry) => (
-							<EntryCard key={entry._id} entry={entry} />
-						))}
-					</div>
-				</div>
+				<Masonry
+					breakpointCols={breakpointColsObj}
+					className={styles.entries}
+					columnClassName={styles.entryColumn}
+				>
+					{postcard.entries.map((entry) => (
+						<EntryCard key={entry._id} entry={entry} />
+					))}
+				</Masonry>
 			</div>
 		</div>
 	)

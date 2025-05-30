@@ -2,7 +2,7 @@ import { ServerLogger } from "@/utils/serverLogger";
 import { NextRequest, NextResponse } from "next/server";
 import { verifyRequest } from "@/utils/auth";
 import { connectToDatabase } from "@/utils/mongoose";
-import { checkUrlInBucket, uploadFile } from "@/utils/s3";
+import { deleteFile, extractKeyFromUrl, uploadFile } from "@/utils/s3";
 import { IEntry, IPostcard, PostcardModel } from "@/models/Postcard";
 import { validateDate } from "@/utils/date";
 import { APIEndpoints, APIResponse, ErrorResponse } from "@/types/api";
@@ -44,6 +44,13 @@ export async function POST(request: NextRequest): Promise<NextResponse<APIRespon
 				{ status: 404 }
 			)
 		}
+		const entry: IEntry | undefined = postcard.entries.find((entry: IEntry) => entry._id.toString() === entryId)
+		if (!entry) {
+			return NextResponse.json(
+				{ message: "Entry not found" },
+				{ status: 404 }
+			)
+		}
 
 		let imageUrl: string | null = null
 		if (image && image instanceof File) {
@@ -57,19 +64,21 @@ export async function POST(request: NextRequest): Promise<NextResponse<APIRespon
 			const key = `uploads/${postcardId}/${entryId}-${Date.now()}${fileExtension}`
 			imageUrl = await uploadFile(image, key)
 		} else if (image && typeof image === 'string') {
-			if (checkUrlInBucket(image)) {
-				imageUrl = image
-			} else {
-				ServerLogger.error(`Invalid image URL does not start with S3 url prefix`)
+			if (entry.imageUrl !== image) {
+				ServerLogger.error(`Modified image URL for entry ${entryId}`)
+				return NextResponse.json(
+					{ message: "Invalid image URL" },
+					{ status: 400 }
+				)
 			}
-		}
-
-		const entry = postcard.entries.find((entry: IEntry) => entry._id.toString() === entryId)
-		if (!entry) {
-			return NextResponse.json(
-				{ message: "Entry not found" },
-				{ status: 404 }
-			)
+			imageUrl = image
+		} else {
+			if (entry.imageUrl) {
+				ServerLogger.info(`Deleting image URL for entry ${entryId}`)
+				const key = extractKeyFromUrl(entry.imageUrl)
+				await deleteFile(key)
+			}
+			imageUrl = null
 		}
 
 		entry.title = title

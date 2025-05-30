@@ -30,7 +30,7 @@
 		position: absolute;
 		top: 0;
 		left: 50%;
-		transform: translate(-50%, -50%);
+		transform: translate(-50%, -35%);
 	}
 }
 
@@ -72,7 +72,7 @@
 	&>span {
 		color: $neutral-700;
 		font-family: $figtree;
-		font-size: 16px;
+		font-size: 14px;
 		font-weight: 700;
 		line-height: normal;
 	}
@@ -80,7 +80,7 @@
 
 .description {
 	width: 100%;
-	color: $neutral-700;
+	color: $neutral-800;
 	font-family: $figtree;
 	font-size: 16px;
 	font-weight: 400;

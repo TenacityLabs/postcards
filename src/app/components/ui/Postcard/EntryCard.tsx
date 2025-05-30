@@ -3,6 +3,7 @@ import styles from "./styles.module.scss"
 import { MONTHS } from "@/constants/date"
 import Image from "next/image"
 import { useMemo } from "react"
+import { useIsMobile } from "@/app/hooks/useIsMobile"
 
 const cardColors = [
 	styles.cardColor0,
@@ -23,7 +24,7 @@ interface EntryCardProps {
 export default function EntryCard(props: EntryCardProps) {
 	const { entry } = props
 	const { title, date, description, imageUrl, tapePattern, cardColor, hoverRotation } = entry
-
+	const isMobile = useIsMobile()
 
 	const hasTape = tapePattern !== -1
 	const cardClass = useMemo(() => {
@@ -38,6 +39,9 @@ export default function EntryCard(props: EntryCardProps) {
 			// No animations if it has a tape
 			cardClass += ` ${styles.tapeCard}`
 		}
+		else if (isMobile) {
+			// No animations if it's on mobile
+		}
 		else if (description) {
 			// Grow on hover if it has a description
 			cardClass += ` ${styles.growOnHover}`
@@ -47,7 +51,7 @@ export default function EntryCard(props: EntryCardProps) {
 		}
 
 		return cardClass
-	}, [imageUrl, date, description, hasTape, cardColor])
+	}, [imageUrl, date, description, hasTape, cardColor, isMobile])
 
 	return (
 		<div

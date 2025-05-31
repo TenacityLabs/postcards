@@ -245,3 +245,30 @@
 		max-width: calc(100vw - 48px);
 	}
 }
+
+.scrollTop {
+	position: fixed;
+	bottom: 24px;
+	right: 24px;
+	opacity: 0;
+	transition: opacity 0.1s ease-in-out;
+
+
+	&>button {
+		border: none;
+		background-color: $neutral-500;
+		border-radius: 20px;
+		cursor: pointer;
+		transition: all 0.2s ease-in-out;
+
+		&:active {
+			background-color: $neutral-600;
+			border-radius: 22px;
+			transform: scale(0.95);
+		}
+	}
+}
+
+.fullOpacity {
+	opacity: 1;
+}

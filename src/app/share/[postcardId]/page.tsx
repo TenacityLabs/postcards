@@ -9,6 +9,7 @@ import PostcardFooter from "./footer"
 import { useIsMobile } from "@/app/hooks/useIsMobile"
 import { useEffect, useState } from "react"
 import PostcardSummary from "./summary"
+import Image from "next/image"
 
 const breakpointColsObj = {
 	default: 3,
@@ -20,10 +21,25 @@ export default function SharePostcard() {
 	const { postcard, loading: postcardLoading } = usePostcard()
 	const isMobile = useIsMobile()
 	const [showSummary, setShowSummary] = useState(isMobile)
+	const [showScrollTop, setShowScrollTop] = useState(false)
 
 	useEffect(() => {
 		setShowSummary(isMobile)
+		setShowScrollTop(prev => prev || isMobile)
 	}, [isMobile])
+
+	useEffect(() => {
+		const handleScroll = () => {
+			setShowScrollTop(window.scrollY > 100)
+		}
+
+		window.addEventListener("scroll", handleScroll)
+		return () => window.removeEventListener("scroll", handleScroll)
+	}, [])
+
+	const scrollToTop = () => {
+		window.scrollTo({ top: 0, behavior: "smooth" })
+	}
 
 	if (postcardLoading) {
 		return <div>Loading...</div>
@@ -52,6 +68,17 @@ export default function SharePostcard() {
 						<PostcardFooter />
 					</div>
 				)}
+			</div>
+
+			<div className={`${styles.scrollTop} ${showScrollTop ? styles.fullOpacity : ""}`}>
+				<button onClick={scrollToTop}>
+					<Image
+						src="/images/icons/scroll-to-top.svg"
+						alt="↑"
+						width={48}
+						height={48}
+					/>
+				</button>
 			</div>
 		</div>
 	)

@@ -11,12 +11,11 @@ export default function PostcardSummary(props: PostcardSummaryProps) {
 	return (
 		<div className={styles.summaryContainer}>
 			<div className={styles.summary}>
-				<div>
+				<div className={styles.summaryLogo}>
 					<Image
 						src="/logos/postcards-logo-wide-64.svg"
 						alt="Postcards"
-						width={115}
-						height={24}
+						fill
 					/>
 				</div>
 				<div className={styles.summaryTitle}>
@@ -26,7 +25,7 @@ export default function PostcardSummary(props: PostcardSummaryProps) {
 					<div className={styles.title}>
 						You&apos;ve Received <br />
 						<b>
-							Emily&apos;s Postcard
+							Christopher&apos;s Postcard
 						</b>
 					</div>
 				</div>

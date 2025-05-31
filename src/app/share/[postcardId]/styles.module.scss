@@ -39,6 +39,34 @@
 			font-weight: 700;
 		}
 	}
+
+	@media screen and (max-width: 1000px) {
+		text-align: center;
+
+		&>.title {
+			font-size: 36px;
+		}
+	}
+
+	@media screen and (max-width: 500px) {
+		text-align: left;
+		gap: 8px;
+		margin-bottom: 24px;
+
+		&>.title {
+			font-size: 28px;
+		}
+	}
+
+	@media screen and (max-width: 375px) {
+		&>.date {
+			font-size: 12px;
+		}
+
+		&>.title {
+			font-size: 24px;
+		}
+	}
 }
 
 .entries {
@@ -53,6 +81,10 @@
 
 	&>* {
 		margin-bottom: 24px; // gap between cards
+	}
+
+	@media screen and (max-width: 500px) {
+		width: 100% !important;
 	}
 }
 
@@ -90,16 +122,36 @@
 }
 
 .summary {
-	width: calc(100vw - 48px);
+	width: fit-content;
+	max-width: calc(100vw - 48px);
 	display: flex;
 	flex-direction: column;
-	gap: 48px;
+	gap: 54px;
+
+	@media screen and (max-width: 500px) {
+		gap: 36px;
+	}
+}
+
+.summaryLogo {
+	position: relative;
+	width: 153px;
+	height: 32px;
+
+	@media screen and (max-width: 500px) {
+		width: 115px;
+		height: 24px;
+	}
+
+	&>img {
+		object-fit: contain;
+	}
 }
 
 .summaryTitle {
 	display: flex;
 	flex-direction: column;
-	gap: 24px;
+	gap: 12px;
 
 	&>.date {
 		color: $neutral-500;
@@ -110,12 +162,16 @@
 
 	&>.title {
 		color: $neutral-900;
-		font-size: 32px;
+		font-size: 42px;
 		font-weight: 400;
 		line-height: normal;
 
 		&>b {
 			font-weight: 700;
+		}
+
+		@media screen and (max-width: 500px) {
+			font-size: 32px;
 		}
 	}
 }
@@ -142,18 +198,16 @@
 	}
 }
 
-@media screen and (max-width: 1000px) {
-	.postcardContainer {
+.postcardContainer {
+	@media screen and (max-width: 1000px) {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 	}
 
-	.header {
-		text-align: center;
-
-		&>.title {
-			font-size: 36px;
-		}
+	@media screen and (max-width: 500px) {
+		display: block;
+		width: 100%;
+		max-width: calc(100vw - 48px);
 	}
 }

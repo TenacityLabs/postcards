@@ -2,12 +2,39 @@ import Image from "next/image"
 import styles from "./styles.module.scss"
 import Link from "next/link"
 import { useUser } from "@/app/context/userContext"
+import { useIsMobile } from "@/app/hooks/useIsMobile"
 
 export default function PostcardFooter() {
 	const { user } = useUser()
+	const isMobile = useIsMobile()
+
+	const scrollToTop = () => {
+		window.scrollTo({
+			top: 0,
+			behavior: "smooth"
+		})
+	}
 
 	return (
 		<div className={styles.footer}>
+			{isMobile && (
+				<button
+					className={styles.scrollTopButton}
+					onClick={scrollToTop}
+				>
+					<div className={styles.scrollTopIcon}>
+						<Image
+							src="/images/icons/scroll-to-top.svg"
+							alt="↑"
+							fill
+						/>
+					</div>
+					<span>
+						Back to top
+					</span>
+				</button>
+			)}
+
 			<Link
 				href={user ? "/dashboard" : "/"}
 				className={styles.createLink}

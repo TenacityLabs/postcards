@@ -70,16 +70,18 @@ export default function SharePostcard() {
 				)}
 			</div>
 
-			<div className={`${styles.scrollTop} ${showScrollTop ? styles.fullOpacity : ""}`}>
-				<button onClick={scrollToTop}>
-					<Image
-						src="/images/icons/scroll-to-top.svg"
-						alt="↑"
-						width={48}
-						height={48}
-					/>
-				</button>
-			</div>
+			{!isMobile && (
+				<div className={`${styles.scrollTopFab} ${showScrollTop ? styles.fullOpacity : ""}`}>
+					<button onClick={scrollToTop}>
+						<Image
+							src="/images/icons/scroll-to-top.svg"
+							alt="↑"
+							width={48}
+							height={48}
+						/>
+					</button>
+				</div>
+			)}
 		</div>
 	)
 }

@@ -49,6 +49,23 @@
 		top: 0;
 		left: 50%;
 		transform: translate(-50%, -35%);
+
+		@media (max-width: 500px) {
+			transform: translate(-50%, -40%);
+		}
+
+		&>img {
+			width: auto;
+			height: 36px !important;
+
+			@media (max-width: 500px) {
+				height: 28px !important;
+			}
+
+			@media (max-width: 375px) {
+				height: 18px !important;
+			}
+		}
 	}
 }
 

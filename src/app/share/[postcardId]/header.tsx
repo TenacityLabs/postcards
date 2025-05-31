@@ -1,6 +1,7 @@
 import { usePostcard } from "@/app/context/postcardContext"
 import styles from "./styles.module.scss"
 import Image from "next/image"
+import { numberToPrettyWeek } from "@/utils/date"
 
 export default function PostcardHeader() {
 	const { postcard } = usePostcard()
@@ -21,7 +22,7 @@ export default function PostcardHeader() {
 			</div>
 
 			<div className={styles.date}>
-				MAY 26 - MAY 31, 2025
+				{numberToPrettyWeek(postcard.createdAt)}
 			</div>
 			<h1 className={styles.title}>
 				{postcard.user.firstName} {postcard.user.lastName}&apos;s <b>Postcard</b>

@@ -113,6 +113,40 @@
 	&:hover {
 		background-color: $neutral-700;
 	}
+
+	@media screen and (max-width: 500px) {
+		width: 100%;
+		text-align: center;
+	}
+
+	@media screen and (max-width: 375px) {
+		font-size: 16px;
+	}
+}
+
+.headerLogo {
+	display: none;
+
+	@media screen and (max-width: 500px) {
+		display: block;
+		margin-bottom: 24px;
+	}
+}
+
+.headerLogo,
+.footerLogo {
+	position: relative;
+	width: 153px;
+	height: 32px;
+
+	@media screen and (max-width: 375px) {
+		width: 115px;
+		height: 24px;
+	}
+
+	&>img {
+		object-fit: contain;
+	}
 }
 
 .summaryContainer {

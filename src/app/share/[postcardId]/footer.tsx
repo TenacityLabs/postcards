@@ -15,12 +15,11 @@ export default function PostcardFooter() {
 				Create your Postcard
 			</Link>
 
-			<div>
+			<div className={styles.footerLogo}>
 				<Image
 					src="/logos/postcards-logo-wide-64.svg"
 					alt="Postcards"
-					width={161}
-					height={40}
+					fill
 				/>
 			</div>
 		</div>

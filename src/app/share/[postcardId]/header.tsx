@@ -1,5 +1,6 @@
 import { usePostcard } from "@/app/context/postcardContext"
 import styles from "./styles.module.scss"
+import Image from "next/image"
 
 export default function PostcardHeader() {
 	const { postcard } = usePostcard()
@@ -11,6 +12,14 @@ export default function PostcardHeader() {
 
 	return (
 		<div className={styles.header}>
+			<div className={styles.headerLogo}>
+				<Image
+					src="/logos/postcards-logo-wide-64.svg"
+					alt="Postcards"
+					fill
+				/>
+			</div>
+
 			<div className={styles.date}>
 				MAY 26 - MAY 31, 2025
 			</div>

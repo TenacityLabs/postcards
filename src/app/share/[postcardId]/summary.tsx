@@ -2,12 +2,15 @@ import Image from "next/image"
 import styles from "./styles.module.scss"
 import { usePostcard } from "@/app/context/postcardContext"
 import { numberToPrettyWeek } from "@/utils/date"
+import Link from "next/link"
+import { useUser } from "@/app/context/userContext"
 interface PostcardSummaryProps {
 	showPostcard: () => void
 }
 
 export default function PostcardSummary(props: PostcardSummaryProps) {
 	const { showPostcard } = props
+	const { user } = useUser()
 	const { postcard, loading } = usePostcard()
 
 	if (loading) {
@@ -21,13 +24,16 @@ export default function PostcardSummary(props: PostcardSummaryProps) {
 	return (
 		<div className={styles.summaryContainer}>
 			<div className={styles.summary}>
-				<div className={styles.summaryLogo}>
+				<Link
+					href={user ? "/dashboard" : "/"}
+					className={styles.summaryLogo}
+				>
 					<Image
 						src="/logos/postcards-logo-wide-64.svg"
 						alt="Postcards"
 						fill
 					/>
-				</div>
+				</Link>
 				<div className={styles.summaryTitle}>
 					<div className={styles.date}>
 						{numberToPrettyWeek(postcard?.createdAt ?? 0)}

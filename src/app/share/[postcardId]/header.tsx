@@ -2,8 +2,11 @@ import { usePostcard } from "@/app/context/postcardContext"
 import styles from "./styles.module.scss"
 import Image from "next/image"
 import { numberToPrettyWeek } from "@/utils/date"
+import Link from "next/link"
+import { useUser } from "@/app/context/userContext"
 
 export default function PostcardHeader() {
+	const { user } = useUser()
 	const { postcard } = usePostcard()
 
 	// This will never happen
@@ -13,13 +16,16 @@ export default function PostcardHeader() {
 
 	return (
 		<div className={styles.header}>
-			<div className={styles.headerLogo}>
+			<Link
+				href={user ? "/dashboard" : "/"}
+				className={styles.headerLogo}
+			>
 				<Image
 					src="/logos/postcards-logo-wide-64.svg"
 					alt="Postcards"
 					fill
 				/>
-			</div>
+			</Link>
 
 			<div className={styles.date}>
 				{numberToPrettyWeek(postcard.createdAt)}

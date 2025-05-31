@@ -36,14 +36,14 @@ export default function EntryCard(props: EntryCardProps) {
 		}
 
 		if (hasTape) {
-			// No animations if it has a tape
 			cardClass += ` ${styles.tapeCard}`
 		}
-		else if (isMobile) {
+
+		if (isMobile) {
 			// No animations if it's on mobile
 		}
-		else if (description) {
-			// Grow on hover if it has a description
+		else if (description || hasTape) {
+			// Grow on hover if it has a description or is taped
 			cardClass += ` ${styles.growOnHover}`
 		} else {
 			// Rotate on hover if it has no description

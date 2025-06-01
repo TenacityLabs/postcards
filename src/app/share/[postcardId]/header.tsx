@@ -16,16 +16,20 @@ export default function PostcardHeader() {
 
 	return (
 		<div className={styles.header}>
-			<Link
-				href={user ? "/dashboard" : "/"}
-				className={styles.headerLogo}
-			>
-				<Image
-					src="/logos/postcards-logo-wide-64.svg"
-					alt="Postcards"
-					fill
-				/>
-			</Link>
+			{loading ? (
+				<div className={styles.skeletonLogo} />
+			) : (
+				<Link
+					href={user ? "/dashboard" : "/"}
+					className={styles.headerLogo}
+				>
+					<Image
+						src="/logos/postcards-logo-wide-64.svg"
+						alt="Postcards"
+						fill
+					/>
+				</Link>
+			)}
 
 			{loading ? (
 				<>

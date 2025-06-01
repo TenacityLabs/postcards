@@ -64,7 +64,7 @@ export default function SharePostcard() {
 		<div className={styles.page}>
 			<div className={styles.container}>
 				{showSummary ? (
-					<PostcardSummary showPostcard={() => setShowSummary(false)} />
+					<PostcardSummary showPostcard={() => setShowSummary(postcardLoading)} />
 				) : (
 					<div className={styles.postcardContainer}>
 						<PostcardHeader />

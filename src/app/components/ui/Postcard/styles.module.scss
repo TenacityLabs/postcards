@@ -144,6 +144,15 @@
 	}
 }
 
+.link {
+	color: $info-700;
+	text-decoration: underline;
+
+	&:hover {
+		opacity: 0.6;
+	}
+}
+
 .imageContainer {
 	width: 100%;
 

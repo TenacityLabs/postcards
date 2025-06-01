@@ -4,6 +4,7 @@ import { MONTHS } from "@/constants/date"
 import Image from "next/image"
 import { useMemo } from "react"
 import { useIsMobile } from "@/app/hooks/useIsMobile"
+import Linkify from "linkify-react"
 
 const cardColors = [
 	styles.cardColor0,
@@ -16,6 +17,12 @@ const cardColors = [
 	styles.cardColor7,
 	styles.cardColor8,
 ]
+
+const linkifyOptions = {
+	target: "_blank",
+	rel: "noopener noreferrer",
+	className: styles.link,
+}
 
 interface EntryCardProps {
 	entry: Entry
@@ -73,7 +80,7 @@ export default function EntryCard(props: EntryCardProps) {
 			<EntryCardTitle title={title} date={date} />
 			{description && (
 				<p className={styles.description}>
-					{description}
+					<Linkify options={linkifyOptions}>{description}</Linkify>
 				</p>
 			)}
 			{imageUrl && (

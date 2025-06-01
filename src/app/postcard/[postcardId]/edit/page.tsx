@@ -115,6 +115,7 @@ export default function EditEntry() {
 	}
 
 	const handleImageChange = async (file: File | null) => {
+		ClientLogger.info(`Image uploaded with size: ${file ? file.size : 'null'}`)
 		if (!file) {
 			setImage(null)
 			return
@@ -126,6 +127,7 @@ export default function EditEntry() {
 
 		try {
 			const compressedFile = await compressImageToJPEG(file, PREFERRED_MAX_WIDTH, PREFERRED_IMAGE_QUALITY)
+			ClientLogger.info(`Compressed file to size: ${compressedFile?.size}`)
 			if (!compressedFile) {
 				ClientLogger.error('Failed to compress image')
 				return

@@ -28,6 +28,7 @@ export function PostcardProvider({ children }: { children: ReactNode }) {
 			if (!postcardId) {
 				return
 			}
+			return
 
 			try {
 				const response = await sendAPIRequest(

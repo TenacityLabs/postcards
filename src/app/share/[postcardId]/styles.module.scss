@@ -22,6 +22,7 @@
 	flex-direction: column;
 	gap: 10px;
 
+	&>.skeletonDate,
 	&>.date {
 		color: $neutral-500;
 		font-size: 14px;
@@ -29,6 +30,7 @@
 		line-height: normal;
 	}
 
+	&>.skeletonTitle,
 	&>.title {
 		color: $neutral-900;
 		font-size: 48px;
@@ -38,6 +40,22 @@
 		&>b {
 			font-weight: 700;
 		}
+	}
+
+	&>.skeletonDate {
+		color: transparent;
+		animation: pulse 2s infinite;
+		@include pulse-animation;
+		width: fit-content;
+		border-radius: 10px;
+	}
+
+	&>.skeletonTitle {
+		color: transparent;
+		animation: pulse 2s infinite;
+		@include pulse-animation;
+		width: fit-content;
+		border-radius: 10px;
 	}
 
 	@media screen and (max-width: 1000px) {

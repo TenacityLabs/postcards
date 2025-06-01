@@ -24,3 +24,19 @@ $card-5: #F9EEF3;
 $card-6: #F3EFF7;
 $card-7: #FFF7F7;
 $card-8: #F0F9F4;
+
+@mixin pulse-animation($start-color: $neutral-200, $mid-color: $neutral-300, $duration: 1.5s) {
+	@keyframes pulse {
+		0% {
+			background-color: $start-color;
+		}
+
+		50% {
+			background-color: $mid-color;
+		}
+
+		100% {
+			background-color: $start-color;
+		}
+	}
+}

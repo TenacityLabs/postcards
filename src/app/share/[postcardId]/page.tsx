@@ -10,12 +10,27 @@ import { useIsMobile } from "@/app/hooks/useIsMobile"
 import { useEffect, useState } from "react"
 import PostcardSummary from "./summary"
 import Image from "next/image"
+import SkeletonCard from "@/app/components/ui/Postcard/SkeletonCard"
 
 const breakpointColsObj = {
 	default: 3,
 	1500: 2,
 	1000: 1,
 }
+
+const skeletonCardHeights = [
+	200,
+	600,
+	400,
+
+	800,
+	500,
+	200,
+
+	400,
+	300,
+	600,
+]
 
 export default function SharePostcard() {
 	const { postcard, loading: postcardLoading } = usePostcard()
@@ -41,10 +56,7 @@ export default function SharePostcard() {
 		window.scrollTo({ top: 0, behavior: "smooth" })
 	}
 
-	if (postcardLoading) {
-		return <div>Loading...</div>
-	}
-	if (!postcard) {
+	if (!postcardLoading && !postcard) {
 		return <div>Postcard not found</div>
 	}
 
@@ -56,15 +68,27 @@ export default function SharePostcard() {
 				) : (
 					<div className={styles.postcardContainer}>
 						<PostcardHeader />
-						<Masonry
-							breakpointCols={breakpointColsObj}
-							className={styles.entries}
-							columnClassName={styles.entryColumn}
-						>
-							{postcard.entries.map((entry) => (
-								<EntryCard key={entry._id} entry={entry} />
-							))}
-						</Masonry>
+						{postcardLoading ? (
+							<Masonry
+								breakpointCols={breakpointColsObj}
+								className={styles.entries}
+								columnClassName={styles.entryColumn}
+							>
+								{skeletonCardHeights.map((height, index) => (
+									<SkeletonCard key={index} height={height} />
+								))}
+							</Masonry>
+						) : (
+							<Masonry
+								breakpointCols={breakpointColsObj}
+								className={styles.entries}
+								columnClassName={styles.entryColumn}
+							>
+								{postcard!.entries.map((entry) => (
+									<EntryCard key={entry._id} entry={entry} />
+								))}
+							</Masonry>
+						)}
 						<PostcardFooter />
 					</div>
 				)}

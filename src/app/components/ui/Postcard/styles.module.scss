@@ -23,6 +23,11 @@
 	}
 }
 
+.skeletonCard {
+	animation: pulse 2s infinite;
+	@include pulse-animation;
+}
+
 .captionCard {
 	flex-direction: column-reverse;
 	gap: 18px;

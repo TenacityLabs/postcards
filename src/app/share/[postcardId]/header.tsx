@@ -7,10 +7,10 @@ import { useUser } from "@/app/context/userContext"
 
 export default function PostcardHeader() {
 	const { user } = useUser()
-	const { postcard } = usePostcard()
+	const { postcard, loading } = usePostcard()
 
 	// This will never happen
-	if (!postcard) {
+	if (!loading && !postcard) {
 		return null
 	}
 
@@ -27,12 +27,25 @@ export default function PostcardHeader() {
 				/>
 			</Link>
 
-			<div className={styles.date}>
-				{numberToPrettyWeek(postcard.createdAt)}
-			</div>
-			<h1 className={styles.title}>
-				{postcard.user.firstName} {postcard.user.lastName}&apos;s <b>Postcard</b>
-			</h1>
+			{loading ? (
+				<>
+					<div className={styles.skeletonDate}>
+						MAY 20 - MAY 25, 2025
+					</div>
+					<h1 className={styles.skeletonTitle}>
+						Lucas&apos;s <b>Postcard</b>
+					</h1>
+				</>
+			) : (
+				<>
+					<div className={styles.date}>
+						{numberToPrettyWeek(postcard!.createdAt)}
+					</div>
+					<h1 className={styles.title}>
+						{postcard!.user.firstName} {postcard!.user.lastName}&apos;s <b>Postcard</b>
+					</h1>
+				</>
+			)}
 		</div>
 	)
 }

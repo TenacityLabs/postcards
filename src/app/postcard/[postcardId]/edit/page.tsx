@@ -32,6 +32,34 @@ export default function EditEntry() {
 		}
 	}, [focusedEntry])
 
+	useEffect(() => {
+		// Handler to support pasting images from clipboard
+		const handlePaste = (e: ClipboardEvent) => {
+			const items = e.clipboardData?.items;
+			if (!items) return;
+
+			for (const item of items) {
+				if (item.type.startsWith("image/")) {
+					if (!IMAGE_MIME_TYPES.includes(item.type)) {
+						ClientLogger.error(`Invalid file type: ${item.type}. Expected one of: ${IMAGE_MIME_TYPES.join(", ")}`)
+						return
+					}
+					const file = item.getAsFile();
+					if (file) {
+						ClientLogger.info("Image pasted from clipboard");
+						handleImageChange(file);
+						break;
+					}
+				}
+			}
+		};
+
+		window.addEventListener("paste", handlePaste);
+		return () => {
+			window.removeEventListener("paste", handlePaste);
+		};
+	}, []);
+
 	const handleFocusEntry = (entry: Entry) => {
 		setFocusedEntry(entry)
 	}

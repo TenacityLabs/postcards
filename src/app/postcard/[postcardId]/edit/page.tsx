@@ -5,7 +5,7 @@ import styles from "./styles.module.scss"
 import { FileInput } from "@/app/components/ui/FileInput";
 import { TextArea, TextInput } from "@/app/components/ui/TextInput";
 import { usePostcard } from "@/app/context/postcardContext";
-import { IMAGE_MIME_TYPES, MAX_IMAGE_SIZE } from "@/constants/file";
+import { IMAGE_MIME_TYPES, MAX_IMAGE_SIZE, PREFERRED_IMAGE_QUALITY, PREFERRED_MAX_WIDTH } from "@/constants/file";
 import { Entry, PostcardDate } from "@/types/postcard";
 import { sendAPIRequest } from "@/utils/api";
 import { ClientLogger } from "@/utils/clientLogger";
@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { POSTCARD_SHARE_LINK_PREFIX } from "@/constants/postcard";
 import { APIEndpoints } from "@/types/api";
 import { APIMethods } from "@/types/api";
+import { compressImageToJPEG } from "@/utils/file";
 
 export default function EditEntry() {
 	const { postcard, setPostcard, focusedEntry, setFocusedEntry } = usePostcard()
@@ -40,10 +41,6 @@ export default function EditEntry() {
 
 			for (const item of items) {
 				if (item.type.startsWith("image/")) {
-					if (!IMAGE_MIME_TYPES.includes(item.type)) {
-						ClientLogger.error(`Invalid file type: ${item.type}. Expected one of: ${IMAGE_MIME_TYPES.join(", ")}`)
-						return
-					}
 					const file = item.getAsFile();
 					if (file) {
 						ClientLogger.info("Image pasted from clipboard");
@@ -59,6 +56,29 @@ export default function EditEntry() {
 			window.removeEventListener("paste", handlePaste);
 		};
 	}, []);
+
+	useEffect(() => {
+		const handleDragOver = (e: DragEvent) => {
+			e.preventDefault(); // Necessary to allow dropping
+		};
+
+		const handleDrop = (e: DragEvent) => {
+			e.preventDefault();
+			if (!e.dataTransfer?.files?.length) return;
+			const file = e.dataTransfer.files[0];
+			ClientLogger.info("Image dropped onto page");
+			handleImageChange(file);
+		};
+
+		window.addEventListener("dragover", handleDragOver);
+		window.addEventListener("drop", handleDrop);
+
+		return () => {
+			window.removeEventListener("dragover", handleDragOver);
+			window.removeEventListener("drop", handleDrop);
+		};
+	}, []);
+
 
 	const handleFocusEntry = (entry: Entry) => {
 		setFocusedEntry(entry)
@@ -94,7 +114,7 @@ export default function EditEntry() {
 		navigator.clipboard.writeText(`${POSTCARD_SHARE_LINK_PREFIX}${postcard?._id}`)
 	}
 
-	const handleImageChange = (file: File | null) => {
+	const handleImageChange = async (file: File | null) => {
 		if (!file) {
 			setImage(null)
 			return
@@ -103,11 +123,21 @@ export default function EditEntry() {
 			ClientLogger.error(`Invalid file type: ${file.type}`)
 			return
 		}
-		if (file.size > MAX_IMAGE_SIZE) {
-			ClientLogger.error(`File size too large: ${file.size}`)
-			return
+
+		try {
+			const compressedFile = await compressImageToJPEG(file, PREFERRED_MAX_WIDTH, PREFERRED_IMAGE_QUALITY)
+			if (!compressedFile) {
+				ClientLogger.error('Failed to compress image')
+				return
+			}
+			if (compressedFile.size > MAX_IMAGE_SIZE) {
+				ClientLogger.error(`File size too large even after compression: ${file.size}`)
+				return
+			}
+			setImage(compressedFile)
+		} catch (error) {
+			ClientLogger.error(JSON.stringify(error))
 		}
-		setImage(file)
 	}
 
 	const handleSubmitEntry = async () => {

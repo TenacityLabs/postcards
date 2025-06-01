@@ -52,6 +52,13 @@ export default function SharePostcard() {
 		return () => window.removeEventListener("scroll", handleScroll)
 	}, [])
 
+	const completeSummary = () => {
+		if (postcardLoading) {
+			return
+		}
+		setShowSummary(false)
+	}
+
 	const scrollToTop = () => {
 		window.scrollTo({ top: 0, behavior: "smooth" })
 	}
@@ -64,7 +71,7 @@ export default function SharePostcard() {
 		<div className={styles.page}>
 			<div className={styles.container}>
 				{showSummary ? (
-					<PostcardSummary showPostcard={() => setShowSummary(postcardLoading)} />
+					<PostcardSummary showPostcard={completeSummary} />
 				) : (
 					<div className={styles.postcardContainer}>
 						<PostcardHeader />

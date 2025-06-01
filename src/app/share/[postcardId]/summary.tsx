@@ -38,12 +38,12 @@ export default function PostcardSummary(props: PostcardSummaryProps) {
 					{loading ? (
 						<>
 							<div className={styles.skeletonDate}>
-								MAY 20 - MAY 25, 2025
+								Unknown - Unknown, Unknown
 							</div>
 							<div className={styles.skeletonTitle}>
 								You&apos;ve Received <br />
 								<b>
-									Lucas&apos;s Postcard
+									Unknown&apos;s Postcard
 								</b>
 							</div>
 						</>

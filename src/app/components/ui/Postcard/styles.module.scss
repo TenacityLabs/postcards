@@ -24,6 +24,7 @@
 }
 
 .skeletonCard {
+	width: 100%;
 	animation: pulse 2s infinite;
 	@include pulse-animation;
 }

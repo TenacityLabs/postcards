@@ -1,9 +1,7 @@
 @use '@/app/system.scss' as *;
 
 .page {
-	background-color: $paper;
-	background-image: radial-gradient(circle, rgba($neutral-700, 0.25), transparent 2px);
-	background-size: 36px 36px;
+	@include paper-background;
 
 	min-height: 100vh;
 

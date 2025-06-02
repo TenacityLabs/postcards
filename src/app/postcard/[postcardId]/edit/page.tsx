@@ -15,9 +15,16 @@ import { POSTCARD_SHARE_LINK_PREFIX } from "@/constants/postcard";
 import { APIEndpoints } from "@/types/api";
 import { APIMethods } from "@/types/api";
 import { compressImageToJPEG } from "@/utils/file";
+import { numberToPrettyDate } from "@/utils/date";
+import { useUser } from "@/app/context/userContext";
+import { useRouter } from "next/navigation";
+import EditIcon from "@/app/components/icons/EditIcon";
+import ArrowLeftIcon from "@/app/components/icons/ArrowLeftIcon";
 
 export default function EditEntry() {
-	const { postcard, setPostcard, focusedEntry, setFocusedEntry } = usePostcard()
+	const { user, loading: userLoading } = useUser()
+	const { postcard, loading: postcardLoading, setPostcard, focusedEntry, setFocusedEntry } = usePostcard()
+	const router = useRouter()
 	const [title, setTitle] = useState('')
 	const [date, setDate] = useState<PostcardDate | null>(null)
 	const [description, setDescription] = useState('')
@@ -32,6 +39,17 @@ export default function EditEntry() {
 			setImage(focusedEntry.imageUrl)
 		}
 	}, [focusedEntry])
+
+	useEffect(() => {
+		if (userLoading || postcardLoading) {
+			return
+		}
+		if (!user || !postcard) {
+			ClientLogger.error('No user or postcard found')
+			router.push('/dashboard')
+			return
+		}
+	}, [userLoading, postcardLoading, user, postcard, router])
 
 	useEffect(() => {
 		// Handler to support pasting images from clipboard
@@ -191,31 +209,59 @@ export default function EditEntry() {
 		}
 	}
 
+	if (!postcard || !user) {
+		return null
+	}
+
 	return (
-		<div className={styles.container}>
-			<div>
-				<Link href="/dashboard">Dashboard</Link>
-				{postcard && (
-					<div>
-						<h4>{new Date(postcard.createdAt).toLocaleString()}</h4>
-						{postcard.entries.map((entry) => (
-							<button
-								key={entry._id}
-								onClick={() => handleFocusEntry(entry)}
-								className={`${styles.entry} ${focusedEntry?._id === entry._id ? styles.focused : ''}`}
-							>
-								{entry.title.trim() || 'Untitled'}
-							</button>
-						))}
-						<div>
-							<button onClick={handleCreateEntry}>New entry</button>
-						</div>
-						<div>
-							<button onClick={handleCopyShareLink}>Copy share link</button>
-						</div>
+		<div className={styles.page}>
+			<div className={styles.navigation}>
+				<div className={styles.header}>
+					<Link
+						href="/dashboard"
+						className={styles.backButton}
+					>
+						<ArrowLeftIcon
+							width={12}
+							height={12}
+						/>
+						WEEK OF {numberToPrettyDate(postcard.createdAt)}
+					</Link>
+					<h1 className={styles.title}>
+						{postcard.user.firstName} {postcard.user.lastName}&apos;s <b>Postcard</b>
+					</h1>
+				</div>
+				<div className={styles.divider} />
+				<div className={styles.entries}>
+					<div className={styles.entriesHeader}>
+						<h4>
+							TABLE OF CONTENTS
+						</h4>
+						<button>
+							<EditIcon
+								width={24}
+								height={24}
+							/>
+						</button>
 					</div>
-				)}
+					{postcard.entries.map((entry) => (
+						<button
+							key={entry._id}
+							onClick={() => handleFocusEntry(entry)}
+							className={`${styles.entry} ${focusedEntry?._id === entry._id ? styles.focused : ''}`}
+						>
+							{entry.title.trim() || 'Untitled'}
+						</button>
+					))}
+					<div>
+						<button onClick={handleCreateEntry}>New entry</button>
+					</div>
+					<div>
+						<button onClick={handleCopyShareLink}>Copy share link</button>
+					</div>
+				</div>
 			</div>
+
 			<div>
 				{focusedEntry ? (
 					<div>

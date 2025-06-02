@@ -1,13 +1,114 @@
-.container {
+@use '@/app/system.scss' as *;
+
+.page {
+	@include paper-background;
+
+	height: 100vh;
+
 	display: grid;
 	grid-template-columns: 400px 1fr;
+	padding: 48px;
+	gap: 48px;
 }
 
-.entry {
-	display: block;
-	width: 100%;
-	text-align: left;
-	background-color: transparent;
+.navigation {
+	display: flex;
+	flex-direction: column;
+	background-color: $neutral-50;
+	border: 1px solid $neutral-300;
+	box-shadow: 4px 4px 20px 0px rgba($neutral-950, 0.05);
+	border-radius: 12px;
+
+	.divider {
+		height: 1px;
+		width: 100%;
+		background-color: $neutral-300;
+	}
+
+	.header {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		padding: 24px;
+
+		.backButton {
+			display: block;
+			text-decoration: none;
+			font-family: Figtree;
+			font-size: 18px;
+			font-style: normal;
+			font-weight: 700;
+			line-height: normal;
+
+			display: flex;
+			align-items: center;
+			gap: 4px;
+
+			color: $neutral-500;
+			transition: color 0.1s ease-in-out;
+
+			&:hover {
+				color: $neutral-700;
+			}
+		}
+
+		.title {
+			font-size: 48px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 1.15;
+			color: $neutral-950;
+
+			&>b {
+				font-weight: 700;
+			}
+		}
+
+	}
+
+	.entries {
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+		padding: 24px;
+
+		.entriesHeader {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+
+			&>h4 {
+				color: $neutral-500;
+				font-size: 18px;
+				font-style: normal;
+				font-weight: 700;
+				line-height: normal;
+			}
+
+			&>button {
+				display: block;
+				border: none;
+				background-color: transparent;
+				cursor: pointer;
+
+				color: $neutral-500;
+				transition: color 0.1s ease-in-out;
+
+				&:hover {
+					color: $neutral-700;
+				}
+			}
+		}
+
+		.entry {
+			display: flex;
+			border: none;
+			width: 100%;
+			text-align: left;
+			background-color: transparent;
+		}
+	}
+
 }
 
 .focused {

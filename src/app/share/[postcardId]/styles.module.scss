@@ -310,7 +310,7 @@
 		background-color: $neutral-500;
 		border-radius: 20px;
 		cursor: pointer;
-		transition: all 0.2s ease-in-out;
+		transition: all 0.3s ease-out;
 
 		&:active {
 			background-color: $neutral-600;
@@ -348,7 +348,7 @@
 	height: 28px;
 	background-color: $neutral-500;
 	border-radius: 10px;
-	transition: all 0.2s ease-in-out;
+	transition: all 0.3s ease-out;
 
 	&>img {
 		object-fit: contain;

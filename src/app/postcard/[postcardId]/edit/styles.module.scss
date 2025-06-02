@@ -106,9 +106,73 @@
 			width: 100%;
 			text-align: left;
 			background-color: transparent;
+
+			color: $neutral-800;
+			font-size: 20px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: normal;
+			cursor: pointer;
+			padding: 8px 8px;
+			margin: -8px -8px;
+			border-radius: 6px;
+
+			transition: background-color 0.3s ease-in-out;
+
+			&:hover {
+				background-color: $neutral-300;
+			}
+		}
+
+		.addNewEntry {
+			display: block;
+			border: none;
+			background-color: transparent;
+			text-align: left;
+			cursor: pointer;
+
+			color: $neutral-600;
+			font-size: 18px;
+			font-style: italic;
+			font-weight: 400;
+			line-height: normal;
+
+			&:hover {
+				color: $neutral-700;
+			}
 		}
 	}
 
+	.footer {
+		display: flex;
+		justify-self: flex-end;
+		gap: 10px;
+		padding: 18px 24px;
+
+		.copyShareLink {
+			display: block;
+			border: none;
+			cursor: pointer;
+
+			width: 100%;
+			padding: 8px;
+			border-radius: 6px;
+			background-color: $neutral-700;
+
+			color: $neutral-50;
+			font-size: 18px;
+			font-style: normal;
+			font-weight: 700;
+			line-height: normal;
+
+			transition: background-color 0.3s ease-out, box-shadow 0.3s ease-out;
+
+			&:active {
+				background-color: $neutral-800;
+				box-shadow: 4px 4px 20px 0px rgba($neutral-950, 0.1);
+			}
+		}
+	}
 }
 
 .focused {

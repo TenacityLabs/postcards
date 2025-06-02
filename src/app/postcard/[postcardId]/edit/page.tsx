@@ -228,7 +228,7 @@ export default function EditEntry() {
 						WEEK OF {numberToPrettyDate(postcard.createdAt)}
 					</Link>
 					<h1 className={styles.title}>
-						{postcard.user.firstName} {postcard.user.lastName}&apos;s <b>Postcard</b>
+						{user.firstName} {user.lastName}&apos;s <b>Postcard</b>
 					</h1>
 				</div>
 				<div className={styles.divider} />
@@ -253,12 +253,23 @@ export default function EditEntry() {
 							{entry.title.trim() || 'Untitled'}
 						</button>
 					))}
-					<div>
-						<button onClick={handleCreateEntry}>New entry</button>
-					</div>
-					<div>
-						<button onClick={handleCopyShareLink}>Copy share link</button>
-					</div>
+					<button
+						className={styles.addNewEntry}
+						onClick={handleCreateEntry}
+					>
+						+ Add new entry
+					</button>
+				</div>
+
+				<div className={styles.divider} />
+
+				<div className={styles.footer}>
+					<button
+						className={styles.copyShareLink}
+						onClick={handleCopyShareLink}
+					>
+						Share Postcard
+					</button>
 				</div>
 			</div>
 

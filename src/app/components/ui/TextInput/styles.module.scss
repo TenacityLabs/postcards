@@ -1,3 +1,5 @@
+@use '@/app/system.scss' as *;
+
 .textAreaContainer {
 	position: relative;
 }
@@ -9,8 +11,12 @@
 
 .textAreaLength {
 	position: absolute;
-	bottom: 1px;
-	right: 2px;
-	font-size: 12px;
-	color: #666;
+	bottom: 24px;
+	right: 24px;
+
+	color: $neutral-400;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: normal;
 }

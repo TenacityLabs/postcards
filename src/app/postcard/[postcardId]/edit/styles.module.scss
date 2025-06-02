@@ -213,6 +213,78 @@
 	}
 }
 
-.focused {
-	background-color: #ababab;
+.content {
+	padding: 36px;
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	background-color: $neutral-50;
+	border-radius: 20px 0 0 20px;
+	background-color: $neutral-50;
+	border: 1px solid $neutral-300;
+	box-shadow: 4px 4px 20px 0px rgba($neutral-950, 0.05);
+
+	.title {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		border-radius: 12px;
+		border: 1px solid rgba($neutral-700, 0.1);
+		padding-right: 24px;
+		box-shadow: 2px 2px 15px 0px rgba($neutral-950, 0.07);
+
+		.titleInput {
+			width: 100%;
+			color: $neutral-600;
+			font-size: 32px;
+			font-style: normal;
+			font-weight: 500;
+			line-height: normal;
+			background: $neutral-50;
+			border: none;
+			outline: none;
+
+			padding: 24px;
+
+			&::placeholder {
+				color: $neutral-400;
+			}
+		}
+
+		.calendarButton {
+			display: block;
+			border: none;
+			background-color: rgba($neutral-700, 0.1);
+			border-radius: 11px;
+			cursor: pointer;
+
+			color: $neutral-500;
+		}
+	}
+
+	.textArea {
+		padding: 24px;
+		flex-grow: 1;
+		border: 0;
+		outline: 0;
+
+		color: $neutral-500;
+		font-size: 24px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: normal;
+		background: $neutral-50;
+		outline: none;
+		border-radius: 12px;
+		border: 1px solid rgba($neutral-700, 0.1);
+		padding-right: 24px;
+		box-shadow: 2px 2px 15px 0px rgba($neutral-950, 0.07);
+
+		padding: 24px;
+
+		&::placeholder {
+			color: $neutral-400;
+		}
+	}
 }

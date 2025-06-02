@@ -56,7 +56,7 @@ export const TextArea = (props: TextAreaProps) => {
 			/>
 			{maxLength && (
 				<div className={styles.textAreaLength}>
-					{value.length}/{maxLength}
+					{value.length}/{maxLength} CHARACTERS
 				</div>
 			)}
 		</div>

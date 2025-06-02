@@ -3,7 +3,7 @@
 import { DateInput } from "@/app/components/ui/DateInput";
 import styles from "./styles.module.scss"
 import { FileInput } from "@/app/components/ui/FileInput";
-import { TextArea, TextInput } from "@/app/components/ui/TextInput";
+import { TextArea } from "@/app/components/ui/TextInput";
 import { usePostcard } from "@/app/context/postcardContext";
 import { IMAGE_MIME_TYPES, MAX_IMAGE_SIZE, PREFERRED_IMAGE_QUALITY, PREFERRED_MAX_WIDTH } from "@/constants/file";
 import { Entry, PostcardDate } from "@/types/postcard";
@@ -16,6 +16,7 @@ import { compressImageToJPEG } from "@/utils/file";
 import { useUser } from "@/app/context/userContext";
 import { useRouter } from "next/navigation";
 import { Navigation } from "./navigation";
+import CalendarIcon from "@/app/components/icons/CalendarIcon";
 
 export default function EditEntry() {
 	const { user, loading: userLoading } = useUser()
@@ -210,32 +211,30 @@ export default function EditEntry() {
 				handleCreateEntry={handleCreateEntry}
 			/>
 
-			<div>
+			<div className={styles.content}>
 				{focusedEntry ? (
-					<div>
-						<div>
-							<TextInput
+					<>
+						<div className={styles.title}>
+							<input
 								placeholder="Title"
 								value={title}
-								setValue={setTitle}
+								onChange={(e) => setTitle(e.target.value)}
+								className={styles.titleInput}
 							/>
+
+							<button className={styles.calendarButton}>
+								<CalendarIcon width={36} height={36} />
+							</button>
 						</div>
-						<div>
-							<DateInput
-								selectedDate={date}
-								setSelectedDate={setDate}
-								clearSelectedDate={() => setDate(null)}
-							/>
-						</div>
-						<div>
-							<TextArea
-								placeholder="Description"
-								value={description}
-								setValue={setDescription}
-								rows={10}
-								maxLength={500}
-							/>
-						</div>
+
+						<TextArea
+							className={styles.textArea}
+							placeholder="Write text or paste a link here"
+							value={description}
+							setValue={setDescription}
+							maxLength={500}
+						/>
+
 						<div>
 							<FileInput
 								label="Upload File"
@@ -250,7 +249,7 @@ export default function EditEntry() {
 						<div>
 							<button onClick={handleDeleteEntry}>Delete</button>
 						</div>
-					</div>
+					</>
 				) : (
 					<div>
 						{postcard?.entries.length ? (

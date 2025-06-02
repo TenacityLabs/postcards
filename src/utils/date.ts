@@ -1,4 +1,4 @@
-import { MONTHS } from "@/constants/date";
+import { DURATION_MESSAGES, MONTHS } from "@/constants/date";
 
 // Convert date to format 'yyyy-mm-dd' to avoid timezone issues
 export const dateToString = (date: Date) => {
@@ -28,6 +28,21 @@ export const numberToPrettyWeek = (date: number, includeYear = false) => {
 	const endDate = date + (6 * 24 * 60 * 60 * 1000)
 
 	return `${numberToPrettyDate(date)} - ${numberToPrettyDate(endDate, includeYear)}`
+}
+
+export const getDaysElapsed = (createdAt: number) => {
+	const now = Date.now()
+	return Math.floor((now - createdAt) / (1000 * 60 * 60 * 24))
+}
+
+export const getDurationMessage = (createdAt: number) => {
+	const daysElapsed = getDaysElapsed(createdAt)
+	for (const msg of DURATION_MESSAGES) {
+		if (daysElapsed < msg.days) {
+			return msg
+		}
+	}
+	return DURATION_MESSAGES[DURATION_MESSAGES.length - 1]
 }
 
 export const validateDate = (dateString: string | null) => {

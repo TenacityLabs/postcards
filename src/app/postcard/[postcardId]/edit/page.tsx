@@ -10,16 +10,23 @@ import { Entry, PostcardDate } from "@/types/postcard";
 import { sendAPIRequest } from "@/utils/api";
 import { ClientLogger } from "@/utils/clientLogger";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { POSTCARD_SHARE_LINK_PREFIX } from "@/constants/postcard";
 import { APIEndpoints } from "@/types/api";
 import { APIMethods } from "@/types/api";
 import { compressImageToJPEG } from "@/utils/file";
-import { numberToPrettyDate } from "@/utils/date";
+import { getDaysElapsed, getDurationMessage, numberToPrettyDate } from "@/utils/date";
 import { useUser } from "@/app/context/userContext";
 import { useRouter } from "next/navigation";
 import EditIcon from "@/app/components/icons/EditIcon";
 import ArrowLeftIcon from "@/app/components/icons/ArrowLeftIcon";
+import { DURATION_STATUS } from "@/constants/date";
+
+const DURATION_STATUS_CLASS = {
+	[DURATION_STATUS.GOOD]: styles.goodStatus,
+	[DURATION_STATUS.MEDIUM]: styles.mediumStatus,
+	[DURATION_STATUS.BAD]: styles.badStatus,
+}
 
 export default function EditEntry() {
 	const { user, loading: userLoading } = useUser()
@@ -30,6 +37,13 @@ export default function EditEntry() {
 	const [description, setDescription] = useState('')
 	// Allow file or image url for reuploads
 	const [image, setImage] = useState<File | string | null>(null)
+
+	const [daysElapsed, durationMessage, durationStatusClass] = useMemo(() => {
+		const daysElapsed = getDaysElapsed(postcard?.createdAt ?? 0)
+		const durationMessage = getDurationMessage(postcard?.createdAt ?? 0)
+		const durationStatusClass = DURATION_STATUS_CLASS[durationMessage.status]
+		return [daysElapsed, durationMessage, durationStatusClass]
+	}, [postcard?.createdAt])
 
 	useEffect(() => {
 		if (focusedEntry) {
@@ -97,7 +111,6 @@ export default function EditEntry() {
 		};
 	}, []);
 
-
 	const handleFocusEntry = (entry: Entry) => {
 		setFocusedEntry(entry)
 	}
@@ -116,7 +129,6 @@ export default function EditEntry() {
 					postcardId: postcard._id
 				}
 			)
-			ClientLogger.info(`Entry created: ${JSON.stringify(response)}`)
 			setPostcard(response.postcard)
 			if (response.postcard.entries.length > 0) {
 				setFocusedEntry(response.postcard.entries[response.postcard.entries.length - 1])
@@ -202,7 +214,6 @@ export default function EditEntry() {
 					entryId: focusedEntry._id
 				}
 			)
-			ClientLogger.info(`Entry deleted: ${JSON.stringify(response)}`)
 			setPostcard(response.postcard)
 		} catch (error) {
 			ClientLogger.error(error)
@@ -264,6 +275,12 @@ export default function EditEntry() {
 				<div className={styles.divider} />
 
 				<div className={styles.footer}>
+					<div className={styles.createdStatus}>
+						<div className={durationStatusClass} />
+						<span>
+							Created {daysElapsed} days ago. {durationMessage.label}
+						</span>
+					</div>
 					<button
 						className={styles.copyShareLink}
 						onClick={handleCopyShareLink}

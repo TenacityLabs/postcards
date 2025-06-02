@@ -38,7 +38,6 @@ export function PostcardProvider({ children }: { children: ReactNode }) {
 					},
 				)
 
-				ClientLogger.info(`Postcard fetched: ${JSON.stringify(response)}`)
 				const postcard: Postcard = response.postcard
 				postcard.entries.forEach(entry => {
 					entry.date = entry.date ? new PostcardDate(entry.date as unknown as string) : null

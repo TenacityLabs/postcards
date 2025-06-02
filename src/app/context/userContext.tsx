@@ -37,7 +37,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
 				)
 
 				setUser(response.user)
-				ClientLogger.sensitive(`User fetched: ${JSON.stringify(response.user)}`)
 			} catch (err) {
 				// Token expired or invalid
 				localStorage.removeItem('token')

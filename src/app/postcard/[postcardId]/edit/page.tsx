@@ -9,24 +9,13 @@ import { IMAGE_MIME_TYPES, MAX_IMAGE_SIZE, PREFERRED_IMAGE_QUALITY, PREFERRED_MA
 import { Entry, PostcardDate } from "@/types/postcard";
 import { sendAPIRequest } from "@/utils/api";
 import { ClientLogger } from "@/utils/clientLogger";
-import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
-import { POSTCARD_SHARE_LINK_PREFIX } from "@/constants/postcard";
+import { useEffect, useState } from "react";
 import { APIEndpoints } from "@/types/api";
 import { APIMethods } from "@/types/api";
 import { compressImageToJPEG } from "@/utils/file";
-import { getDaysElapsed, getDurationMessage, numberToPrettyDate } from "@/utils/date";
 import { useUser } from "@/app/context/userContext";
 import { useRouter } from "next/navigation";
-import EditIcon from "@/app/components/icons/EditIcon";
-import ArrowLeftIcon from "@/app/components/icons/ArrowLeftIcon";
-import { DURATION_STATUS } from "@/constants/date";
-
-const DURATION_STATUS_CLASS = {
-	[DURATION_STATUS.GOOD]: styles.goodStatus,
-	[DURATION_STATUS.MEDIUM]: styles.mediumStatus,
-	[DURATION_STATUS.BAD]: styles.badStatus,
-}
+import { Navigation } from "./navigation";
 
 export default function EditEntry() {
 	const { user, loading: userLoading } = useUser()
@@ -37,13 +26,6 @@ export default function EditEntry() {
 	const [description, setDescription] = useState('')
 	// Allow file or image url for reuploads
 	const [image, setImage] = useState<File | string | null>(null)
-
-	const [daysElapsed, durationMessage, durationStatusClass] = useMemo(() => {
-		const daysElapsed = getDaysElapsed(postcard?.createdAt ?? 0)
-		const durationMessage = getDurationMessage(postcard?.createdAt ?? 0)
-		const durationStatusClass = DURATION_STATUS_CLASS[durationMessage.status]
-		return [daysElapsed, durationMessage, durationStatusClass]
-	}, [postcard?.createdAt])
 
 	useEffect(() => {
 		if (focusedEntry) {
@@ -140,10 +122,6 @@ export default function EditEntry() {
 		}
 	}
 
-	const handleCopyShareLink = () => {
-		navigator.clipboard.writeText(`${POSTCARD_SHARE_LINK_PREFIX}${postcard?._id}`)
-	}
-
 	const handleImageChange = async (file: File | null) => {
 		ClientLogger.info(`Image uploaded with size: ${file ? file.size : 'null'}`)
 		if (!file) {
@@ -226,69 +204,11 @@ export default function EditEntry() {
 
 	return (
 		<div className={styles.page}>
-			<div className={styles.navigation}>
-				<div className={styles.header}>
-					<Link
-						href="/dashboard"
-						className={styles.backButton}
-					>
-						<ArrowLeftIcon
-							width={12}
-							height={12}
-						/>
-						WEEK OF {numberToPrettyDate(postcard.createdAt)}
-					</Link>
-					<h1 className={styles.title}>
-						{user.firstName} {user.lastName}&apos;s <b>Postcard</b>
-					</h1>
-				</div>
-				<div className={styles.divider} />
-				<div className={styles.entries}>
-					<div className={styles.entriesHeader}>
-						<h4>
-							TABLE OF CONTENTS
-						</h4>
-						<button>
-							<EditIcon
-								width={24}
-								height={24}
-							/>
-						</button>
-					</div>
-					{postcard.entries.map((entry) => (
-						<button
-							key={entry._id}
-							onClick={() => handleFocusEntry(entry)}
-							className={`${styles.entry} ${focusedEntry?._id === entry._id ? styles.focused : ''}`}
-						>
-							{entry.title.trim() || 'Untitled'}
-						</button>
-					))}
-					<button
-						className={styles.addNewEntry}
-						onClick={handleCreateEntry}
-					>
-						+ Add new entry
-					</button>
-				</div>
-
-				<div className={styles.divider} />
-
-				<div className={styles.footer}>
-					<div className={styles.createdStatus}>
-						<div className={durationStatusClass} />
-						<span>
-							Created {daysElapsed} days ago. {durationMessage.label}
-						</span>
-					</div>
-					<button
-						className={styles.copyShareLink}
-						onClick={handleCopyShareLink}
-					>
-						Share Postcard
-					</button>
-				</div>
-			</div>
+			<Navigation
+				handleFocusEntry={handleFocusEntry}
+				focusedEntry={focusedEntry}
+				handleCreateEntry={handleCreateEntry}
+			/>
 
 			<div>
 				{focusedEntry ? (

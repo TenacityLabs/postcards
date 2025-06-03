@@ -2,9 +2,10 @@ import { ServerLogger } from "@/utils/serverLogger";
 import { NextRequest, NextResponse } from "next/server";
 import { verifyRequest } from "@/utils/auth";
 import { connectToDatabase } from "@/utils/mongoose";
+import { deleteFile, extractKeyFromUrl, uploadFile } from "@/utils/s3";
 import { IEntry, IPostcard, PostcardModel } from "@/models/Postcard";
-import { validateDate } from "@/utils/date";
 import { APIEndpoints, APIResponse, ErrorResponse } from "@/types/api";
+import { IMAGE_MIME_TYPES } from "@/constants/file";
 
 export async function POST(request: NextRequest): Promise<NextResponse<APIResponse<APIEndpoints.EditEntry> | ErrorResponse>> {
 	try {
@@ -14,9 +15,8 @@ export async function POST(request: NextRequest): Promise<NextResponse<APIRespon
 		const formData = await request.formData()
 		const postcardId = formData.get("postcardId") as string
 		const entryId = formData.get("entryId") as string
-		const title = formData.get("title") as string
-		const description = formData.get("description") as string
-		const date = formData.get("date") as string | null
+		const image = formData.get("file") as File | string | null
+		const imageName = formData.get("imageName") as string | null
 
 		if (!postcardId || !entryId) {
 			return NextResponse.json(
@@ -24,9 +24,15 @@ export async function POST(request: NextRequest): Promise<NextResponse<APIRespon
 				{ status: 400 }
 			)
 		}
-		if (date && !validateDate(date)) {
+		if (!(image instanceof File) || !imageName) {
 			return NextResponse.json(
-				{ message: "Invalid date" },
+				{ message: "Invalid image or image name" },
+				{ status: 400 }
+			)
+		}
+		if (!IMAGE_MIME_TYPES.includes(image.type)) {
+			return NextResponse.json(
+				{ message: `Invalid file type, image is of mimetype ${image.type}` },
 				{ status: 400 }
 			)
 		}
@@ -35,7 +41,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<APIRespon
 			_id: postcardId,
 			user: userId,
 		})
-		if (!postcard) {
+		if (!postcard || postcard.user.toString() !== userId) {
 			return NextResponse.json(
 				{ message: "Postcard not found" },
 				{ status: 404 }
@@ -49,23 +55,33 @@ export async function POST(request: NextRequest): Promise<NextResponse<APIRespon
 			)
 		}
 
-		entry.title = title
-		entry.description = description
-		if (date) {
-			entry.date = date
+		let imageUrl: string | null = null
+		const fileExtension = `.${image.name.split('.').pop() || ''}`
+		const key = `uploads/${postcardId}/${entryId}-${Date.now()}${fileExtension}`
+		// Upload before deletion for safety
+		imageUrl = await uploadFile(image, key)
+
+		if (entry.imageUrl) {
+			ServerLogger.info(`Deleting image URL for entry ${entryId}`)
+			const key = extractKeyFromUrl(entry.imageUrl)
+			await deleteFile(key)
 		}
+
+		entry.imageUrl = imageUrl
+		entry.imageName = imageName
 		postcard.updatedAt = Date.now()
 		await postcard.save()
 
 		return NextResponse.json({
-			message: "Postcard entry edited successfully",
+			message: "Postcard entry image uploaded successfully",
 			postcard: postcard.toJSON({ versionKey: false })
 		}, { status: 200 })
 	} catch (error) {
-		ServerLogger.error(`Error editing postcard entry: ${error}`)
+		ServerLogger.error(`Error uploading postcard entry image: ${error}`)
 		return NextResponse.json(
-			{ message: "Failed to edit postcard entry" },
+			{ message: "Failed to upload postcard entry image" },
 			{ status: 500 }
 		)
 	}
 }
+

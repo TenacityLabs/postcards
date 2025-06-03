@@ -29,6 +29,7 @@ export interface IEntry extends Document {
 	date: string
 	description: string
 	imageUrl: string | null
+	imageName: string | null
 	tapePattern: number
 	cardColor: number
 	hoverRotation: number

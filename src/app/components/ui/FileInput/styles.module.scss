@@ -48,10 +48,15 @@
 		line-height: normal;
 	}
 
+	.fileInputDelete {
+		display: none;
+	}
+
 	.fileInputPreview {
 		max-width: 500px;
 		transition: background-color 0.2s ease-in-out;
 		border-radius: 6px;
+		position: relative;
 
 		.previewImageContainer {
 			height: 35px;
@@ -67,11 +72,34 @@
 			}
 		}
 
+		&>.fileInputDelete {
+			position: absolute;
+			display: block;
+			top: 10px;
+			right: 10px;
+			cursor: pointer;
+			color: $neutral-500;
+			background: none;
+			border: none;
+			outline: none;
+
+			transition: all 0.1s ease-in-out;
+			opacity: 0;
+
+			&:hover {
+				color: $neutral-700;
+			}
+		}
+
 		&:hover {
 			background-color: $neutral-300;
 
 			.previewImageContainer {
 				opacity: 0.7;
+			}
+
+			.fileInputDelete {
+				opacity: 1;
 			}
 		}
 	}

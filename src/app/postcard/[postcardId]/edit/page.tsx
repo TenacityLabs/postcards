@@ -242,7 +242,8 @@ export default function EditEntry() {
 							label="Upload File"
 							accept={IMAGE_MIME_TYPES.join(',')}
 							labelText={image ? 'luppy.png' : 'Click or drag to upload here.'}
-							onChange={handleImageChange}
+							onUpload={handleImageChange}
+							onDelete={() => handleImageChange(null)}
 							image={image}
 						/>
 					</>

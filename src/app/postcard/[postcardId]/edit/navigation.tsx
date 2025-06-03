@@ -4,11 +4,11 @@ import { getDaysElapsed, getDurationMessage, numberToPrettyDate } from '@/utils/
 import ArrowLeftIcon from '@/app/components/icons/ArrowLeftIcon'
 import { usePostcard } from '@/app/context/postcardContext'
 import { useUser } from '@/app/context/userContext'
-import EditIcon from '@/app/components/icons/EditIcon'
 import { POSTCARD_SHARE_LINK_PREFIX } from '@/constants/postcard'
 import { Entry } from '@/types/postcard'
 import { DURATION_STATUS } from '@/constants/date'
 import { useMemo } from 'react'
+import TrashIcon from '@/app/components/icons/TrashIcon'
 
 const DURATION_STATUS_CLASS = {
 	[DURATION_STATUS.GOOD]: styles.goodStatus,
@@ -19,11 +19,12 @@ const DURATION_STATUS_CLASS = {
 interface NavigationProps {
 	handleFocusEntry: (entry: Entry) => void
 	focusedEntry: Entry | null
-	handleCreateEntry: () => void
+	onCreateEntry: () => void
+	onDeleteEntry: (entryId: string) => void
 }
 
 export const Navigation = (props: NavigationProps) => {
-	const { handleFocusEntry, focusedEntry, handleCreateEntry } = props
+	const { handleFocusEntry, focusedEntry, onCreateEntry, onDeleteEntry } = props
 	const { postcard } = usePostcard()
 	const { user } = useUser()
 
@@ -36,6 +37,11 @@ export const Navigation = (props: NavigationProps) => {
 
 	const handleCopyShareLink = () => {
 		navigator.clipboard.writeText(`${POSTCARD_SHARE_LINK_PREFIX}${postcard?._id}`)
+	}
+
+	const handleDeleteEntry = (e: React.MouseEvent<HTMLButtonElement>, entryId: string) => {
+		e.stopPropagation()
+		onDeleteEntry(entryId)
 	}
 
 	if (!postcard || !user) {
@@ -65,25 +71,27 @@ export const Navigation = (props: NavigationProps) => {
 					<h4>
 						TABLE OF CONTENTS
 					</h4>
-					<button>
-						<EditIcon
-							width={24}
-							height={24}
-						/>
-					</button>
 				</div>
 				{postcard.entries.map((entry) => (
-					<button
+					<div
 						key={entry._id}
 						onClick={() => handleFocusEntry(entry)}
 						className={`${styles.entry} ${focusedEntry?._id === entry._id ? styles.focused : ''}`}
 					>
-						{entry.title.trim() || 'Untitled'}
-					</button>
+						<span>
+							{entry.title.trim() || 'Untitled'}
+						</span>
+						<button
+							className={styles.deleteButton}
+							onClick={(e) => handleDeleteEntry(e, entry._id)}
+						>
+							<TrashIcon width={24} height={24} />
+						</button>
+					</div>
 				))}
 				<button
 					className={styles.addNewEntry}
-					onClick={handleCreateEntry}
+					onClick={onCreateEntry}
 				>
 					+ Add new entry
 				</button>

@@ -76,10 +76,6 @@
 		overflow-y: auto;
 
 		.entriesHeader {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-
 			&>h4 {
 				color: $neutral-500;
 				font-size: 18px;
@@ -87,24 +83,12 @@
 				font-weight: 700;
 				line-height: normal;
 			}
-
-			&>button {
-				display: block;
-				border: none;
-				background-color: transparent;
-				cursor: pointer;
-
-				color: $neutral-500;
-				transition: color 0.1s ease-in-out;
-
-				&:hover {
-					color: $neutral-700;
-				}
-			}
 		}
 
 		.entry {
 			display: flex;
+			align-items: center;
+			justify-content: space-between;
 			border: none;
 			width: 100%;
 			text-align: left;
@@ -120,11 +104,31 @@
 			margin: -8px -8px;
 			border-radius: 6px;
 
-			transition: background-color 0.3s ease-in-out;
+			transition: background-color 0.2s ease-in-out;
+
+			&>.deleteButton {
+				border: none;
+				outline: none;
+				background: none;
+				cursor: pointer;
+
+				transition: opacity 0.3s ease-in-out, color 0.2s ease-in-out;
+				color: $neutral-500;
+				opacity: 0;
+
+				&:hover {
+					color: $neutral-700;
+				}
+			}
 
 			&:hover {
 				background-color: $neutral-300;
+
+				&>.deleteButton {
+					opacity: 1;
+				}
 			}
+
 		}
 
 		.addNewEntry {

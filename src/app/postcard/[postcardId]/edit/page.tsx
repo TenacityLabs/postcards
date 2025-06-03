@@ -176,10 +176,10 @@ export default function EditEntry() {
 		}
 	}
 
-	const handleDeleteEntry = async () => {
+	const handleDeleteEntry = async (entryId: string) => {
 		ClientLogger.info('Deleting entry')
-		if (!postcard || !focusedEntry) {
-			ClientLogger.error('No postcard or focused entry found')
+		if (!postcard) {
+			ClientLogger.error('No postcard found')
 			return
 		}
 		try {
@@ -188,7 +188,7 @@ export default function EditEntry() {
 				APIMethods.POST,
 				{
 					postcardId: postcard._id,
-					entryId: focusedEntry._id
+					entryId,
 				}
 			)
 			setPostcard(response.postcard)
@@ -206,7 +206,8 @@ export default function EditEntry() {
 			<Navigation
 				handleFocusEntry={handleFocusEntry}
 				focusedEntry={focusedEntry}
-				handleCreateEntry={handleCreateEntry}
+				onCreateEntry={handleCreateEntry}
+				onDeleteEntry={handleDeleteEntry}
 			/>
 
 			<div className={styles.content}>

@@ -244,6 +244,7 @@
 			background: $neutral-50;
 			border: none;
 			outline: none;
+			border-radius: 12px 0 0 12px;
 
 			padding: 24px;
 
@@ -263,28 +264,48 @@
 		}
 	}
 
-	.textArea {
-		padding: 24px;
+	.textAreaContainer {
 		flex-grow: 1;
-		border: 0;
-		outline: 0;
+		position: relative;
+		width: 100%;
 
-		color: $neutral-500;
-		font-size: 24px;
-		font-style: normal;
-		font-weight: 400;
-		line-height: normal;
-		background: $neutral-50;
-		outline: none;
-		border-radius: 12px;
-		border: 1px solid rgba($neutral-700, 0.1);
-		padding-right: 24px;
-		box-shadow: 2px 2px 15px 0px rgba($neutral-950, 0.07);
+		.textArea {
+			padding: 24px;
+			border: 0;
+			outline: 0;
+			width: 100%;
+			height: 100%;
+			resize: none;
 
-		padding: 24px;
+			color: $neutral-500;
+			font-size: 24px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: normal;
+			background: $neutral-50;
+			outline: none;
+			border-radius: 12px;
+			border: 1px solid rgba($neutral-700, 0.1);
+			padding-right: 24px;
+			box-shadow: 2px 2px 15px 0px rgba($neutral-950, 0.07);
 
-		&::placeholder {
+			padding: 24px;
+
+			&::placeholder {
+				color: $neutral-400;
+			}
+		}
+
+		.textAreaLength {
+			position: absolute;
+			bottom: 24px;
+			right: 24px;
+
 			color: $neutral-400;
+			font-size: 18px;
+			font-style: normal;
+			font-weight: 700;
+			line-height: normal;
 		}
 	}
 }

@@ -1,9 +1,7 @@
 "use client"
 
-import { DateInput } from "@/app/components/ui/DateInput";
 import styles from "./styles.module.scss"
 import { FileInput } from "@/app/components/ui/FileInput";
-import { TextArea } from "@/app/components/ui/TextInput";
 import { usePostcard } from "@/app/context/postcardContext";
 import { IMAGE_MIME_TYPES, MAX_IMAGE_SIZE, PREFERRED_IMAGE_QUALITY, PREFERRED_MAX_WIDTH } from "@/constants/file";
 import { Entry, PostcardDate } from "@/types/postcard";
@@ -227,28 +225,25 @@ export default function EditEntry() {
 							</button>
 						</div>
 
-						<TextArea
-							className={styles.textArea}
-							placeholder="Write text or paste a link here"
-							value={description}
-							setValue={setDescription}
-							maxLength={500}
-						/>
-
-						<div>
-							<FileInput
-								label="Upload File"
-								accept={IMAGE_MIME_TYPES.join(',')}
-								labelText={image ? 'File uploaded' : 'No file selected'}
-								onChange={handleImageChange}
+						<div className={styles.textAreaContainer}>
+							<textarea
+								value={description}
+								onChange={(e) => setDescription(e.target.value)}
+								placeholder="Write text or paste a link here"
+								className={styles.textArea}
+								maxLength={500}
 							/>
+							<div className={styles.textAreaLength}>
+								{description.length}/500 CHARACTERS
+							</div>
 						</div>
-						<div>
-							<button onClick={handleSubmitEntry}>Submit</button>
-						</div>
-						<div>
-							<button onClick={handleDeleteEntry}>Delete</button>
-						</div>
+
+						<FileInput
+							label="Upload File"
+							accept={IMAGE_MIME_TYPES.join(',')}
+							labelText={image ? 'File uploaded' : 'Click or drag to upload here.'}
+							onChange={handleImageChange}
+						/>
 					</>
 				) : (
 					<div>

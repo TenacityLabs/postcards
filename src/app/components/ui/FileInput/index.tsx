@@ -20,10 +20,19 @@ export const FileInput = (props: FileInputProps) => {
 	}
 
 	return (
-		<div>
-			<label htmlFor={label}>
-				{labelText || 'No file selected'}
+		<div className={styles.fileContainer}>
+			<label
+				htmlFor={label}
+				className={styles.fileInput}
+			>
+				<div className={styles.fileInputTitle}>
+					UPLOAD AN IMAGE
+				</div>
+				<div className={styles.fileInputLabel}>
+					{labelText || 'Click or drag to upload here.'}
+				</div>
 			</label>
+
 			<input
 				className={styles.hidden}
 				type="file"

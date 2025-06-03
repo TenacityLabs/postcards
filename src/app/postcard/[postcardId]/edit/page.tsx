@@ -241,8 +241,9 @@ export default function EditEntry() {
 						<FileInput
 							label="Upload File"
 							accept={IMAGE_MIME_TYPES.join(',')}
-							labelText={image ? 'File uploaded' : 'Click or drag to upload here.'}
+							labelText={image ? 'luppy.png' : 'Click or drag to upload here.'}
 							onChange={handleImageChange}
+							image={image}
 						/>
 					</>
 				) : (

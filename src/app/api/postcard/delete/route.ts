@@ -51,7 +51,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<APIRespon
 	} catch (error) {
 		ServerLogger.error(`Error deleting postcard: ${error}`)
 		return NextResponse.json(
-			{ message: 'Internal server error' },
+			{ error: 'Internal server error' },
 			{ status: 500 }
 		)
 	}

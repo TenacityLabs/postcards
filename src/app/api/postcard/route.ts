@@ -15,7 +15,7 @@ export async function GET(request: Request): Promise<NextResponse<APIResponse<AP
 
 		if (!postcardId) {
 			return NextResponse.json(
-				{ message: 'Postcard ID is required' },
+				{ error: 'Postcard ID is required' },
 				{ status: 400 }
 			)
 		}
@@ -28,7 +28,7 @@ export async function GET(request: Request): Promise<NextResponse<APIResponse<AP
 
 		if (!postcard) {
 			return NextResponse.json(
-				{ message: 'Postcard not found' },
+				{ error: 'Postcard not found' },
 				{ status: 404 }
 			)
 		}
@@ -43,13 +43,13 @@ export async function GET(request: Request): Promise<NextResponse<APIResponse<AP
 		// We will handle token refreshes later
 		if (error instanceof Error && error.message.includes('expired')) {
 			return NextResponse.json(
-				{ message: 'Token has expired' },
+				{ error: 'Token has expired' },
 				{ status: 401 }
 			)
 		}
 
 		return NextResponse.json(
-			{ message: 'Internal server error' },
+			{ error: 'Internal server error' },
 			{ status: 500 }
 		)
 	}

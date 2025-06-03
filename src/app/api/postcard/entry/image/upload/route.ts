@@ -7,7 +7,7 @@ import { IEntry, IPostcard, PostcardModel } from "@/models/Postcard";
 import { APIEndpoints, APIResponse, ErrorResponse } from "@/types/api";
 import { IMAGE_MIME_TYPES } from "@/constants/file";
 
-export async function POST(request: NextRequest): Promise<NextResponse<APIResponse<APIEndpoints.EditEntry> | ErrorResponse>> {
+export async function POST(request: NextRequest): Promise<NextResponse<APIResponse<APIEndpoints.UploadEntryImage> | ErrorResponse>> {
 	try {
 		const { userId } = verifyRequest(request)
 		await connectToDatabase()
@@ -20,19 +20,19 @@ export async function POST(request: NextRequest): Promise<NextResponse<APIRespon
 
 		if (!postcardId || !entryId) {
 			return NextResponse.json(
-				{ message: "No postcard ID, entry ID, or title provided" },
+				{ error: "No postcard ID, entry ID, or title provided" },
 				{ status: 400 }
 			)
 		}
 		if (!(image instanceof File) || !imageName) {
 			return NextResponse.json(
-				{ message: "Invalid image or image name" },
+				{ error: "Invalid image or image name" },
 				{ status: 400 }
 			)
 		}
 		if (!IMAGE_MIME_TYPES.includes(image.type)) {
 			return NextResponse.json(
-				{ message: `Invalid file type, image is of mimetype ${image.type}` },
+				{ error: `Invalid file type, image is of mimetype ${image.type}` },
 				{ status: 400 }
 			)
 		}
@@ -43,14 +43,14 @@ export async function POST(request: NextRequest): Promise<NextResponse<APIRespon
 		})
 		if (!postcard || postcard.user.toString() !== userId) {
 			return NextResponse.json(
-				{ message: "Postcard not found" },
+				{ error: "Postcard not found" },
 				{ status: 404 }
 			)
 		}
 		const entry: IEntry | undefined = postcard.entries.find((entry: IEntry) => entry._id.toString() === entryId)
 		if (!entry) {
 			return NextResponse.json(
-				{ message: "Entry not found" },
+				{ error: "Entry not found" },
 				{ status: 404 }
 			)
 		}
@@ -73,14 +73,13 @@ export async function POST(request: NextRequest): Promise<NextResponse<APIRespon
 		await postcard.save()
 
 		return NextResponse.json({
-			message: "Postcard entry image uploaded successfully",
 			imageUrl: imageUrl,
 			imageName: imageName,
 		}, { status: 200 })
 	} catch (error) {
 		ServerLogger.error(`Error uploading postcard entry image: ${error}`)
 		return NextResponse.json(
-			{ message: "Failed to upload postcard entry image" },
+			{ error: "Failed to upload postcard entry image" },
 			{ status: 500 }
 		)
 	}

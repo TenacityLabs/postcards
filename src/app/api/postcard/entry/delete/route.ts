@@ -14,7 +14,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<APIRespon
 
 		if (!postcardId) {
 			return NextResponse.json(
-				{ message: "No postcard ID provided" },
+				{ error: "No postcard ID provided" },
 				{ status: 400 }
 			)
 		}
@@ -25,14 +25,14 @@ export async function POST(request: NextRequest): Promise<NextResponse<APIRespon
 		})
 		if (!postcard) {
 			return NextResponse.json(
-				{ message: "Postcard not found" },
+				{ error: "Postcard not found" },
 				{ status: 404 }
 			)
 		}
 		const entry = postcard.entries.find((e) => e._id.toString() === entryId)
 		if (!entry) {
 			return NextResponse.json(
-				{ message: "Entry not found" },
+				{ error: "Entry not found" },
 				{ status: 404 }
 			)
 		}
@@ -45,13 +45,12 @@ export async function POST(request: NextRequest): Promise<NextResponse<APIRespon
 		await postcard.save()
 
 		return NextResponse.json({
-			message: "Postcard created successfully",
-			postcard: postcard.toObject({ versionKey: false }),
+			message: "Postcard entry deleted successfully",
 		}, { status: 200 })
 	} catch (error) {
 		ServerLogger.error(`Error deleting postcard entry: ${error}`)
 		return NextResponse.json(
-			{ message: "Failed to delete postcard entry" },
+			{ error: "Failed to delete postcard entry" },
 			{ status: 500 }
 		)
 	}

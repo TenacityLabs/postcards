@@ -20,7 +20,7 @@ export async function POST(request: Request): Promise<NextResponse<APIResponse<A
 
 		if (!email || !password || !firstName || !lastName) {
 			return NextResponse.json(
-				{ message: 'Email, password, first name, and last name are required' },
+				{ error: 'Email, password, first name, and last name are required' },
 				{ status: 400 }
 			)
 		}
@@ -31,7 +31,7 @@ export async function POST(request: Request): Promise<NextResponse<APIResponse<A
 		const user: IUser | null = await UserModel.findOne({ email })
 		if (user) {
 			return NextResponse.json(
-				{ message: 'User already exists' },
+				{ error: 'User already exists' },
 				{ status: 400 }
 			)
 		}
@@ -55,7 +55,7 @@ export async function POST(request: Request): Promise<NextResponse<APIResponse<A
 
 		if (!userResponse) {
 			return NextResponse.json(
-				{ message: 'Failed to create user' },
+				{ error: 'Failed to create user' },
 				{ status: 500 }
 			)
 		}
@@ -76,7 +76,7 @@ export async function POST(request: Request): Promise<NextResponse<APIResponse<A
 	} catch (error) {
 		ServerLogger.error(`Signup error: ${error}`)
 		return NextResponse.json(
-			{ message: 'Internal server error' },
+			{ error: 'Internal server error' },
 			{ status: 500 }
 		)
 	}

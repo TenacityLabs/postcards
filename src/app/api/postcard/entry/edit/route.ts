@@ -14,13 +14,13 @@ export async function POST(request: NextRequest): Promise<NextResponse<APIRespon
 
 		if (!postcardId || !entryId) {
 			return NextResponse.json(
-				{ message: "No postcard ID, entry ID, or title provided" },
+				{ error: "No postcard ID, entry ID, or title provided" },
 				{ status: 400 }
 			)
 		}
 		if (date && !validateDate(date)) {
 			return NextResponse.json(
-				{ message: "Invalid date" },
+				{ error: "Invalid date" },
 				{ status: 400 }
 			)
 		}
@@ -31,14 +31,14 @@ export async function POST(request: NextRequest): Promise<NextResponse<APIRespon
 		})
 		if (!postcard) {
 			return NextResponse.json(
-				{ message: "Postcard not found" },
+				{ error: "Postcard not found" },
 				{ status: 404 }
 			)
 		}
 		const entry: IEntry | undefined = postcard.entries.find((entry: IEntry) => entry._id.toString() === entryId)
 		if (!entry) {
 			return NextResponse.json(
-				{ message: "Entry not found" },
+				{ error: "Entry not found" },
 				{ status: 404 }
 			)
 		}
@@ -50,13 +50,14 @@ export async function POST(request: NextRequest): Promise<NextResponse<APIRespon
 		await postcard.save()
 
 		return NextResponse.json({
-			message: "Postcard entry edited successfully",
-			postcard: postcard.toJSON({ versionKey: false })
+			title,
+			description,
+			date,
 		}, { status: 200 })
 	} catch (error) {
 		ServerLogger.error(`Error editing postcard entry: ${error}`)
 		return NextResponse.json(
-			{ message: "Failed to edit postcard entry" },
+			{ error: "Failed to edit postcard entry" },
 			{ status: 500 }
 		)
 	}

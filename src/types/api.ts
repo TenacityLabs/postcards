@@ -36,7 +36,7 @@ interface ApiDataDefinition<
 }
 
 export interface ErrorResponse {
-	message: string
+	error: string
 }
 
 export interface ApiDataDefinitions {

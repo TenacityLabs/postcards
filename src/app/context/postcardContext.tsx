@@ -68,7 +68,7 @@ export function PostcardProvider({ children }: { children: ReactNode }) {
 	}, [postcardId])
 
 	useEffect(() => {
-		if (!postcard || !focusedEntry) {
+		if (!postcard || !focusedEntryId) {
 			return
 		}
 

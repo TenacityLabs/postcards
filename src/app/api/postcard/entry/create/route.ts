@@ -13,7 +13,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<APIRespon
 
 		if (!postcardId) {
 			return NextResponse.json(
-				{ message: "No postcard ID provided" },
+				{ error: "No postcard ID provided" },
 				{ status: 400 }
 			)
 		}
@@ -42,19 +42,19 @@ export async function POST(request: NextRequest): Promise<NextResponse<APIRespon
 
 		if (!postcard) {
 			return NextResponse.json(
-				{ message: "Postcard not found" },
+				{ error: "Postcard not found" },
 				{ status: 404 }
 			)
 		}
+		const entryResponse = postcard.entries[postcard.entries.length - 1]
 
 		return NextResponse.json({
-			message: "Postcard created successfully",
-			postcard: postcard.toObject({ versionKey: false }),
+			entry: entryResponse.toObject({ versionKey: false }),
 		}, { status: 200 })
 	} catch (error) {
 		ServerLogger.error(`Error creating postcard entry: ${error}`)
 		return NextResponse.json(
-			{ message: "Failed to create postcard entry" },
+			{ error: "Failed to create postcard entry" },
 			{ status: 500 }
 		)
 	}

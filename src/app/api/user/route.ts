@@ -11,7 +11,7 @@ export async function GET(request: Request): Promise<NextResponse<APIResponse<AP
 		const authHeader = request.headers.get('Authorization')
 		if (!authHeader?.startsWith('Bearer ')) {
 			return NextResponse.json(
-				{ message: 'Unauthorized' },
+				{ error: 'Unauthorized' },
 				{ status: 401 }
 			)
 		}
@@ -30,7 +30,7 @@ export async function GET(request: Request): Promise<NextResponse<APIResponse<AP
 
 		if (!user) {
 			return NextResponse.json(
-				{ message: 'User not found' },
+				{ error: 'User not found' },
 				{ status: 404 }
 			)
 		}
@@ -45,13 +45,13 @@ export async function GET(request: Request): Promise<NextResponse<APIResponse<AP
 		// We will handle token refreshes later
 		if (error instanceof Error && error.message.includes('expired')) {
 			return NextResponse.json(
-				{ message: 'Token has expired' },
+				{ error: 'Token has expired' },
 				{ status: 401 }
 			)
 		}
 
 		return NextResponse.json(
-			{ message: 'Internal server error' },
+			{ error: 'Internal server error' },
 			{ status: 500 }
 		)
 	}

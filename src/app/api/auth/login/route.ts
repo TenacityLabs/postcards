@@ -22,7 +22,7 @@ export async function POST(request: Request): Promise<NextResponse<APIResponse<A
 
 		if (!email || !password) {
 			return NextResponse.json(
-				{ message: 'Email and password are required' },
+				{ error: 'Email and password are required' },
 				{ status: 400 }
 			)
 		}
@@ -33,7 +33,7 @@ export async function POST(request: Request): Promise<NextResponse<APIResponse<A
 		const user: IUser | null = await UserModel.findOne({ email })
 		if (!user) {
 			return NextResponse.json(
-				{ message: 'Invalid email or password' },
+				{ error: 'Invalid email or password' },
 				{ status: 401 }
 			)
 		}
@@ -41,7 +41,7 @@ export async function POST(request: Request): Promise<NextResponse<APIResponse<A
 		const isPasswordValid = await bcrypt.compare(password, user.password)
 		if (!isPasswordValid) {
 			return NextResponse.json(
-				{ message: 'Invalid email or password' },
+				{ error: 'Invalid email or password' },
 				{ status: 401 }
 			)
 		}
@@ -70,7 +70,7 @@ export async function POST(request: Request): Promise<NextResponse<APIResponse<A
 	} catch (error) {
 		ServerLogger.error(`Login error: ${error}`)
 		return NextResponse.json(
-			{ message: 'Internal server error' },
+			{ error: 'Internal server error' },
 			{ status: 500 }
 		)
 	}

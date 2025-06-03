@@ -15,7 +15,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<APIRespon
 		const formData = await request.formData()
 		const postcardId = formData.get("postcardId") as string
 		const entryId = formData.get("entryId") as string
-		const image = formData.get("file") as File | string | null
+		const image = formData.get("image") as File | string | null
 		const imageName = formData.get("imageName") as string | null
 
 		if (!postcardId || !entryId) {

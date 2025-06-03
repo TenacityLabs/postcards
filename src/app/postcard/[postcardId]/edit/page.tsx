@@ -58,7 +58,7 @@ export default function EditEntry() {
 					const file = item.getAsFile();
 					if (file) {
 						ClientLogger.info("Image pasted from clipboard");
-						handleImageChange(file);
+						handleUploadEntryImage(file);
 						break;
 					}
 				}
@@ -81,7 +81,7 @@ export default function EditEntry() {
 			if (!e.dataTransfer?.files?.length) return;
 			const file = e.dataTransfer.files[0];
 			ClientLogger.info("Image dropped onto page");
-			handleImageChange(file);
+			handleUploadEntryImage(file);
 		};
 
 		window.addEventListener("dragover", handleDragOver);
@@ -131,10 +131,10 @@ export default function EditEntry() {
 		}
 	}
 
-	const handleImageChange = async (file: File | null) => {
-		ClientLogger.info(`Image uploaded with size: ${file ? file.size : 'null'}`)
-		if (!file) {
-			setImage(null)
+	const handleUploadEntryImage = async (file: File) => {
+		ClientLogger.info('Uploading entry image')
+		if (!focusedEntry || !postcard) {
+			ClientLogger.error('No focused entry or postcard found')
 			return
 		}
 		if (!IMAGE_MIME_TYPES.includes(file.type)) {
@@ -153,7 +153,41 @@ export default function EditEntry() {
 				ClientLogger.error(`File size too large even after compression: ${file.size}`)
 				return
 			}
-			setImage(compressedFile)
+
+			const response = await sendAPIRequest(
+				APIEndpoints.UploadEntryImage,
+				APIMethods.POST,
+				{
+					postcardId: postcard._id,
+					entryId: focusedEntry._id,
+					image: compressedFile,
+					imageName: file.name,
+				}
+			)
+			setPostcard(response.postcard)
+		} catch (error) {
+			console.log(error)
+			ClientLogger.error(JSON.stringify(error))
+		}
+	}
+
+	const handleDeleteEntryImage = async () => {
+		ClientLogger.info('Deleting entry image')
+		if (!focusedEntry || !postcard) {
+			ClientLogger.error('No focused entry or postcard found')
+			return
+		}
+
+		try {
+			const response = await sendAPIRequest(
+				APIEndpoints.DeleteEntryImage,
+				APIMethods.POST,
+				{
+					postcardId: postcard._id,
+					entryId: focusedEntry._id,
+				}
+			)
+			setPostcard(response.postcard)
 		} catch (error) {
 			ClientLogger.error(JSON.stringify(error))
 		}
@@ -226,8 +260,8 @@ export default function EditEntry() {
 							label="Upload File"
 							accept={IMAGE_MIME_TYPES.join(',')}
 							labelText={image ? 'luppy.png' : 'Click or drag to upload here.'}
-							onUpload={handleImageChange}
-							onDelete={() => handleImageChange(null)}
+							onUpload={handleUploadEntryImage}
+							onDelete={handleDeleteEntryImage}
 							image={image}
 						/>
 					</>

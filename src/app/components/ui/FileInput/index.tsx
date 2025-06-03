@@ -7,7 +7,7 @@ interface FileInputProps {
 	label: string
 	labelText: string
 	accept: string
-	onUpload: (file: File | null) => void
+	onUpload: (file: File) => void
 	onDelete: () => void
 	image: File | string | null
 }
@@ -18,7 +18,10 @@ export const FileInput = (props: FileInputProps) => {
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newFile = e.target.files?.[0] || null
-		onUpload?.(newFile)
+		if (!newFile) {
+			return
+		}
+		onUpload(newFile)
 		// Reset the input by changing its key to allow reuploading
 		setKey(prev => prev + 1)
 	}

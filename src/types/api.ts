@@ -1,5 +1,5 @@
 import { GetUserResponse, LoginRequest, LoginResponse, SignupRequest, SignupResponse } from "./api/auth"
-import { CreateEntryRequest, CreateEntryResponse, CreatePostcardResponse, DeleteEntryRequest, DeleteEntryResponse, DeletePostcardRequest, DeletePostcardResponse, EditEntryRequest, EditEntryResponse, GetPostcardRequest, GetPostcardResponse } from "./api/postcard"
+import { CreateEntryRequest, CreateEntryResponse, CreatePostcardResponse, DeleteEntryImageRequest, DeleteEntryImageResponse, DeleteEntryRequest, DeleteEntryResponse, DeletePostcardRequest, DeletePostcardResponse, EditEntryRequest, EditEntryResponse, GetPostcardRequest, GetPostcardResponse, UploadEntryImageResponse, UploadEntryImageRequest } from "./api/postcard"
 
 export enum APIMethods {
 	GET = 'GET',
@@ -21,6 +21,8 @@ export enum APIEndpoints {
 	CreateEntry = '/api/postcard/entry/create',
 	DeleteEntry = '/api/postcard/entry/delete',
 	EditEntry = '/api/postcard/entry/edit',
+	UploadEntryImage = '/api/postcard/entry/image/upload',
+	DeleteEntryImage = '/api/postcard/entry/image/delete',
 }
 
 interface ApiDataDefinition<
@@ -49,6 +51,8 @@ export interface ApiDataDefinitions {
 	[APIEndpoints.CreateEntry]: ApiDataDefinition<APIMethods.POST, CreateEntryRequest, CreateEntryResponse>
 	[APIEndpoints.DeleteEntry]: ApiDataDefinition<APIMethods.POST, DeleteEntryRequest, DeleteEntryResponse>
 	[APIEndpoints.EditEntry]: ApiDataDefinition<APIMethods.POST, EditEntryRequest, EditEntryResponse>
+	[APIEndpoints.UploadEntryImage]: ApiDataDefinition<APIMethods.POST, UploadEntryImageRequest, UploadEntryImageResponse>
+	[APIEndpoints.DeleteEntryImage]: ApiDataDefinition<APIMethods.POST, DeleteEntryImageRequest, DeleteEntryImageResponse>
 }
 
 export type APIRequest<T extends APIEndpoints> = ApiDataDefinitions[T]['request'];

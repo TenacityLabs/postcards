@@ -42,10 +42,29 @@ export interface EditEntryRequest {
 	entryId: string
 	title: string
 	description: string
-	file: File | string | null
 	date: string | null
 }
 
 export interface EditEntryResponse {
+	postcard: Postcard
+}
+
+export interface UploadEntryImageRequest {
+	postcardId: string
+	entryId: string
+	image: File | null
+	imageName: string | null
+}
+
+export interface UploadEntryImageResponse {
+	postcard: Postcard
+}
+
+export interface DeleteEntryImageRequest {
+	postcardId: string
+	entryId: string
+}
+
+export interface DeleteEntryImageResponse {
 	postcard: Postcard
 }

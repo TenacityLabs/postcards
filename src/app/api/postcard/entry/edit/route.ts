@@ -10,13 +10,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<APIRespon
 	try {
 		const { userId } = verifyRequest(request)
 		await connectToDatabase()
-
-		const formData = await request.formData()
-		const postcardId = formData.get("postcardId") as string
-		const entryId = formData.get("entryId") as string
-		const title = formData.get("title") as string
-		const description = formData.get("description") as string
-		const date = formData.get("date") as string | null
+		const { postcardId, entryId, title, description, date } = await request.json()
 
 		if (!postcardId || !entryId) {
 			return NextResponse.json(
@@ -51,9 +45,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<APIRespon
 
 		entry.title = title
 		entry.description = description
-		if (date) {
-			entry.date = date
-		}
+		entry.date = date
 		postcard.updatedAt = Date.now()
 		await postcard.save()
 

@@ -30,7 +30,7 @@ const objectToFormData = (obj: RawObject) => {
 	return formData;
 }
 
-const FORM_DATA_ENDPOINTS = [APIEndpoints.EditEntry]
+const FORM_DATA_ENDPOINTS = [APIEndpoints.UploadEntryImage, APIEndpoints.DeleteEntryImage]
 
 export const sendAPIRequest = async <T extends APIEndpoints>(endpoint: T, method: APIMethod<T>, request: APIRequest<T>): Promise<APIResponse<T>> => {
 	const isFormDataEndpoint = FORM_DATA_ENDPOINTS.includes(endpoint);

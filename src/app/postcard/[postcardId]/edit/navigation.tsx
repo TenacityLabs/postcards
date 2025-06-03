@@ -5,7 +5,6 @@ import ArrowLeftIcon from '@/app/components/icons/ArrowLeftIcon'
 import { usePostcard } from '@/app/context/postcardContext'
 import { useUser } from '@/app/context/userContext'
 import { POSTCARD_SHARE_LINK_PREFIX } from '@/constants/postcard'
-import { Entry } from '@/types/postcard'
 import { DURATION_STATUS } from '@/constants/date'
 import { useMemo } from 'react'
 import TrashIcon from '@/app/components/icons/TrashIcon'
@@ -17,15 +16,13 @@ const DURATION_STATUS_CLASS = {
 }
 
 interface NavigationProps {
-	handleFocusEntry: (entry: Entry) => void
-	focusedEntry: Entry | null
 	onCreateEntry: () => void
 	onDeleteEntry: (entryId: string) => void
 }
 
 export const Navigation = (props: NavigationProps) => {
-	const { handleFocusEntry, focusedEntry, onCreateEntry, onDeleteEntry } = props
-	const { postcard } = usePostcard()
+	const { onCreateEntry, onDeleteEntry } = props
+	const { postcard, focusedEntryId, setFocusedEntryId } = usePostcard()
 	const { user } = useUser()
 
 	const [daysElapsed, durationMessage, durationStatusClass] = useMemo(() => {
@@ -75,8 +72,8 @@ export const Navigation = (props: NavigationProps) => {
 				{postcard.entries.map((entry) => (
 					<div
 						key={entry._id}
-						onClick={() => handleFocusEntry(entry)}
-						className={`${styles.entry} ${focusedEntry?._id === entry._id ? styles.focused : ''}`}
+						onClick={() => setFocusedEntryId(entry._id)}
+						className={`${styles.entry} ${focusedEntryId === entry._id ? styles.focused : ''}`}
 					>
 						<span>
 							{entry.title.trim() || 'Untitled'}

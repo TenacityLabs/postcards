@@ -4,10 +4,9 @@ import styles from "./styles.module.scss"
 import { FileInput } from "@/app/components/ui/FileInput";
 import { usePostcard } from "@/app/context/postcardContext";
 import { IMAGE_MIME_TYPES, MAX_IMAGE_SIZE, PREFERRED_IMAGE_QUALITY, PREFERRED_MAX_WIDTH } from "@/constants/file";
-import { Entry, PostcardDate } from "@/types/postcard";
 import { sendAPIRequest } from "@/utils/api";
 import { ClientLogger } from "@/utils/clientLogger";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { APIEndpoints } from "@/types/api";
 import { APIMethods } from "@/types/api";
 import { compressImageToJPEG } from "@/utils/file";
@@ -18,23 +17,8 @@ import CalendarIcon from "@/app/components/icons/CalendarIcon";
 
 export default function EditEntry() {
 	const { user, loading: userLoading } = useUser()
-	const { postcard, loading: postcardLoading, setPostcard, focusedEntry, setFocusedEntry } = usePostcard()
+	const { postcard, loading: postcardLoading, focusedEntryId, setFocusedEntryId, focusedEntry, updatePostcard, updateEntry } = usePostcard()
 	const router = useRouter()
-	const [title, setTitle] = useState('')
-	const [date, setDate] = useState<PostcardDate | null>(null)
-	const [description, setDescription] = useState('')
-	// Allow file or image url for reuploads
-	const [image, setImage] = useState<File | string | null>(null)
-	const [entriesToSave, setEntriesToSave] = useState<Record<string, NodeJS.Timeout | null>>({})
-
-	useEffect(() => {
-		if (focusedEntry) {
-			setTitle(focusedEntry.title)
-			setDate(focusedEntry.date)
-			setDescription(focusedEntry.description)
-			setImage(focusedEntry.imageUrl)
-		}
-	}, [focusedEntry])
 
 	useEffect(() => {
 		if (userLoading || postcardLoading) {
@@ -47,66 +31,7 @@ export default function EditEntry() {
 		}
 	}, [userLoading, postcardLoading, user, postcard, router])
 
-	useEffect(() => {
-		// Handler to support pasting images from clipboard
-		const handlePaste = (e: ClipboardEvent) => {
-			const items = e.clipboardData?.items;
-			if (!items) return;
-
-			for (const item of items) {
-				if (item.type.startsWith("image/")) {
-					const file = item.getAsFile();
-					if (file) {
-						ClientLogger.info("Image pasted from clipboard");
-						handleUploadEntryImage(file);
-						break;
-					}
-				}
-			}
-		};
-
-		window.addEventListener("paste", handlePaste);
-		return () => {
-			window.removeEventListener("paste", handlePaste);
-		};
-	}, []);
-
-	useEffect(() => {
-		const handleDragOver = (e: DragEvent) => {
-			e.preventDefault(); // Necessary to allow dropping
-		};
-
-		const handleDrop = (e: DragEvent) => {
-			e.preventDefault();
-			if (!e.dataTransfer?.files?.length) return;
-			const file = e.dataTransfer.files[0];
-			ClientLogger.info("Image dropped onto page");
-			handleUploadEntryImage(file);
-		};
-
-		window.addEventListener("dragover", handleDragOver);
-		window.addEventListener("drop", handleDrop);
-
-		return () => {
-			window.removeEventListener("dragover", handleDragOver);
-			window.removeEventListener("drop", handleDrop);
-		};
-	}, []);
-
-	useEffect(() => {
-		if (!focusedEntry) {
-			return
-		}
-
-		console.log(title, date, description)
-
-	}, [title, date, description, focusedEntry])
-
-	const handleFocusEntry = (entry: Entry) => {
-		setFocusedEntry(entry)
-	}
-
-	const handleCreateEntry = async () => {
+	const handleCreateEntry = useCallback(async () => {
 		ClientLogger.info('Creating new entry')
 		if (!postcard) {
 			ClientLogger.error('No postcard found')
@@ -120,20 +45,18 @@ export default function EditEntry() {
 					postcardId: postcard._id
 				}
 			)
-			setPostcard(response.postcard)
-			if (response.postcard.entries.length > 0) {
-				setFocusedEntry(response.postcard.entries[response.postcard.entries.length - 1])
-			} else {
-				setFocusedEntry(null)
-			}
+			updatePostcard({
+				entries: [...postcard.entries, response.entry]
+			})
+			setFocusedEntryId(response.entry._id)
 		} catch (error) {
 			ClientLogger.error(error)
 		}
-	}
+	}, [postcard, setFocusedEntryId, updatePostcard])
 
-	const handleUploadEntryImage = async (file: File) => {
+	const handleUploadEntryImage = useCallback(async (file: File) => {
 		ClientLogger.info('Uploading entry image')
-		if (!focusedEntry || !postcard) {
+		if (!focusedEntryId || !postcard) {
 			ClientLogger.error('No focused entry or postcard found')
 			return
 		}
@@ -159,48 +82,55 @@ export default function EditEntry() {
 				APIMethods.POST,
 				{
 					postcardId: postcard._id,
-					entryId: focusedEntry._id,
+					entryId: focusedEntryId,
 					image: compressedFile,
 					imageName: file.name,
 				}
 			)
-			setPostcard(response.postcard)
+			updateEntry(focusedEntryId, {
+				imageUrl: response.imageUrl,
+				imageName: response.imageName,
+			})
 		} catch (error) {
 			console.log(error)
 			ClientLogger.error(JSON.stringify(error))
 		}
-	}
+	}, [focusedEntryId, postcard, updateEntry])
 
-	const handleDeleteEntryImage = async () => {
+	const handleDeleteEntryImage = useCallback(async () => {
 		ClientLogger.info('Deleting entry image')
-		if (!focusedEntry || !postcard) {
+		if (!focusedEntryId || !postcard) {
 			ClientLogger.error('No focused entry or postcard found')
 			return
 		}
 
 		try {
-			const response = await sendAPIRequest(
+			await sendAPIRequest(
 				APIEndpoints.DeleteEntryImage,
 				APIMethods.POST,
 				{
 					postcardId: postcard._id,
-					entryId: focusedEntry._id,
+					entryId: focusedEntryId,
 				}
 			)
-			setPostcard(response.postcard)
+			updateEntry(focusedEntryId, {
+				imageUrl: null,
+				imageName: null,
+			})
 		} catch (error) {
+			console.log(error)
 			ClientLogger.error(JSON.stringify(error))
 		}
-	}
+	}, [focusedEntryId, postcard, updateEntry])
 
-	const handleDeleteEntry = async (entryId: string) => {
+	const handleDeleteEntry = useCallback(async (entryId: string) => {
 		ClientLogger.info('Deleting entry')
 		if (!postcard) {
 			ClientLogger.error('No postcard found')
 			return
 		}
 		try {
-			const response = await sendAPIRequest(
+			await sendAPIRequest(
 				APIEndpoints.DeleteEntry,
 				APIMethods.POST,
 				{
@@ -208,11 +138,59 @@ export default function EditEntry() {
 					entryId,
 				}
 			)
-			setPostcard(response.postcard)
+			updatePostcard({
+				entries: postcard.entries.filter(entry => entry._id !== entryId),
+			})
 		} catch (error) {
 			ClientLogger.error(error)
 		}
-	}
+	}, [postcard, updatePostcard])
+
+	useEffect(() => {
+		// Handler to support pasting images from clipboard
+		const handlePaste = (e: ClipboardEvent) => {
+			const items = e.clipboardData?.items;
+			if (!items) return;
+
+			for (const item of items) {
+				if (item.type.startsWith("image/")) {
+					const file = item.getAsFile();
+					if (file) {
+						ClientLogger.info("Image pasted from clipboard");
+						handleUploadEntryImage(file);
+						break;
+					}
+				}
+			}
+		};
+
+		window.addEventListener("paste", handlePaste);
+		return () => {
+			window.removeEventListener("paste", handlePaste);
+		};
+	}, [handleUploadEntryImage]);
+
+	useEffect(() => {
+		const handleDragOver = (e: DragEvent) => {
+			e.preventDefault(); // Necessary to allow dropping
+		};
+
+		const handleDrop = (e: DragEvent) => {
+			e.preventDefault();
+			if (!e.dataTransfer?.files?.length) return;
+			const file = e.dataTransfer.files[0];
+			ClientLogger.info("Image dropped onto page");
+			handleUploadEntryImage(file);
+		};
+
+		window.addEventListener("dragover", handleDragOver);
+		window.addEventListener("drop", handleDrop);
+
+		return () => {
+			window.removeEventListener("dragover", handleDragOver);
+			window.removeEventListener("drop", handleDrop);
+		};
+	}, [handleUploadEntryImage]);
 
 	if (!postcard || !user) {
 		return null
@@ -221,20 +199,18 @@ export default function EditEntry() {
 	return (
 		<div className={styles.page}>
 			<Navigation
-				handleFocusEntry={handleFocusEntry}
-				focusedEntry={focusedEntry}
 				onCreateEntry={handleCreateEntry}
 				onDeleteEntry={handleDeleteEntry}
 			/>
 
 			<div className={styles.content}>
-				{focusedEntry ? (
+				{focusedEntryId && focusedEntry ? (
 					<>
 						<div className={styles.title}>
 							<input
 								placeholder="Title"
-								value={title}
-								onChange={(e) => setTitle(e.target.value)}
+								value={focusedEntry.title}
+								onChange={(e) => updateEntry(focusedEntryId, { title: e.target.value })}
 								className={styles.titleInput}
 							/>
 
@@ -245,24 +221,24 @@ export default function EditEntry() {
 
 						<div className={styles.textAreaContainer}>
 							<textarea
-								value={description}
-								onChange={(e) => setDescription(e.target.value)}
+								value={focusedEntry.description}
+								onChange={(e) => updateEntry(focusedEntryId, { description: e.target.value })}
 								placeholder="Write text or paste a link here"
 								className={styles.textArea}
 								maxLength={500}
 							/>
 							<div className={styles.textAreaLength}>
-								{description.length}/500 CHARACTERS
+								{focusedEntry.description.length}/500 CHARACTERS
 							</div>
 						</div>
 
 						<FileInput
 							label="Upload File"
 							accept={IMAGE_MIME_TYPES.join(',')}
-							labelText={image ? 'luppy.png' : 'Click or drag to upload here.'}
+							labelText={focusedEntry.imageUrl ? focusedEntry.imageName ?? "What's this?" : 'Click or drag to upload here.'}
 							onUpload={handleUploadEntryImage}
 							onDelete={handleDeleteEntryImage}
-							image={image}
+							image={focusedEntry.imageUrl}
 						/>
 					</>
 				) : (

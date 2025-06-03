@@ -9,7 +9,7 @@ interface FileInputProps {
 	accept: string
 	onUpload: (file: File) => void
 	onDelete: () => void
-	image: File | string | null
+	image: string | null
 }
 
 export const FileInput = (props: FileInputProps) => {

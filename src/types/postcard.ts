@@ -15,6 +15,7 @@ export interface Entry {
 	date: PostcardDate | null
 	description: string
 	imageUrl: string | null
+	imageName: string | null
 	tapePattern: number
 	cardColor: number
 	hoverRotation: number

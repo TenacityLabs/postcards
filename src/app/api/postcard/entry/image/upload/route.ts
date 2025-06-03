@@ -74,7 +74,8 @@ export async function POST(request: NextRequest): Promise<NextResponse<APIRespon
 
 		return NextResponse.json({
 			message: "Postcard entry image uploaded successfully",
-			postcard: postcard.toJSON({ versionKey: false })
+			imageUrl: imageUrl,
+			imageName: imageName,
 		}, { status: 200 })
 	} catch (error) {
 		ServerLogger.error(`Error uploading postcard entry image: ${error}`)

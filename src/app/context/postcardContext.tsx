@@ -5,13 +5,16 @@ import { Entry, Postcard, PostcardDate } from '@/types/postcard'
 import { sendAPIRequest } from '@/utils/api'
 import { ClientLogger } from '@/utils/clientLogger'
 import { useParams } from 'next/navigation'
-import { createContext, useContext, useEffect, useState, ReactNode, Dispatch, SetStateAction } from 'react'
+import { createContext, useContext, useEffect, useState, ReactNode, Dispatch, SetStateAction, useCallback, useMemo } from 'react'
 
 interface PostcardContextType {
 	postcard: Postcard | null
 	setPostcard: Dispatch<SetStateAction<Postcard | null>>
+	updatePostcard: (partialPostcard: Partial<Postcard>) => void
+	updateEntry: (entryId: string, partialEntry: Partial<Entry>) => void
+	focusedEntryId: string | null
+	setFocusedEntryId: Dispatch<SetStateAction<string | null>>
 	focusedEntry: Entry | null
-	setFocusedEntry: Dispatch<SetStateAction<Entry | null>>
 	loading: boolean
 }
 
@@ -21,7 +24,13 @@ export function PostcardProvider({ children }: { children: ReactNode }) {
 	const { postcardId } = useParams()
 	const [postcard, setPostcard] = useState<Postcard | null>(null)
 	const [loading, setLoading] = useState(true)
-	const [focusedEntry, setFocusedEntry] = useState<Entry | null>(null)
+	const [focusedEntryId, setFocusedEntryId] = useState<string | null>(null)
+	const focusedEntry = useMemo(() => {
+		if (!postcard) {
+			return null
+		}
+		return postcard.entries.find(entry => entry._id === focusedEntryId) || null
+	}, [postcard, focusedEntryId])
 
 	useEffect(() => {
 		const fetchPostcard = async () => {
@@ -44,9 +53,9 @@ export function PostcardProvider({ children }: { children: ReactNode }) {
 				})
 				setPostcard(postcard)
 				if (postcard.entries.length > 0) {
-					setFocusedEntry(postcard.entries[0])
+					setFocusedEntryId(postcard.entries[0]._id)
 				} else {
-					setFocusedEntry(null)
+					setFocusedEntryId(null)
 				}
 			} catch (error) {
 				ClientLogger.error(`Error fetching postcard: ${error}`)
@@ -63,19 +72,45 @@ export function PostcardProvider({ children }: { children: ReactNode }) {
 			return
 		}
 
-		const entryIndex = postcard.entries.findIndex(entry => entry._id === focusedEntry._id)
+		const entryIndex = postcard.entries.findIndex(entry => entry._id === focusedEntryId)
 		if (entryIndex === -1) {
-			setFocusedEntry(null)
+			setFocusedEntryId(null)
 		}
-	}, [postcard, focusedEntry])
+	}, [postcard, focusedEntryId])
+
+	const updatePostcard = useCallback((partialPostcard: Partial<Postcard>) => {
+		setPostcard(prevPostcard => {
+			if (!prevPostcard) {
+				return null
+			}
+			return { ...prevPostcard, ...partialPostcard }
+		})
+	}, [])
+
+	const updateEntry = useCallback((entryId: string, partialEntry: Partial<Entry>) => {
+		setPostcard(prevPostcard => {
+			if (!prevPostcard) {
+				return null
+			}
+			const prevEntry = prevPostcard.entries.find(entry => entry._id === entryId)
+			if (!prevEntry) {
+				return prevPostcard
+			}
+			const newEntry = { ...prevEntry, ...partialEntry }
+			return { ...prevPostcard, entries: prevPostcard.entries.map(entry => entry._id === entryId ? newEntry : entry) }
+		})
+	}, [])
 
 	return (
 		<PostcardContext.Provider
 			value={{
 				postcard,
 				setPostcard,
+				focusedEntryId,
+				setFocusedEntryId,
 				focusedEntry,
-				setFocusedEntry,
+				updatePostcard,
+				updateEntry,
 				loading,
 			}}
 		>

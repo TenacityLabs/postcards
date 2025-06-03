@@ -1,4 +1,4 @@
-import { Postcard } from "../postcard";
+import { Entry, Postcard } from "../postcard";
 
 export interface GetPostcardRequest {
 	postcardId: string
@@ -25,7 +25,7 @@ export interface CreateEntryRequest {
 }
 
 export interface CreateEntryResponse {
-	postcard: Postcard
+	entry: Entry
 }
 
 export interface DeleteEntryRequest {
@@ -34,7 +34,7 @@ export interface DeleteEntryRequest {
 }
 
 export interface DeleteEntryResponse {
-	postcard: Postcard
+	message: string
 }
 
 export interface EditEntryRequest {
@@ -46,7 +46,9 @@ export interface EditEntryRequest {
 }
 
 export interface EditEntryResponse {
-	postcard: Postcard
+	title: string
+	description: string
+	date: string | null
 }
 
 export interface UploadEntryImageRequest {
@@ -57,7 +59,8 @@ export interface UploadEntryImageRequest {
 }
 
 export interface UploadEntryImageResponse {
-	postcard: Postcard
+	imageUrl: string
+	imageName: string
 }
 
 export interface DeleteEntryImageRequest {
@@ -66,5 +69,5 @@ export interface DeleteEntryImageRequest {
 }
 
 export interface DeleteEntryImageResponse {
-	postcard: Postcard
+	message: string
 }

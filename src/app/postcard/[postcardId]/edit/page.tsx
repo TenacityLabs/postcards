@@ -235,7 +235,7 @@ export default function EditEntry() {
 						<FileInput
 							label="Upload File"
 							accept={IMAGE_MIME_TYPES.join(',')}
-							labelText={focusedEntry.imageUrl ? focusedEntry.imageName ?? "What's this?" : 'Click or drag to upload here.'}
+							labelText={focusedEntry.imageUrl ? focusedEntry.imageName ?? "Unknown file" : 'Click or drag to upload here.'}
 							onUpload={handleUploadEntryImage}
 							onDelete={handleDeleteEntryImage}
 							image={focusedEntry.imageUrl}

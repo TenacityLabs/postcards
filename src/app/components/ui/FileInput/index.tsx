@@ -47,7 +47,7 @@ export const FileInput = (props: FileInputProps) => {
 					{!!image && (
 						<div className={styles.previewImageContainer}>
 							<Image
-								src='/images/test/loopy2.jpg'
+								src={image}
 								alt='Preview'
 								width={25}
 								height={25}

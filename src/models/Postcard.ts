@@ -63,6 +63,12 @@ const EntrySchema = new Schema<IEntry>({
 		nullable: true,
 		default: null,
 	},
+	imageName: {
+		type: String,
+		required: false,
+		nullable: true,
+		default: null,
+	},
 	tapePattern: {
 		type: Number,
 		required: true,

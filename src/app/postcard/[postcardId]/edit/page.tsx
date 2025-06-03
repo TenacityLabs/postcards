@@ -25,6 +25,7 @@ export default function EditEntry() {
 	const [description, setDescription] = useState('')
 	// Allow file or image url for reuploads
 	const [image, setImage] = useState<File | string | null>(null)
+	const [entriesToSave, setEntriesToSave] = useState<Record<string, NodeJS.Timeout | null>>({})
 
 	useEffect(() => {
 		if (focusedEntry) {
@@ -92,6 +93,15 @@ export default function EditEntry() {
 		};
 	}, []);
 
+	useEffect(() => {
+		if (!focusedEntry) {
+			return
+		}
+
+		console.log(title, date, description)
+
+	}, [title, date, description, focusedEntry])
+
 	const handleFocusEntry = (entry: Entry) => {
 		setFocusedEntry(entry)
 	}
@@ -146,33 +156,6 @@ export default function EditEntry() {
 			setImage(compressedFile)
 		} catch (error) {
 			ClientLogger.error(JSON.stringify(error))
-		}
-	}
-
-	const handleSubmitEntry = async () => {
-		ClientLogger.info('Submitting new entry')
-		if (!postcard || !focusedEntry) {
-			ClientLogger.error('No postcard or focused entry found')
-			return
-		}
-
-		try {
-			const response = await sendAPIRequest(
-				APIEndpoints.EditEntry,
-				APIMethods.POST,
-				{
-					postcardId: postcard._id,
-					entryId: focusedEntry._id,
-					title,
-					description,
-					file: image,
-					date: date ? date.toString() : null
-				}
-			)
-			ClientLogger.info(`Postcard created: ${JSON.stringify(response)}`)
-			setPostcard(response.postcard)
-		} catch (error) {
-			ClientLogger.error(error)
 		}
 	}
 

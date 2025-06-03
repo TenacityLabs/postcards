@@ -110,12 +110,12 @@
 		right: -24px;
 		filter: drop-shadow(4px 10px 20px rgba($neutral-950, 0.1));
 
-		transition: opacity 0.3s ease-in-out;
+		transition: opacity 0.2s ease-in-out;
 		opacity: 0;
 	}
 
 	&:hover {
-		background: $neutral-100;
+		background: $neutral-200;
 
 		.fileUploadIcon {
 			opacity: 1;

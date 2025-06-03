@@ -10,7 +10,6 @@ import { createContext, useContext, useEffect, useState, ReactNode, Dispatch, Se
 interface PostcardContextType {
 	postcard: Postcard | null
 	setPostcard: Dispatch<SetStateAction<Postcard | null>>
-	updatePostcard: (partialPostcard: Partial<Postcard>) => void
 	updateEntry: (entryId: string, partialEntry: Partial<Entry>) => void
 	focusedEntryId: string | null
 	setFocusedEntryId: Dispatch<SetStateAction<string | null>>
@@ -78,15 +77,6 @@ export function PostcardProvider({ children }: { children: ReactNode }) {
 		}
 	}, [postcard, focusedEntryId])
 
-	const updatePostcard = useCallback((partialPostcard: Partial<Postcard>) => {
-		setPostcard(prevPostcard => {
-			if (!prevPostcard) {
-				return null
-			}
-			return { ...prevPostcard, ...partialPostcard }
-		})
-	}, [])
-
 	const updateEntry = useCallback((entryId: string, partialEntry: Partial<Entry>) => {
 		setPostcard(prevPostcard => {
 			if (!prevPostcard) {
@@ -109,7 +99,6 @@ export function PostcardProvider({ children }: { children: ReactNode }) {
 				focusedEntryId,
 				setFocusedEntryId,
 				focusedEntry,
-				updatePostcard,
 				updateEntry,
 				loading,
 			}}

@@ -17,7 +17,7 @@ import CalendarIcon from "@/app/components/icons/CalendarIcon";
 
 export default function EditEntry() {
 	const { user, loading: userLoading } = useUser()
-	const { postcard, loading: postcardLoading, focusedEntryId, setFocusedEntryId, focusedEntry, updatePostcard, updateEntry } = usePostcard()
+	const { postcard, setPostcard, loading: postcardLoading, focusedEntryId, setFocusedEntryId, focusedEntry, updateEntry } = usePostcard()
 	const router = useRouter()
 
 	useEffect(() => {
@@ -45,14 +45,20 @@ export default function EditEntry() {
 					postcardId: postcard._id
 				}
 			)
-			updatePostcard({
-				entries: [...postcard.entries, response.entry]
+			setPostcard(prevPostcard => {
+				if (!prevPostcard) {
+					return null
+				}
+				return {
+					...prevPostcard,
+					entries: [...prevPostcard.entries, response.entry]
+				}
 			})
 			setFocusedEntryId(response.entry._id)
 		} catch (error) {
 			ClientLogger.error(error)
 		}
-	}, [postcard, setFocusedEntryId, updatePostcard])
+	}, [postcard, setFocusedEntryId, setPostcard])
 
 	const handleUploadEntryImage = useCallback(async (file: File) => {
 		ClientLogger.info('Uploading entry image')
@@ -138,13 +144,19 @@ export default function EditEntry() {
 					entryId,
 				}
 			)
-			updatePostcard({
-				entries: postcard.entries.filter(entry => entry._id !== entryId),
+			setPostcard(prevPostcard => {
+				if (!prevPostcard) {
+					return null
+				}
+				return {
+					...prevPostcard,
+					entries: prevPostcard.entries.filter(entry => entry._id !== entryId),
+				}
 			})
 		} catch (error) {
 			ClientLogger.error(error)
 		}
-	}, [postcard, updatePostcard])
+	}, [postcard, setPostcard])
 
 	useEffect(() => {
 		// Handler to support pasting images from clipboard

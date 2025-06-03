@@ -1,11 +1,12 @@
 "use client"
 
+import { AUTO_SAVE_DEBOUNCE } from '@/constants/postcard'
 import { APIEndpoints, APIMethods } from '@/types/api'
 import { Entry, Postcard, PostcardDate } from '@/types/postcard'
 import { sendAPIRequest } from '@/utils/api'
 import { ClientLogger } from '@/utils/clientLogger'
 import { useParams } from 'next/navigation'
-import { createContext, useContext, useEffect, useState, ReactNode, Dispatch, SetStateAction, useCallback, useMemo } from 'react'
+import { createContext, useContext, useEffect, useState, ReactNode, Dispatch, SetStateAction, useCallback, useMemo, useRef } from 'react'
 
 interface PostcardContextType {
 	postcard: Postcard | null
@@ -30,6 +31,7 @@ export function PostcardProvider({ children }: { children: ReactNode }) {
 		}
 		return postcard.entries.find(entry => entry._id === focusedEntryId) || null
 	}, [postcard, focusedEntryId])
+	const autoSaveEntriesRef = useRef<Record<string, NodeJS.Timeout>>({})
 
 	useEffect(() => {
 		const fetchPostcard = async () => {
@@ -77,7 +79,44 @@ export function PostcardProvider({ children }: { children: ReactNode }) {
 		}
 	}, [postcard, focusedEntryId])
 
+	const handleSaveEntry = useCallback(async (entryId: string) => {
+		ClientLogger.info(`Saving entry ${entryId}`)
+		if (!postcard) {
+			return
+		}
+		const entry = postcard?.entries.find(entry => entry._id === entryId)
+		if (!entry) {
+			return
+		}
+
+		try {
+			await sendAPIRequest(
+				APIEndpoints.EditEntry,
+				APIMethods.POST,
+				{
+					postcardId: postcardId as string,
+					entryId,
+					title: entry.title,
+					description: entry.description,
+					date: entry.date ? entry.date.toString() : null,
+				}
+			)
+			ClientLogger.info(`Entry ${entryId} saved`)
+			// Don't update postcard, changes could've been made while syncing
+		} catch (error) {
+			ClientLogger.error(`Error saving entry ${entryId}: ${error}`)
+		}
+	}, [postcard, postcardId])
+
 	const updateEntry = useCallback((entryId: string, partialEntry: Partial<Entry>) => {
+		if (autoSaveEntriesRef.current[entryId]) {
+			clearTimeout(autoSaveEntriesRef.current[entryId])
+		}
+		autoSaveEntriesRef.current[entryId] = setTimeout(() => {
+			handleSaveEntry(entryId)
+		}, AUTO_SAVE_DEBOUNCE)
+
+
 		setPostcard(prevPostcard => {
 			if (!prevPostcard) {
 				return null
@@ -89,7 +128,7 @@ export function PostcardProvider({ children }: { children: ReactNode }) {
 			const newEntry = { ...prevEntry, ...partialEntry }
 			return { ...prevPostcard, entries: prevPostcard.entries.map(entry => entry._id === entryId ? newEntry : entry) }
 		})
-	}, [])
+	}, [handleSaveEntry])
 
 	return (
 		<PostcardContext.Provider

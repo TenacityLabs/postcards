@@ -5,3 +5,5 @@ export const TAPE_CHANCE = 0.5
 export const TAPE_PATTERNS = 1
 
 export const CARD_COLORS = 9
+
+export const AUTO_SAVE_DEBOUNCE = 3000

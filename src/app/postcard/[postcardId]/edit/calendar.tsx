@@ -1,10 +1,13 @@
 import CalendarIcon from '@/app/components/icons/CalendarIcon'
 import styles from './calendar.module.scss'
 import { useEffect, useRef, useState } from 'react'
+import TriangleDown from '@/app/components/icons/TriangleDown'
 
 export const Calendar = () => {
 	const [isCalendarOpen, setIsCalendarOpen] = useState(false)
 	const calendarRef = useRef<HTMLDivElement>(null)
+
+	const [selectingYear, setSelectingYear] = useState(false)
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -50,6 +53,12 @@ export const Calendar = () => {
 						</div>
 					</div>
 					<div className={styles.navigator}>
+						<button className={styles.toggleNavigationButton} onClick={() => setSelectingYear(prev => !prev)}>
+							<span>
+								August 2025
+							</span>
+							<TriangleDown width={18} height={18} />
+						</button>
 					</div>
 				</div>
 			)}

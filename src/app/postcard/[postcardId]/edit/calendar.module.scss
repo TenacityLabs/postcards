@@ -1,0 +1,68 @@
+@use '@/app/system.scss' as *;
+
+.container {
+	position: relative;
+}
+
+.calendarButton {
+	display: block;
+	border: none;
+	outline: none;
+	background-color: rgba($neutral-700, 0.1);
+	border-radius: 11px;
+	cursor: pointer;
+	color: $neutral-500;
+
+	@include transition-normal;
+
+	&:hover {
+		color: $neutral-700;
+		background-color: rgba($neutral-700, 0.2);
+	}
+}
+
+.calendar {
+	z-index: 100;
+	width: 360px;
+	position: absolute;
+	top: 45px;
+	right: 0;
+	border-radius: 28px;
+	background-color: $paper;
+	display: flex;
+	flex-direction: column;
+	box-shadow: 4px 4px 15px 0px rgba($neutral-950, 0.1);
+
+	.header {
+		padding: 24px 24px 12px 24px;
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+
+		.subtitle {
+			color: $neutral-500;
+			font-family: Figtree;
+			font-size: 14px;
+			font-style: normal;
+			font-weight: 700;
+			line-height: 20px;
+			letter-spacing: 0.1px;
+		}
+
+		.titleDate {
+			color: $neutral-950;
+			font-family: Figtree;
+			font-size: 32px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 40px;
+		}
+	}
+
+	.navigator {
+		padding: 2px 6px 2px 8px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+}

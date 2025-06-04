@@ -13,7 +13,7 @@ import { compressImageToJPEG } from "@/utils/file";
 import { useUser } from "@/app/context/userContext";
 import { useRouter } from "next/navigation";
 import { Navigation } from "./navigation";
-import CalendarIcon from "@/app/components/icons/CalendarIcon";
+import { Calendar } from "./calendar";
 
 export default function EditEntry() {
 	const { user, loading: userLoading } = useUser()
@@ -226,9 +226,7 @@ export default function EditEntry() {
 								className={styles.titleInput}
 							/>
 
-							<button className={styles.calendarButton}>
-								<CalendarIcon width={36} height={36} />
-							</button>
+							<Calendar />
 						</div>
 
 						<div className={styles.textAreaContainer}>

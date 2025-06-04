@@ -77,7 +77,7 @@ export const Navigation = (props: NavigationProps) => {
 							className={styles.deleteButton}
 							onClick={(e) => handleDeleteEntry(e, entry._id)}
 						>
-							<TrashIcon width={24} height={24} />
+							<TrashIcon width={20} height={20} />
 						</button>
 					</div>
 				))}

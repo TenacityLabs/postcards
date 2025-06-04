@@ -26,7 +26,7 @@
 		display: block;
 		text-decoration: none;
 		font-family: Figtree;
-		font-size: 18px;
+		font-size: 16px;
 		font-style: normal;
 		font-weight: 700;
 		line-height: normal;
@@ -44,7 +44,7 @@
 	}
 
 	.title {
-		font-size: 48px;
+		font-size: 36px;
 		font-style: normal;
 		font-weight: 400;
 		line-height: 1.15;
@@ -68,7 +68,7 @@
 	.entriesHeader {
 		&>h4 {
 			color: $neutral-500;
-			font-size: 18px;
+			font-size: 16px;
 			font-style: normal;
 			font-weight: 700;
 			line-height: normal;
@@ -85,7 +85,7 @@
 		background-color: transparent;
 
 		color: $neutral-800;
-		font-size: 20px;
+		font-size: 18px;
 		font-style: normal;
 		font-weight: 400;
 		line-height: normal;
@@ -140,6 +140,7 @@
 
 		&:hover {
 			color: $neutral-700;
+			font-weight: 500;
 		}
 	}
 }
@@ -156,7 +157,7 @@
 		gap: 18px;
 
 		color: $neutral-950;
-		font-size: 18px;
+		font-size: 16px;
 		font-style: normal;
 		font-weight: 400;
 		line-height: normal;
@@ -196,7 +197,7 @@
 		background-color: $neutral-700;
 
 		color: $neutral-50;
-		font-size: 18px;
+		font-size: 16px;
 		font-style: normal;
 		font-weight: 700;
 		line-height: normal;

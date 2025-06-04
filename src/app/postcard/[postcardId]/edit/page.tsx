@@ -239,7 +239,10 @@ export default function EditEntry() {
 								className={styles.textArea}
 								maxLength={500}
 							/>
-							<div className={styles.textAreaLength}>
+							<div
+								className={`${styles.textAreaLength} ${focusedEntry.description.length >= 500 ?
+									styles.errorLength : focusedEntry.description.length >= 450 ? styles.warningLength : ''}`}
+							>
 								{focusedEntry.description.length}/500 CHARACTERS
 							</div>
 						</div>

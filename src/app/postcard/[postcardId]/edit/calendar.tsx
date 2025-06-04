@@ -147,24 +147,41 @@ export const Calendar = () => {
 							Year selector
 						</div>
 					) : (
-						<div className={styles.calendarGrid}>
-							{WEEKDAYS.Single.map((day, index) => (
-								<div key={`${day}-${index}`}>
-									{day}
-								</div>
-							))}
-							{calendarDays.map((day, index) => (
-								<div key={`${focusedYear}-${focusedMonth}-${index}`}>
-									<button
-										className={`${day ? styles.day : styles.emptyDay} ${isSelectedDate(day) ? styles.focused : ''}`}
-										onClick={() => handleSelectDate(day)}
-									>
+						<div className={styles.calendarGridContainer}>
+							<div className={styles.calendarGrid}>
+								{WEEKDAYS.Single.map((day, index) => (
+									<div key={`${day}-${index}`}>
 										{day}
-									</button>
-								</div>
-							))}
+									</div>
+								))}
+								{calendarDays.map((day, index) => (
+									<div key={`${focusedYear}-${focusedMonth}-${index}`}>
+										<button
+											className={`${day ? styles.day : styles.emptyDay} ${isSelectedDate(day) ? styles.focused : ''}`}
+											onClick={() => handleSelectDate(day)}
+										>
+											{day}
+										</button>
+									</div>
+								))}
+							</div>
 						</div>
 					)}
+
+					<div className={styles.footer}>
+						<button>
+							Cancel
+						</button>
+
+						<div className={styles.confirmButtons}>
+							<button>
+								Clear
+							</button>
+							<button>
+								OK
+							</button>
+						</div>
+					</div>
 				</div>
 			)}
 		</div>

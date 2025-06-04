@@ -3,14 +3,14 @@
 import { usePostcard } from "@/app/context/postcardContext"
 import PostcardHeader from "./header"
 import styles from "./styles.module.scss"
-import EntryCard from "@/app/components/ui/Postcard/EntryCard"
+import EntryCard from "@/app/share/[postcardId]/Postcard/EntryCard"
 import Masonry from "react-masonry-css"
 import PostcardFooter from "./footer"
 import { useIsMobile } from "@/app/hooks/useIsMobile"
 import { useEffect, useState } from "react"
 import PostcardSummary from "./summary"
 import Image from "next/image"
-import SkeletonCard from "@/app/components/ui/Postcard/SkeletonCard"
+import SkeletonCard from "@/app/share/[postcardId]/Postcard/SkeletonCard"
 
 const breakpointColsObj = {
 	default: 3,

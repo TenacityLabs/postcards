@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.scss";
 import { UserProvider } from "@/app/context/userContext";
 import AuthRouter from "@/app/components/AuthRouter";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
 	title: "Postcards",
@@ -21,6 +22,10 @@ export default function RootLayout({
 						{children}
 					</AuthRouter>
 				</UserProvider>
+
+				<Toaster
+					position="bottom-right"
+				/>
 			</body>
 		</html>
 	);

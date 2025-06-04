@@ -1,0 +1,70 @@
+@use '@/app/system.scss' as *;
+
+.toast {
+	width: 400px;
+	background-color: $neutral-50;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 18px;
+	border-radius: 10px;
+	border: 1px solid rgba($neutral-700, 0.1);
+
+	color: $neutral-800;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 150%;
+
+	.content {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+
+		span {
+			max-width: 310px;
+		}
+	}
+
+	.closeButton {
+		background-color: transparent;
+		border: none;
+		padding: 0;
+		margin: 0;
+		cursor: pointer;
+		color: $neutral-500;
+	}
+
+	&.enter {
+		animation: toastEnter 0.25s ease forwards;
+	}
+
+	&.leave {
+		animation: toastLeave 0.2s ease forwards;
+	}
+}
+
+@keyframes toastEnter {
+	0% {
+		opacity: 0;
+		transform: translateY(50px) scale(0.6);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+
+@keyframes toastLeave {
+	0% {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+
+	100% {
+		opacity: 0;
+		transform: translateY(50px) scale(0.6);
+	}
+}

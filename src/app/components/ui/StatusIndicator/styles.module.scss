@@ -1,0 +1,29 @@
+@use '@/app/system.scss' as *;
+
+.success {
+	background-color: $success-500;
+	border: 2px solid $success-700;
+}
+
+.warning {
+	background-color: $warning-500;
+	border: 2px solid $warning-700;
+}
+
+.error {
+	background-color: $error-500;
+	border: 2px solid $error-700;
+}
+
+.info {
+	background-color: $info-500;
+	border: 2px solid $info-700;
+}
+
+.success,
+.warning,
+.error {
+	width: 12px;
+	height: 12px;
+	border-radius: 5px;
+}

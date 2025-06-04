@@ -5,15 +5,10 @@ import ArrowLeftIcon from '@/app/components/icons/ArrowLeftIcon'
 import { usePostcard } from '@/app/context/postcardContext'
 import { useUser } from '@/app/context/userContext'
 import { POSTCARD_SHARE_LINK_PREFIX } from '@/constants/postcard'
-import { DURATION_STATUS } from '@/constants/date'
 import { useMemo } from 'react'
 import TrashIcon from '@/app/components/icons/TrashIcon'
-
-const DURATION_STATUS_CLASS = {
-	[DURATION_STATUS.GOOD]: styles.goodStatus,
-	[DURATION_STATUS.MEDIUM]: styles.mediumStatus,
-	[DURATION_STATUS.BAD]: styles.badStatus,
-}
+import { showToast } from '@/app/components/ui/CustomToast'
+import { Status, StatusIndicator } from '@/app/components/ui/StatusIndicator'
 
 interface NavigationProps {
 	onCreateEntry: () => void
@@ -25,15 +20,15 @@ export const Navigation = (props: NavigationProps) => {
 	const { postcard, focusedEntryId, setFocusedEntryId } = usePostcard()
 	const { user } = useUser()
 
-	const [daysElapsed, durationMessage, durationStatusClass] = useMemo(() => {
+	const [daysElapsed, durationMessage, durationStatus] = useMemo(() => {
 		const daysElapsed = getDaysElapsed(postcard?.createdAt ?? 0)
 		const durationMessage = getDurationMessage(postcard?.createdAt ?? 0)
-		const durationStatusClass = DURATION_STATUS_CLASS[durationMessage.status]
-		return [daysElapsed, durationMessage, durationStatusClass]
+		return [daysElapsed, durationMessage, durationMessage.status]
 	}, [postcard?.createdAt])
 
 	const handleCopyShareLink = () => {
 		navigator.clipboard.writeText(`${POSTCARD_SHARE_LINK_PREFIX}${postcard?._id}`)
+		showToast('Copied sharing link to clipboard', Status.SUCCESS)
 	}
 
 	const handleDeleteEntry = (e: React.MouseEvent<HTMLButtonElement>, entryId: string) => {
@@ -98,7 +93,7 @@ export const Navigation = (props: NavigationProps) => {
 
 			<div className={styles.footer}>
 				<div className={styles.createdStatus}>
-					<div className={durationStatusClass} />
+					<StatusIndicator status={durationStatus} />
 					<span>
 						Created {daysElapsed} days ago. {durationMessage.label}
 					</span>

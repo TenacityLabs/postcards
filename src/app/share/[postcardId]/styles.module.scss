@@ -120,7 +120,7 @@
 	font-weight: 700;
 	line-height: normal;
 
-	transition: background-color 0.1s ease-in-out;
+	@include transition-normal;
 
 	&:hover {
 		background-color: $neutral-700;
@@ -258,7 +258,7 @@
 
 	cursor: pointer;
 
-	transition: background-color 0.1s ease-in-out;
+	@include transition-normal;
 
 	&:hover {
 		background-color: $neutral-700;
@@ -302,7 +302,7 @@
 	bottom: 24px;
 	right: 24px;
 	opacity: 0;
-	transition: opacity 0.1s ease-in-out;
+	@include transition-normal;
 
 
 	&>button {

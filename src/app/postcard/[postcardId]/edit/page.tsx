@@ -1,7 +1,7 @@
 "use client"
 
 import styles from "./styles.module.scss"
-import { FileInput } from "@/app/components/ui/FileInput";
+import { FileInput } from "@/app/postcard/[postcardId]/edit/fileInput";
 import { usePostcard } from "@/app/context/postcardContext";
 import { IMAGE_MIME_TYPES, MAX_IMAGE_SIZE, PREFERRED_IMAGE_QUALITY, PREFERRED_MAX_WIDTH } from "@/constants/file";
 import { sendAPIRequest } from "@/utils/api";

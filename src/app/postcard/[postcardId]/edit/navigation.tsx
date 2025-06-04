@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import styles from './styles.module.scss'
+import styles from './navigation.module.scss'
 import { getDaysElapsed, getDurationMessage, numberToPrettyDate } from '@/utils/date'
 import ArrowLeftIcon from '@/app/components/icons/ArrowLeftIcon'
 import { usePostcard } from '@/app/context/postcardContext'
@@ -46,7 +46,7 @@ export const Navigation = (props: NavigationProps) => {
 	}
 
 	return (
-		<div className={styles.navigation}>
+		<div className={styles.container}>
 			<div className={styles.header}>
 				<Link
 					href="/dashboard"

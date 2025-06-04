@@ -24,7 +24,7 @@
 	box-shadow: 2px 2px 15px 0px rgba($neutral-950, 0.05);
 
 	background: $neutral-50;
-	transition: background 0.1s ease-in-out;
+	@include transition-normal;
 
 	.fileInputTitle {
 		color: $neutral-600;
@@ -54,7 +54,7 @@
 
 	.fileInputPreview {
 		max-width: 500px;
-		transition: background-color 0.2s ease-in-out;
+		@include transition-normal;
 		border-radius: 6px;
 		position: relative;
 
@@ -64,7 +64,7 @@
 			border-radius: 6px;
 			padding: 5px;
 			margin: -5px;
-			transition: opacity 0.2s ease-in-out;
+			@include transition-normal;
 			opacity: 1;
 
 			&>img {
@@ -83,7 +83,7 @@
 			border: none;
 			outline: none;
 
-			transition: all 0.1s ease-in-out;
+			@include transition-normal;
 			opacity: 0;
 
 			&:hover {
@@ -110,7 +110,7 @@
 		right: -24px;
 		filter: drop-shadow(4px 10px 20px rgba($neutral-950, 0.1));
 
-		transition: opacity 0.2s ease-in-out;
+		@include transition-normal;
 		opacity: 0;
 	}
 

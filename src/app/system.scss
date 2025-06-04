@@ -58,3 +58,7 @@ $card-8: #F0F9F4;
 	background-image: radial-gradient(circle, rgba($neutral-700, 0.25), transparent 2px);
 	background-size: 36px 36px;
 }
+
+@mixin transition-normal {
+	transition: all 0.1s ease-in-out;
+}

@@ -67,11 +67,11 @@ export const DateInput = (props: DateInputProps) => {
 		<div className={styles.container}>
 			<div className={styles.header}>
 				<button onClick={goToPreviousMonth}>Prev</button>
-				<h4>{focusedYear}, {MONTHS[focusedMonth - 1]}</h4>
+				<h4>{focusedYear}, {MONTHS.AllCapsShort[focusedMonth - 1]}</h4>
 				<button onClick={goToNextMonth}>Next</button>
 			</div>
 			<div className={styles.calendar}>
-				{WEEKDAYS.map((day) => (
+				{WEEKDAYS.TitleCaseShort.map((day) => (
 					<div key={day} className={styles.dayLabel}>
 						{day}
 					</div>

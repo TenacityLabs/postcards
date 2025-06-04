@@ -1,8 +1,24 @@
 import { Status } from "@/app/components/ui/StatusIndicator"
 
-export const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+const WEEKDAYS_RAW = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+export const WEEKDAYS = {
+	TitleCase: WEEKDAYS_RAW,
+	TitleCaseShort: WEEKDAYS_RAW.map(day => day.slice(0, 3)),
+	AllCaps: WEEKDAYS_RAW.map(day => day.toUpperCase()),
+	AllCapsShort: WEEKDAYS_RAW.map(day => day.toUpperCase().slice(0, 3)),
 
-export const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
+	Single: WEEKDAYS_RAW.map(day => day.slice(0, 1)),
+}
+
+const MONTHS_RAW = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+export const MONTHS = {
+	TitleCase: MONTHS_RAW,
+	TitleCaseShort: MONTHS_RAW.map(month => month.slice(0, 3)),
+	AllCaps: MONTHS_RAW.map(month => month.toUpperCase()),
+	AllCapsShort: MONTHS_RAW.map(month => month.toUpperCase().slice(0, 3)),
+
+	Single: MONTHS_RAW.map(month => month.slice(0, 1)),
+}
 
 export const DURATION_MESSAGES = [
 	{

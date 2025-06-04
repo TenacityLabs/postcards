@@ -67,11 +67,12 @@
 		align-items: center;
 
 		.toggleNavigationButton {
+			height: 40px;
 			display: flex;
 			align-items: center;
 			gap: 4px;
 
-			padding: 10px 4px 10px 8px;
+			padding: 0 4px 0 8px;
 			color: $neutral-900;
 			font-size: 14px;
 			font-style: normal;
@@ -87,6 +88,68 @@
 
 			&:hover {
 				background-color: rgba($neutral-700, 0.1);
+			}
+		}
+
+		.navigationButtons {
+			display: flex;
+
+			.navigationButton {
+				width: 40px;
+				height: 40px;
+				color: $neutral-900;
+
+				border: none;
+				outline: none;
+				background-color: inherit;
+				cursor: pointer;
+				border-radius: 6px;
+
+				&:hover {
+					background-color: rgba($neutral-700, 0.1);
+				}
+			}
+		}
+	}
+
+	.calendarGrid {
+		display: grid;
+		grid-template-columns: repeat(7, 1fr);
+		gap: 4px;
+		padding: 0 12px;
+		color: $neutral-950;
+		text-align: center;
+
+		>* {
+			height: 44px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.emptyDay,
+		.day {
+			border: none;
+			outline: none;
+			background-color: inherit;
+		}
+
+		.day {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 40px;
+			height: 40px;
+			cursor: pointer;
+			border-radius: 100px;
+
+			&:hover {
+				background-color: rgba($neutral-700, 0.1);
+			}
+
+			&.focused {
+				background-color: $neutral-900;
+				color: $neutral-50;
 			}
 		}
 	}

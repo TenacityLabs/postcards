@@ -111,7 +111,7 @@ function EntryCardTitle(props: EntryCardTitleProps) {
 		return (
 			<div className={styles.titleWithDate}>
 				<h3>{title}</h3>
-				<span>{MONTHS[date.month - 1]} {date.day}, {date.year}</span>
+				<span>{MONTHS.AllCapsShort[date.month - 1]} {date.day}, {date.year}</span>
 			</div>
 		)
 	} else {

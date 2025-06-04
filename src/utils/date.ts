@@ -16,7 +16,7 @@ export const numberToPrettyDate = (date: number, includeYear = false) => {
 	const day = dateObj.getUTCDate()
 	const year = dateObj.getUTCFullYear()
 
-	let prettyDate = `${MONTHS[month]} ${day}`
+	let prettyDate = `${MONTHS.AllCapsShort[month]} ${day}`
 	if (includeYear) {
 		prettyDate += `, ${year}`
 	}

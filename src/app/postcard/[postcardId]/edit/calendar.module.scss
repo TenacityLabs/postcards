@@ -99,6 +99,15 @@
 		letter-spacing: 0.1px;
 
 		@include calendar-button;
+
+		.triangleDown {
+			height: 18px;
+			@include transition-normal;
+		}
+
+		.rotateUp {
+			transform: rotate(180deg);
+		}
 	}
 
 	.navigationButtons {

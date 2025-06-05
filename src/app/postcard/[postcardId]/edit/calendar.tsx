@@ -182,7 +182,9 @@ export const Calendar = () => {
 							<span>
 								{MONTHS.TitleCase[focusedMonth - 1]} {focusedYear}
 							</span>
-							<TriangleDown width={18} height={18} />
+							<span className={`${styles.triangleDown} ${selectingYear ? styles.rotateUp : ''}`}>
+								<TriangleDown width={18} height={18} />
+							</span>
 						</button>
 						{!selectingYear && (
 							<div className={styles.navigationButtons}>

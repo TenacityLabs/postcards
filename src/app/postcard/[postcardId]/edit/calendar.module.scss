@@ -25,7 +25,6 @@
 .calendarButton {
 	display: flex;
 	align-items: center;
-	gap: 12px;
 	padding: 8px 12px;
 
 	border: none;
@@ -42,11 +41,16 @@
 	}
 
 	.date {
+		padding-right: 12px;
 		font-size: 16px;
 		font-style: normal;
 		font-weight: 500;
 		line-height: normal;
 		white-space: nowrap;
+
+		&.noDate {
+			padding-right: 0;
+		}
 	}
 
 	.icon {

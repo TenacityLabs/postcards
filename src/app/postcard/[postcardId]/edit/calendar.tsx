@@ -22,6 +22,13 @@ export const Calendar = () => {
 	const [focusedMonth, setFocusedMonth] = useState((new Date()).getMonth())
 	const [focusedYear, setFocusedYear] = useState((new Date()).getFullYear())
 
+	const actualDate = useMemo(() => {
+		if (!focusedEntry || !focusedEntry.date) {
+			return null
+		}
+		return `${MONTHS.TitleCase[focusedEntry.date.month - 1]} ${focusedEntry.date.day}, ${focusedEntry.date.year}`
+	}, [focusedEntry])
+
 	const selectableYears = useMemo(() => {
 		const currentYear = new Date().getFullYear()
 		const start = currentYear - 97
@@ -160,8 +167,8 @@ export const Calendar = () => {
 		<div className={styles.container}>
 			{/* Use onMouseDown to since event listeners are also mouseDown */}
 			<button className={styles.calendarButton} onMouseDown={handleCalendarClick}>
-				<span className={styles.date}>
-					August 17, 2025
+				<span className={`${styles.date} ${actualDate ? '' : styles.noDate}`}>
+					{actualDate}
 				</span>
 				<span className={styles.icon}>
 					<CalendarIcon width={24} height={24} />

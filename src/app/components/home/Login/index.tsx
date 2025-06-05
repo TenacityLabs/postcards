@@ -16,7 +16,10 @@ export default function Login(props: LoginProps) {
 
 	return (
 		<>
-			<div className={styles.logoContainer}>
+			<button
+				className={styles.logoContainer}
+				onClick={navigateToLanding}
+			>
 				<Image
 					src="/logos/logo-128.svg"
 					alt="Postcards"
@@ -24,7 +27,7 @@ export default function Login(props: LoginProps) {
 					height={36}
 				/>
 				<h2>Postcards</h2>
-			</div>
+			</button>
 
 			<div className={styles.postcard}>
 				<div className={styles.postcardContent}>

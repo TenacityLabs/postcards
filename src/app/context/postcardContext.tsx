@@ -86,8 +86,6 @@ export function PostcardProvider({ children }: { children: ReactNode }) {
 		}
 
 		try {
-			console.log('entry.date')
-			console.log(entry.date ? entry.date.toString() : null)
 			await sendAPIRequest(
 				APIEndpoints.EditEntry,
 				APIMethods.POST,

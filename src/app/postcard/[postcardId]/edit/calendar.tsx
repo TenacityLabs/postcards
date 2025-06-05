@@ -7,6 +7,8 @@ import ChevronArrowRightIcon from '@/app/components/icons/ChevronArrowRightIcon'
 import { MONTHS, WEEKDAYS } from '@/constants/date'
 import { usePostcard } from '@/app/context/postcardContext'
 import { PostcardDate } from '@/types/postcard'
+import { showToast } from '@/app/components/ui/CustomToast'
+import { Status } from '@/app/components/ui/StatusIndicator'
 
 export const Calendar = () => {
 	const { focusedEntryId, focusedEntry, updateEntry } = usePostcard()
@@ -15,7 +17,7 @@ export const Calendar = () => {
 
 	const [selectingYear, setSelectingYear] = useState(false)
 
-	const [selectedDate, setSelectedDate] = useState<PostcardDate | null>(new PostcardDate(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()))
+	const [selectedDate, setSelectedDate] = useState<PostcardDate | null>(null)
 	// Month is 0-indexed
 	const [focusedMonth, setFocusedMonth] = useState((new Date()).getMonth())
 	const [focusedYear, setFocusedYear] = useState((new Date()).getFullYear())
@@ -23,7 +25,7 @@ export const Calendar = () => {
 	useEffect(() => {
 		if (!focusedEntry?.date) {
 			const today = new Date()
-			setSelectedDate(new PostcardDate(today.getFullYear(), today.getMonth(), today.getDate()))
+			setSelectedDate(null)
 			setFocusedMonth(today.getMonth())
 			setFocusedYear(today.getFullYear())
 			return
@@ -82,14 +84,24 @@ export const Calendar = () => {
 		setSelectedDate(new PostcardDate(focusedYear, focusedMonth, day))
 	}, [focusedYear, focusedMonth])
 
+	const handleClearDate = useCallback(() => {
+		if (focusedEntryId) {
+			updateEntry(focusedEntryId, {
+				date: null,
+			})
+		}
+		setIsCalendarOpen(false)
+		showToast('Date cleared', Status.SUCCESS)
+	}, [focusedEntryId, updateEntry])
+
 	const handleConfirmSelectDate = useCallback(() => {
 		if (focusedEntryId && selectedDate) {
-			console.log('focusedEntryId', focusedEntryId)
-			console.log('selectedDate', selectedDate.toString())
 			updateEntry(focusedEntryId, {
 				date: selectedDate,
 			})
 		}
+		setIsCalendarOpen(false)
+		showToast('Updated date', Status.SUCCESS)
 	}, [focusedEntryId, selectedDate, updateEntry])
 
 	const handleCalendarClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
@@ -188,7 +200,7 @@ export const Calendar = () => {
 						</button>
 
 						<div className={styles.confirmButtons}>
-							<button onClick={() => setSelectedDate(null)}>
+							<button onClick={handleClearDate}>
 								Clear
 							</button>
 							<button onClick={handleConfirmSelectDate}>

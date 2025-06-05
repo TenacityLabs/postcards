@@ -9,13 +9,13 @@ import { usePostcard } from '@/app/context/postcardContext'
 import { PostcardDate } from '@/types/postcard'
 
 export const Calendar = () => {
-	const { focusedEntry } = usePostcard()
+	const { focusedEntryId, focusedEntry, updateEntry } = usePostcard()
 	const [isCalendarOpen, setIsCalendarOpen] = useState(false)
 	const calendarRef = useRef<HTMLDivElement>(null)
 
 	const [selectingYear, setSelectingYear] = useState(false)
 
-	const [selectedDate, setSelectedDate] = useState(new PostcardDate(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()))
+	const [selectedDate, setSelectedDate] = useState<PostcardDate | null>(new PostcardDate(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()))
 	// Month is 0-indexed
 	const [focusedMonth, setFocusedMonth] = useState((new Date()).getMonth())
 	const [focusedYear, setFocusedYear] = useState((new Date()).getFullYear())
@@ -30,7 +30,7 @@ export const Calendar = () => {
 		}
 		const postcardDate = focusedEntry.date
 		setSelectedDate(postcardDate)
-		setFocusedMonth(postcardDate.month - 1)
+		setFocusedMonth(postcardDate.month)
 		setFocusedYear(postcardDate.year)
 	}, [focusedEntry?.date, isCalendarOpen])
 
@@ -82,6 +82,16 @@ export const Calendar = () => {
 		setSelectedDate(new PostcardDate(focusedYear, focusedMonth, day))
 	}, [focusedYear, focusedMonth])
 
+	const handleConfirmSelectDate = useCallback(() => {
+		if (focusedEntryId && selectedDate) {
+			console.log('focusedEntryId', focusedEntryId)
+			console.log('selectedDate', selectedDate.toString())
+			updateEntry(focusedEntryId, {
+				date: selectedDate,
+			})
+		}
+	}, [focusedEntryId, selectedDate, updateEntry])
+
 	const handleCalendarClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
 		e.stopPropagation()
 		setIsCalendarOpen(prev => !prev)
@@ -122,7 +132,11 @@ export const Calendar = () => {
 							SELECT DATE
 						</div>
 						<div className={styles.titleDate}>
-							Mon, {MONTHS.TitleCaseShort[selectedDate.month - 1]} {selectedDate.day}
+							{selectedDate ? (
+								`Mon, ${MONTHS.TitleCaseShort[selectedDate.month - 1]} ${selectedDate.day}`
+							) : (
+								'Pick a date'
+							)}
 						</div>
 					</div>
 					<div className={styles.navigator}>
@@ -169,15 +183,15 @@ export const Calendar = () => {
 					)}
 
 					<div className={styles.footer}>
-						<button>
+						<button onClick={() => setIsCalendarOpen(false)}>
 							Cancel
 						</button>
 
 						<div className={styles.confirmButtons}>
-							<button>
+							<button onClick={() => setSelectedDate(null)}>
 								Clear
 							</button>
-							<button>
+							<button onClick={handleConfirmSelectDate}>
 								OK
 							</button>
 						</div>

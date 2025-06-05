@@ -79,43 +79,37 @@ export function PostcardProvider({ children }: { children: ReactNode }) {
 		}
 	}, [postcard, focusedEntryId])
 
-	const handleSaveEntry = useCallback(async (entryId: string) => {
-		ClientLogger.info(`Saving entry ${entryId}`)
-		if (!postcard) {
-			return
-		}
-		const entry = postcard?.entries.find(entry => entry._id === entryId)
-		if (!entry) {
+	const handleSaveEntry = useCallback(async (entry: Entry) => {
+		ClientLogger.info(`Saving entry ${entry._id}`)
+		if (!postcardId) {
 			return
 		}
 
 		try {
+			console.log('entry.date')
+			console.log(entry.date ? entry.date.toString() : null)
 			await sendAPIRequest(
 				APIEndpoints.EditEntry,
 				APIMethods.POST,
 				{
 					postcardId: postcardId as string,
-					entryId,
+					entryId: entry._id,
 					title: entry.title,
 					description: entry.description,
 					date: entry.date ? entry.date.toString() : null,
 				}
 			)
-			ClientLogger.info(`Entry ${entryId} saved`)
+			ClientLogger.info(`Entry ${entry._id} saved`)
 			// Don't update postcard, changes could've been made while syncing
 		} catch (error) {
-			ClientLogger.error(`Error saving entry ${entryId}: ${error}`)
+			ClientLogger.error(`Error saving entry ${entry._id}: ${error}`)
 		}
-	}, [postcard, postcardId])
+	}, [postcardId])
 
 	const updateEntry = useCallback((entryId: string, partialEntry: Partial<Entry>) => {
 		if (autoSaveEntriesRef.current[entryId]) {
 			clearTimeout(autoSaveEntriesRef.current[entryId])
 		}
-		autoSaveEntriesRef.current[entryId] = setTimeout(() => {
-			handleSaveEntry(entryId)
-		}, AUTO_SAVE_DEBOUNCE)
-
 
 		setPostcard(prevPostcard => {
 			if (!prevPostcard) {
@@ -126,7 +120,17 @@ export function PostcardProvider({ children }: { children: ReactNode }) {
 				return prevPostcard
 			}
 			const newEntry = { ...prevEntry, ...partialEntry }
-			return { ...prevPostcard, entries: prevPostcard.entries.map(entry => entry._id === entryId ? newEntry : entry) }
+
+			autoSaveEntriesRef.current[entryId] = setTimeout(() => {
+				handleSaveEntry(newEntry)
+			}, AUTO_SAVE_DEBOUNCE)
+
+			const newPostcard = {
+				...prevPostcard,
+				entries: prevPostcard.entries.map(entry => entry._id === entryId ? newEntry : entry)
+			}
+
+			return newPostcard
 		})
 	}, [handleSaveEntry])
 

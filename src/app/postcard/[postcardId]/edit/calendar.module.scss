@@ -147,9 +147,15 @@
 			height: 40px;
 			cursor: pointer;
 			border-radius: 100px;
+			transition: all 0.1s ease-in-out;
 
 			&:hover {
 				background-color: rgba($neutral-700, 0.1);
+			}
+
+			&:active {
+				transform: scale(0.95);
+				background-color: rgba($neutral-700, 0.3);
 			}
 
 			&.focused {

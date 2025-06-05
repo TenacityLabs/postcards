@@ -62,3 +62,26 @@ $card-8: #F0F9F4;
 @mixin transition-normal {
 	transition: all 0.1s ease-in-out;
 }
+
+@mixin simple-scrollbar {
+	scrollbar-width: 16px;
+	scrollbar-color: rgba($neutral-900, 0.2) transparent;
+
+	// WebKit
+	&::-webkit-scrollbar {
+		width: 16px;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: rgba($neutral-900, 0.2);
+		border-radius: 100px;
+	}
+
+	&::-webkit-scrollbar-thumb:hover {
+		background-color: rgba($neutral-900, 0.3);
+	}
+}

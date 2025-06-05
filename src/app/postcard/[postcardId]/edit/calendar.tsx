@@ -22,6 +22,12 @@ export const Calendar = () => {
 	const [focusedMonth, setFocusedMonth] = useState((new Date()).getMonth())
 	const [focusedYear, setFocusedYear] = useState((new Date()).getFullYear())
 
+	const selectableYears = useMemo(() => {
+		const currentYear = new Date().getFullYear()
+		const start = currentYear - 98
+		return Array.from({ length: 99 }, (_, i) => start + i)
+	}, [])
+
 	useEffect(() => {
 		if (!focusedEntry?.date) {
 			const today = new Date()
@@ -173,11 +179,19 @@ export const Calendar = () => {
 					{selectingYear ? (
 						<div className={styles.yearGridContainer}>
 							<div className={styles.yearGrid}>
-								<div className={styles.yearButtonContainer}>
-									<button className={styles.year}>
-										2025
-									</button>
-								</div>
+								{selectableYears.map(year => (
+									<div
+										className={styles.yearButtonContainer}
+										key={year}
+									>
+										<button
+											className={styles.year}
+											onClick={() => setFocusedYear(year)}
+										>
+											{year}
+										</button>
+									</div>
+								))}
 							</div>
 						</div>
 					) : (

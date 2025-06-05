@@ -24,7 +24,6 @@
 .calendar {
 	z-index: 100;
 	width: 360px;
-	height: 540px;
 	position: absolute;
 	top: 45px;
 	right: 0;
@@ -117,7 +116,7 @@
 .yearGridContainer,
 .calendarGridContainer {
 	padding-top: 4px;
-	flex-grow: 1;
+	height: 350px;
 }
 
 .calendarGrid {
@@ -173,6 +172,9 @@
 }
 
 .yearGrid {
+	overflow-y: scroll;
+	@include simple-scrollbar;
+	height: 100%;
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	column-gap: 8px;

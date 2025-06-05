@@ -64,6 +64,7 @@
 	padding: 24px;
 	flex-grow: 1;
 	overflow-y: auto;
+	@include simple-scrollbar;
 
 	.entriesHeader {
 		&>h4 {

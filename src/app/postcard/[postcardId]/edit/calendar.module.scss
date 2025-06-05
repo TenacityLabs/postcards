@@ -34,8 +34,12 @@
 	@include transition-normal;
 
 	&:hover {
-		color: $neutral-700;
 		background-color: rgba($neutral-700, 0.2);
+		color: $neutral-700;
+	}
+
+	&:active {
+		transform: scale(0.95);
 	}
 }
 

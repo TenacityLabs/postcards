@@ -123,7 +123,6 @@
 				opacity: 1;
 			}
 		}
-
 	}
 
 	.addNewEntry {
@@ -203,14 +202,15 @@
 		font-weight: 700;
 		line-height: normal;
 
-		transition: all 0.3s ease-out;
+		@include transition-normal;
 
 		&:hover {
-			background-color: $neutral-600;
+			background-color: $neutral-800;
 		}
 
 		&:active {
 			background-color: $neutral-800;
+			transform: scale(0.95);
 			box-shadow: 4px 4px 20px 0px rgba($neutral-950, 0.1);
 		}
 	}

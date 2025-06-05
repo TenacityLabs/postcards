@@ -12,6 +12,9 @@ $neutral-800: #555555;
 $neutral-900: #4C4C4C;
 $neutral-950: #000000;
 
+$primary-500: #FBD5EA;
+$primary-700: #F5A0D0;
+
 $success-500: #A5D06A;
 $success-700: #6A9A3C;
 
@@ -53,8 +56,8 @@ $card-8: #F0F9F4;
 	}
 }
 
-@mixin paper-background {
-	background-color: $paper;
+@mixin grid-background {
+	background-color: $neutral-200;
 	background-image: radial-gradient(circle, rgba($neutral-700, 0.25), transparent 2px);
 	background-size: 36px 36px;
 }

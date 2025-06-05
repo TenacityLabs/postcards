@@ -11,8 +11,9 @@ export default function EditIcon(props: IconProps) {
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
 		>
-			<path d="M14.7855 36.8715L5.82069 31.8817L29.9241 8.28566L36.5209 15.1361L14.7855 36.8715ZM59.102 36.5332H12.5866V26.9764H59.102V36.5332ZM30.1779 55.0548L5.82069 31.8817L14.7009 26.6381L36.69 48.1198L30.1779 55.0548Z" fill="currentColor" />
+			<path d="M5 32H59M59 32L32 5M59 32L32 59" stroke="currentColor" strokeWidth="7.71428" strokeLinecap="round" strokeLinejoin="round" />
 		</svg>
 	)
 }
+
 

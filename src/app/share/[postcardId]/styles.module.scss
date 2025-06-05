@@ -1,7 +1,7 @@
 @use '@/app/system.scss' as *;
 
 .page {
-	@include paper-background;
+	@include grid-background;
 
 	min-height: 100vh;
 
@@ -40,8 +40,8 @@
 		}
 	}
 
-	&>.skeletonDate,
-	&>.skeletonTitle {
+	>.skeletonDate,
+	>.skeletonTitle {
 		-webkit-user-select: none;
 		-ms-user-select: none;
 		user-select: none;

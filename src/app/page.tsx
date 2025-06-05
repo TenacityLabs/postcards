@@ -1,18 +1,37 @@
 "use client"
 
-import Link from "next/link";
+import { useMemo, useState } from "react";
+import styles from "./page.module.scss";
+import Landing from "./components/home/Landing";
+
+enum AuthPage {
+	Landing = 'landing',
+	Signup = 'signup',
+	Login = 'login',
+}
 
 export default function Home() {
+	const [authPage, setAuthPage] = useState<AuthPage>(AuthPage.Landing);
+
+	const renderedPage = useMemo(() => {
+		switch (authPage) {
+			case AuthPage.Login:
+				return <>Login</>
+			case AuthPage.Signup:
+				return <>Signup</>
+			case AuthPage.Landing:
+				return (
+					<Landing
+						navigateToLogin={() => setAuthPage(AuthPage.Login)}
+						navigateToSignup={() => setAuthPage(AuthPage.Signup)}
+					/>
+				)
+		}
+	}, [authPage])
 
 	return (
-		<div>
-			<h1>Postcards</h1>
-			<div>
-				<Link href="/login">Login</Link>
-			</div>
-			<div>
-				<Link href="/signup">Signup</Link>
-			</div>
+		<div className={styles.page}>
+			{renderedPage}
 		</div>
 	);
 }

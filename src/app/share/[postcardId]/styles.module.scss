@@ -109,21 +109,29 @@
 }
 
 .createLink {
-	padding: 10px 24px;
-	border-radius: 10px;
-	border: 1px solid rgba($neutral-700, 0.1);
-	background-color: $neutral-800;
+	display: block;
 	text-decoration: none;
 
-	color: $neutral-100;
-	font-size: 21px;
+	padding: 10px 16px;
+	border-radius: 6px;
+	background-color: $neutral-700;
+
+	color: $neutral-50;
+	font-size: 18px;
+	font-style: normal;
 	font-weight: 700;
 	line-height: normal;
 
 	@include transition-normal;
 
 	&:hover {
-		background-color: $neutral-700;
+		background-color: $neutral-800;
+	}
+
+	&:active {
+		background-color: $neutral-800;
+		transform: scale(0.95);
+		box-shadow: 4px 4px 20px 0px rgba($neutral-950, 0.1);
 	}
 
 	@media screen and (max-width: 500px) {
@@ -244,13 +252,13 @@
 }
 
 .summaryNextButton {
-	padding: 8px 24px;
-	border-radius: 10px;
-	border: 1px solid rgba($neutral-700, 0.1);
-	background: $neutral-800;
+	padding: 10px 16px;
+	border-radius: 6px;
+	background: $neutral-700;
+	border: none;
+	outline: none;
 
 	color: $neutral-50;
-	text-shadow: 0px 3px 4px rgba($neutral-950, 0.05);
 	font-size: 16px;
 	font-style: normal;
 	font-weight: 700;
@@ -261,7 +269,13 @@
 	@include transition-normal;
 
 	&:hover {
-		background-color: $neutral-700;
+		background-color: $neutral-800;
+	}
+
+	&:active {
+		background-color: $neutral-800;
+		transform: scale(0.95);
+		box-shadow: 4px 4px 20px 0px rgba($neutral-950, 0.1);
 	}
 }
 

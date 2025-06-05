@@ -110,6 +110,10 @@
 			&:hover {
 				color: $neutral-700;
 			}
+
+			&:active {
+				transform: scale(0.9);
+			}
 		}
 
 		&.focused {

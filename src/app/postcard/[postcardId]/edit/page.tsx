@@ -267,7 +267,6 @@ export default function EditEntry() {
 					</div>
 				)}
 			</div>
-			<FileDropOverlay visible={true} />
 		</div>
 	)
 }

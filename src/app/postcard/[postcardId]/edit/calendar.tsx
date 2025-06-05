@@ -158,19 +158,27 @@ export const Calendar = () => {
 							</span>
 							<TriangleDown width={18} height={18} />
 						</button>
-						<div className={styles.navigationButtons}>
-							<button className={styles.navigationButton} onClick={goToPreviousMonth}>
-								<ChevronArrowLeftIcon width={24} height={24} />
-							</button>
-							<button className={styles.navigationButton} onClick={goToNextMonth}>
-								<ChevronArrowRightIcon width={24} height={24} />
-							</button>
-						</div>
+						{!selectingYear && (
+							<div className={styles.navigationButtons}>
+								<button className={styles.navigationButton} onClick={goToPreviousMonth}>
+									<ChevronArrowLeftIcon width={24} height={24} />
+								</button>
+								<button className={styles.navigationButton} onClick={goToNextMonth}>
+									<ChevronArrowRightIcon width={24} height={24} />
+								</button>
+							</div>
+						)}
 					</div>
 
 					{selectingYear ? (
-						<div>
-							Year selector
+						<div className={styles.yearGridContainer}>
+							<div className={styles.yearGrid}>
+								<div className={styles.yearButtonContainer}>
+									<button className={styles.year}>
+										2025
+									</button>
+								</div>
+							</div>
 						</div>
 					) : (
 						<div className={styles.calendarGridContainer}>

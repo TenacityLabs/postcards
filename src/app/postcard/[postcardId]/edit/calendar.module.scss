@@ -1,5 +1,23 @@
 @use '@/app/system.scss' as *;
 
+@mixin calendar-button {
+	border: none;
+	outline: none;
+	background-color: inherit;
+	cursor: pointer;
+	border-radius: 100px;
+	@include transition-normal;
+
+	&:hover {
+		background-color: rgba($neutral-700, 0.1);
+	}
+
+	&:active {
+		transform: scale(0.95);
+		background-color: rgba($neutral-700, 0.3);
+	}
+}
+
 .container {
 	position: relative;
 }
@@ -80,15 +98,7 @@
 		line-height: 20px;
 		letter-spacing: 0.1px;
 
-		border: none;
-		outline: none;
-		background-color: inherit;
-		cursor: pointer;
-		border-radius: 6px;
-
-		&:hover {
-			background-color: rgba($neutral-700, 0.1);
-		}
+		@include calendar-button;
 	}
 
 	.navigationButtons {
@@ -99,15 +109,7 @@
 			height: 40px;
 			color: $neutral-900;
 
-			border: none;
-			outline: none;
-			background-color: inherit;
-			cursor: pointer;
-			border-radius: 6px;
-
-			&:hover {
-				background-color: rgba($neutral-700, 0.1);
-			}
+			@include calendar-button;
 		}
 	}
 }
@@ -147,18 +149,8 @@
 		justify-content: center;
 		width: 40px;
 		height: 40px;
-		cursor: pointer;
-		border-radius: 100px;
-		transition: all 0.1s ease-in-out;
 
-		&:hover {
-			background-color: rgba($neutral-700, 0.1);
-		}
-
-		&:active {
-			transform: scale(0.95);
-			background-color: rgba($neutral-700, 0.3);
-		}
+		@include calendar-button;
 
 		&.focused {
 			background-color: $neutral-900;
@@ -193,11 +185,6 @@
 	.year {
 		padding: 6px 0;
 		width: 72px;
-		border: none;
-		outline: none;
-		cursor: pointer;
-		border-radius: 100px;
-		;
 
 		text-align: center;
 		font-size: 16px;
@@ -205,19 +192,9 @@
 		font-weight: 600;
 		line-height: 24px;
 		letter-spacing: 0.15px;
-
 		color: $neutral-900;
-		background-color: inherit;
-		@include transition-normal;
 
-		&:hover {
-			background-color: rgba($neutral-700, 0.1);
-		}
-
-		&:active {
-			transform: scale(0.95);
-			background-color: rgba($neutral-700, 0.3);
-		}
+		@include calendar-button;
 
 		&.focused {
 			background-color: $neutral-900;
@@ -240,14 +217,6 @@
 	button {
 		height: 40px;
 		padding: 0 16px;
-		border-radius: 6px;
-		border: none;
-		outline: none;
-		background-color: inherit;
-		cursor: pointer;
-
-		&:hover {
-			background-color: rgba($neutral-700, 0.1);
-		}
+		@include calendar-button;
 	}
 }

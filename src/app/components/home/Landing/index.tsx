@@ -12,13 +12,14 @@ import { ClientLogger } from "@/utils/clientLogger";
 import { validateEmail } from "@/utils/email";
 
 interface LandingProps {
+	email: string
+	setEmail: (email: string) => void
 	navigateToLogin: () => void
 	navigateToSignup: () => void
 }
 
 export default function Landing(props: LandingProps) {
-	const { navigateToLogin, navigateToSignup } = props
-	const [email, setEmail] = useState("");
+	const { email, setEmail, navigateToLogin, navigateToSignup } = props
 	const [checkUserLoading, setCheckUserLoading] = useState(false);
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

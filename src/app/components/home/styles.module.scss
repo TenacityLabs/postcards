@@ -1,0 +1,124 @@
+@use '@/app/system.scss' as *;
+
+.logoContainer {
+	padding: 10px;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 48px;
+
+	h2 {
+		color: $neutral-900;
+		font-size: 27px;
+		font-style: normal;
+		font-weight: 600;
+		line-height: normal;
+	}
+}
+
+.postcard {
+	width: calc(100vw - 128px);
+
+	background: url("/images/postcard-pattern.svg");
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	border-radius: 50px;
+	padding: 48px;
+}
+
+.postcardContent {
+	background-color: $paper;
+	padding: 80px;
+	border-radius: 50px;
+	display: flex;
+	gap: 48px;
+	min-height: 512px;
+}
+
+.navigationContainer {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+
+	.navigation {
+		width: 240px;
+		display: flex;
+		align-items: center;
+		gap: 20px;
+
+		color: $neutral-900;
+
+		>button {
+			background-color: transparent;
+			border: none;
+			padding: 0;
+			margin: 0;
+			cursor: pointer;
+			@include transition-normal;
+
+			&:hover {
+				transform: translateX(-4px);
+			}
+		}
+
+		>h1 {
+			font-size: 48px;
+			font-style: normal;
+			font-weight: 500;
+			line-height: 150%;
+			letter-spacing: -0.5px;
+		}
+	}
+}
+
+.divider {
+	background-color: $neutral-700;
+	width: 2px;
+	align-self: stretch;
+}
+
+.form {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 48px;
+
+	.formGroup {
+		display: flex;
+		flex-direction: column;
+		gap: 18px;
+
+		.formLabel {
+			color: $neutral-600;
+			font-size: 14px;
+			font-style: normal;
+			font-weight: 700;
+			line-height: 150%;
+			letter-spacing: -0.15px;
+		}
+
+		.formInput {
+			color: $neutral-800;
+			font-size: 24px;
+			font-style: normal;
+			font-weight: 500;
+			line-height: 150%;
+			letter-spacing: -0.264px;
+
+			background-color: transparent;
+			outline: none;
+			border: none;
+			padding-bottom: 12px;
+			border-bottom: 1px solid $neutral-400;
+
+			&::placeholder {
+				color: $neutral-500;
+			}
+
+			&.formInputDisabled {
+				cursor: not-allowed;
+			}
+		}
+	}
+}

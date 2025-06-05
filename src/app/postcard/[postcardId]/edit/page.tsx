@@ -124,7 +124,6 @@ export default function EditEntry() {
 				imageName: null,
 			})
 		} catch (error) {
-			console.log(error)
 			ClientLogger.error(JSON.stringify(error))
 		}
 	}, [focusedEntryId, postcard, updateEntry])
@@ -268,6 +267,7 @@ export default function EditEntry() {
 					</div>
 				)}
 			</div>
+			<FileDropOverlay visible={true} />
 		</div>
 	)
 }

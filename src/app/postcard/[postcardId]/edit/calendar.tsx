@@ -160,7 +160,12 @@ export const Calendar = () => {
 		<div className={styles.container}>
 			{/* Use onMouseDown to since event listeners are also mouseDown */}
 			<button className={styles.calendarButton} onMouseDown={handleCalendarClick}>
-				<CalendarIcon width={36} height={36} />
+				<span className={styles.date}>
+					August 17, 2025
+				</span>
+				<span className={styles.icon}>
+					<CalendarIcon width={24} height={24} />
+				</span>
 			</button>
 
 			{isCalendarOpen && (

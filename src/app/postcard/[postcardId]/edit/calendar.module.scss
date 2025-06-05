@@ -178,7 +178,7 @@
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	column-gap: 8px;
-	row-gap: 16px;
+	row-gap: 0;
 	padding: 0 22px;
 	color: $neutral-950;
 	text-align: center;
@@ -206,9 +206,27 @@
 		line-height: 24px;
 		letter-spacing: 0.15px;
 
-		color: $neutral-50;
-		background-color: $neutral-900;
+		color: $neutral-900;
+		background-color: inherit;
+		@include transition-normal;
 
+		&:hover {
+			background-color: rgba($neutral-700, 0.1);
+		}
+
+		&:active {
+			transform: scale(0.95);
+			background-color: rgba($neutral-700, 0.3);
+		}
+
+		&.focused {
+			background-color: $neutral-900;
+			color: $neutral-50;
+
+			&:hover {
+				opacity: 0.9;
+			}
+		}
 	}
 }
 

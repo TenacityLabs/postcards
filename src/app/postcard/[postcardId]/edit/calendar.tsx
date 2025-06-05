@@ -24,11 +24,18 @@ export const Calendar = () => {
 
 	const selectableYears = useMemo(() => {
 		const currentYear = new Date().getFullYear()
-		const start = currentYear - 98
+		const start = currentYear - 97
 		return Array.from({ length: 99 }, (_, i) => start + i)
 	}, [])
 
+	// Refs to scroll to focused year by default
+	const yearGridRef = useRef<HTMLDivElement>(null)
+	const focusedYearButtonRef = useRef<HTMLButtonElement>(null)
+
 	useEffect(() => {
+		if (!isCalendarOpen) {
+			setSelectingYear(false)
+		}
 		if (!focusedEntry?.date) {
 			const today = new Date()
 			setSelectedDate(null)
@@ -136,6 +143,19 @@ export const Calendar = () => {
 		}
 	}, [isCalendarOpen])
 
+	useEffect(() => {
+		if (selectingYear && yearGridRef.current && focusedYearButtonRef.current) {
+			const container = yearGridRef.current
+			const focusedButton = focusedYearButtonRef.current
+
+			const containerTop = container.getBoundingClientRect().top
+			const buttonTop = focusedButton.getBoundingClientRect().top
+
+			// Adjust scrollTop to bring the button into view
+			container.scrollTop += buttonTop - containerTop - container.clientHeight / 2 + focusedButton.clientHeight / 2
+		}
+	}, [selectingYear])
+
 	return (
 		<div className={styles.container}>
 			{/* Use onMouseDown to since event listeners are also mouseDown */}
@@ -178,15 +198,16 @@ export const Calendar = () => {
 
 					{selectingYear ? (
 						<div className={styles.yearGridContainer}>
-							<div className={styles.yearGrid}>
+							<div className={styles.yearGrid} ref={yearGridRef}>
 								{selectableYears.map(year => (
 									<div
 										className={styles.yearButtonContainer}
 										key={year}
 									>
 										<button
-											className={styles.year}
+											className={`${styles.year} ${year === focusedYear ? styles.focused : ''}`}
 											onClick={() => setFocusedYear(year)}
+											ref={year === focusedYear ? focusedYearButtonRef : null}
 										>
 											{year}
 										</button>

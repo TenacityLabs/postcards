@@ -37,15 +37,15 @@ export default function Signup(props: SignupProps) {
 		e.preventDefault()
 		if (isFillingSenderInfo) return
 		if (!email || !password) {
-			showToast("Please fill in all fields", Status.ERROR)
+			showToast("Please fill in all fields", Status.Error)
 			return
 		}
 		if (!validateEmail(email)) {
-			showToast("Please enter a valid email address", Status.ERROR)
+			showToast("Please enter a valid email address", Status.Error)
 			return
 		}
 		if (!validatePassword(password)) {
-			showToast("Password must be at least 8 characters long and contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character", Status.ERROR)
+			showToast("Password must be at least 8 characters long and contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character", Status.Error)
 			return
 		}
 
@@ -67,17 +67,17 @@ export default function Signup(props: SignupProps) {
 			})
 			localStorage.setItem(LOCALSTORAGE_JWT_KEY, response.token)
 			setUser(response.user)
-			showToast("Signup successful", Status.SUCCESS)
+			showToast("Signup successful", Status.Success)
 		} catch (error) {
 			setIsSigningUp(false)
 			ClientLogger.error(error)
 			if (error instanceof AxiosError) {
 				if (error.response?.data?.error) {
-					showToast(error.response.data.error, Status.ERROR)
+					showToast(error.response.data.error, Status.Error)
 					return
 				}
 			}
-			showToast("An error occurred while signing up", Status.ERROR)
+			showToast("An error occurred while signing up", Status.Error)
 		}
 	}, [email, isSigningUp, password, setUser, firstName, lastName, displayName])
 

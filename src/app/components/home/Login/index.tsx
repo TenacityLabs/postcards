@@ -46,17 +46,17 @@ export default function Login(props: LoginProps) {
 			})
 			localStorage.setItem(LOCALSTORAGE_JWT_KEY, response.token)
 			setUser(response.user)
-			showToast("Login successful", Status.SUCCESS)
+			showToast("Login successful", Status.Success)
 		} catch (error) {
 			setIsLoggingIn(false)
 			ClientLogger.error(error)
 			if (error instanceof AxiosError) {
 				if (error.response?.data?.error) {
-					showToast(error.response.data.error, Status.ERROR)
+					showToast(error.response.data.error, Status.Error)
 					return
 				}
 			}
-			showToast("An error occurred while logging in", Status.ERROR)
+			showToast("An error occurred while logging in", Status.Error)
 		}
 	}, [email, isLoggingIn, password, setUser])
 

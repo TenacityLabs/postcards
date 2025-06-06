@@ -24,26 +24,26 @@ export const DURATION_MESSAGES = [
 	{
 		days: 0,
 		label: 'Get started!',
-		status: Status.SUCCESS,
+		status: Status.Success,
 	},
 	{
 		days: 5,
 		label: 'Keep adding entries!',
-		status: Status.SUCCESS,
+		status: Status.Success,
 	},
 	{
 		days: 7,
 		label: 'Finish your postcard!',
-		status: Status.SUCCESS,
+		status: Status.Success,
 	},
 	{
 		days: 10,
 		label: 'Start sharing!',
-		status: Status.WARNING,
+		status: Status.Warning,
 	},
 	{
 		days: 14,
 		label: 'Share your postcard!',
-		status: Status.ERROR,
+		status: Status.Error,
 	},
 ]

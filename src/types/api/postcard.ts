@@ -9,6 +9,7 @@ export interface GetPostcardResponse {
 }
 
 export interface CreatePostcardResponse {
+	postcardId: string
 	postcards: Postcard[]
 }
 

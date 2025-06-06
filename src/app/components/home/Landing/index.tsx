@@ -28,7 +28,7 @@ export default function Landing(props: LandingProps) {
 			return
 		}
 		if (!email || !validateEmail(email)) {
-			showToast("Please enter a valid email", Status.ERROR)
+			showToast("Please enter a valid email", Status.Error)
 			return
 		}
 
@@ -41,7 +41,7 @@ export default function Landing(props: LandingProps) {
 				navigateToSignup()
 			}
 		} catch (error) {
-			showToast("An error occurred while checking if the user exists", Status.ERROR)
+			showToast("An error occurred while checking if the user exists", Status.Error)
 			ClientLogger.error(`Error checking if user exists: ${error}`)
 			setCheckUserLoading(false);
 		}

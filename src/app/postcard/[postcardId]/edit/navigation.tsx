@@ -28,7 +28,7 @@ export const Navigation = (props: NavigationProps) => {
 
 	const handleCopyShareLink = () => {
 		navigator.clipboard.writeText(`${POSTCARD_SHARE_LINK_PREFIX}${postcard?._id}`)
-		showToast('Copied sharing link to clipboard', Status.SUCCESS)
+		showToast('Copied sharing link to clipboard', Status.Success)
 	}
 
 	const handleDeleteEntry = (e: React.MouseEvent<HTMLButtonElement>, entryId: string) => {

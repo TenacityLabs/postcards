@@ -53,6 +53,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<APIRespon
 			await session.commitTransaction()
 
 			return NextResponse.json({
+				postcardId: postcard._id.toString(),
 				postcards: user.postcards.map(postcard => postcard.toObject({ versionKey: false })),
 			}, { status: 200 })
 		} catch (error) {

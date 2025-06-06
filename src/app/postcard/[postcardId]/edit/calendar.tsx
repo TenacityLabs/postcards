@@ -111,7 +111,7 @@ export const Calendar = () => {
 			})
 		}
 		setIsCalendarOpen(false)
-		showToast('Date cleared', Status.SUCCESS)
+		showToast('Date cleared', Status.Success)
 	}, [focusedEntryId, updateEntry])
 
 	const handleConfirmSelectDate = useCallback(() => {
@@ -121,7 +121,7 @@ export const Calendar = () => {
 			})
 		}
 		setIsCalendarOpen(false)
-		showToast('Updated date', Status.SUCCESS)
+		showToast('Updated date', Status.Success)
 	}, [focusedEntryId, selectedDate, updateEntry])
 
 	const handleCalendarClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {

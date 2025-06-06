@@ -1,17 +1,17 @@
 import styles from './styles.module.scss'
 
 export enum Status {
-	SUCCESS = 'success',
-	WARNING = 'warning',
-	ERROR = 'error',
-	INFO = 'info',
+	Success = 'success',
+	Warning = 'warning',
+	Error = 'error',
+	Info = 'info',
 }
 
 const statusClasses = {
-	[Status.SUCCESS]: styles.success,
-	[Status.WARNING]: styles.warning,
-	[Status.ERROR]: styles.error,
-	[Status.INFO]: styles.info,
+	[Status.Success]: styles.success,
+	[Status.Warning]: styles.warning,
+	[Status.Error]: styles.error,
+	[Status.Info]: styles.info,
 }
 
 interface StatusIndicatorProps {

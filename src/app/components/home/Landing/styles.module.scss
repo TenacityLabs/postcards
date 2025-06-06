@@ -4,8 +4,8 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	padding: 0 12px;
 	gap: 12px;
-	margin-bottom: 12px;
 
 	.logoContainer {
 		display: flex;
@@ -22,11 +22,46 @@
 	}
 
 	.subtitle {
+		text-align: center;
 		color: $neutral-800;
 		font-size: 26px;
 		font-style: normal;
 		font-weight: 400;
 		line-height: normal;
+	}
+
+	@media screen and (max-width: 1000px) {
+		.logoContainer {
+			.logo {
+				width: 76px;
+				height: 76px;
+			}
+
+			h1 {
+				font-size: 72px;
+			}
+		}
+
+		.subtitle {
+			font-size: 20px;
+		}
+	}
+
+	@media screen and (max-width: 500px) {
+		.logoContainer {
+			.logo {
+				width: 48px;
+				height: 48px;
+			}
+
+			h1 {
+				font-size: 48px;
+			}
+		}
+
+		.subtitle {
+			font-size: 18px;
+		}
 	}
 }
 
@@ -35,10 +70,18 @@
 	width: 100%;
 	display: flex;
 	justify-content: center;
+	align-items: center;
 	overflow-x: hidden;
 
-	>img {
+	.heroImage {
+		height: 50vh;
+		width: auto;
+
 		@include no-drag;
+
+		@media screen and (max-width: 1000px) {
+			height: calc(100vh - 450px);
+		}
 	}
 }
 
@@ -104,6 +147,35 @@
 			opacity: 1;
 			cursor: not-allowed;
 			transform: none;
+		}
+	}
+
+	@media screen and (max-width: 1000px) {
+		padding: 8px 14px 8px 20px;
+
+		>input {
+			font-size: 18px;
+			width: 300px;
+		}
+
+		>button {
+			width: 32px;
+			height: 32px;
+		}
+	}
+
+	@media screen and (max-width: 500px) {
+		// padding: 8px 12px 8px 16px;
+
+		>input {
+			font-size: 16px;
+			width: calc(100vw - 140px);
+			max-width: 280px;
+		}
+
+		>button {
+			width: 30px;
+			height: 30px;
 		}
 	}
 }

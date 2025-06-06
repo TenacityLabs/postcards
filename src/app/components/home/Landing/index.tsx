@@ -63,6 +63,7 @@ export default function Landing(props: LandingProps) {
 						alt="Postcards"
 						width={96}
 						height={96}
+						className={styles.logo}
 					/>
 					<h1>Postcards</h1>
 				</div>
@@ -78,10 +79,7 @@ export default function Landing(props: LandingProps) {
 					alt="Postcard"
 					width={1720}
 					height={641}
-					style={{
-						height: '50vh',
-						width: 'auto',
-					}}
+					className={styles.heroImage}
 				/>
 			</div>
 
@@ -100,7 +98,10 @@ export default function Landing(props: LandingProps) {
 					type="submit"
 					disabled={checkUserLoading}
 				>
-					<ArrowRightRoundedIcon width={16} height={16} />
+					<ArrowRightRoundedIcon
+						width={16}
+						height={16}
+					/>
 				</button>
 			</form>
 		</>

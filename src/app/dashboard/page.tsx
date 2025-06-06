@@ -9,11 +9,27 @@ import Folder from './Folder';
 import EmptyFolder from './EmptyFolder';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import { showToast } from '../components/ui/CustomToast';
+import { Status } from '../components/ui/StatusIndicator';
 
 export default function Dashboard() {
 	const { user, setUser, loading, logout } = useUser()
 	const [isEditing, setIsEditing] = useState(false)
+
+	const handleToggleEditing = useCallback(() => {
+		if (isEditing) {
+			setIsEditing(false)
+			return
+		}
+
+		if (user?.postcards.length === 0) {
+			showToast("You have no postcards to edit", Status.Error)
+			return
+		}
+
+		setIsEditing(true)
+	}, [user?.postcards.length, isEditing])
 
 	const handleDeletePostcard = async (postcardId: string) => {
 		try {
@@ -36,6 +52,7 @@ export default function Dashboard() {
 				}
 			)
 			ClientLogger.info(`Postcard deleted: ${JSON.stringify(response)}`)
+			showToast("Postcard deleted", Status.Success)
 			setUser((prev) => {
 				if (!prev) {
 					return null
@@ -45,6 +62,9 @@ export default function Dashboard() {
 					postcards: response.postcards,
 				}
 			})
+			if (response.postcards.length === 0) {
+				setIsEditing(false)
+			}
 		} catch (error) {
 			ClientLogger.error(error)
 		}
@@ -77,7 +97,7 @@ export default function Dashboard() {
 							</h1>
 						)}
 
-						<button onClick={() => setIsEditing(!isEditing)}>
+						<button onClick={handleToggleEditing}>
 							<span>
 								Edit
 							</span>

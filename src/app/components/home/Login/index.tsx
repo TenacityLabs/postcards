@@ -1,9 +1,6 @@
 "use client"
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import styles from "../styles.module.scss";
-import Image from "next/image";
-import ArrowLeftRoundedIcon from "@/app/components/icons/ArrowLeftRoundedIcon";
 import { ClientLogger } from "@/utils/clientLogger";
 import { showToast } from "../../ui/CustomToast";
 import { AxiosError } from "axios";
@@ -12,8 +9,7 @@ import { sendAPIRequest } from "@/utils/api";
 import { APIEndpoints, APIMethods } from "@/types/api";
 import { useUser } from "@/app/context/userContext";
 import { LOCALSTORAGE_JWT_KEY } from "@/constants/auth";
-import EyeIcon from "../../icons/EyeIcon";
-import EyeSlashIcon from "../../icons/EyeSlashIcon";
+import LoginDesktop from "./desktop";
 
 interface LoginProps {
 	email: string
@@ -62,103 +58,16 @@ export default function Login(props: LoginProps) {
 
 	return (
 		<>
-			<button
-				className={styles.logoContainer}
-				onClick={navigateToLanding}
-			>
-				<Image
-					src="/logos/logo-128.svg"
-					alt="Postcards"
-					width={36}
-					height={36}
-				/>
-				<h2>Postcards</h2>
-			</button>
-
-			<div className={styles.postcard}>
-				<div className={styles.postcardContent}>
-					<div className={styles.navigationContainer}>
-						<div className={styles.navigation}>
-							<button
-								onClick={navigateToLanding}
-							>
-								<ArrowLeftRoundedIcon width={20} height={20} />
-							</button>
-							<h1>Log in</h1>
-						</div>
-
-						<div>
-							<Image
-								src="/images/stamp.png"
-								alt="Stamp"
-								width={170}
-								height={51}
-							/>
-						</div>
-					</div>
-
-					<div className={styles.divider} />
-
-					<form
-						className={styles.form}
-						onSubmit={handleSubmit}
-					>
-						<div className={styles.formContent}>
-							<div className={styles.formGroup}>
-								<div className={styles.formLabel}>
-									EMAIL ADDRESS
-								</div>
-								<div className={`${styles.formInput} ${styles.formInputDisabled}`}>
-									{email}
-								</div>
-							</div>
-
-							<div className={styles.formGroup}>
-								<div className={styles.formLabel}>
-									PASSWORD
-								</div>
-								<div className={styles.passwordInputContainer}>
-									<input
-										ref={passwordRef}
-										disabled={isLoggingIn}
-										className={styles.passwordInput}
-										placeholder="Enter your password"
-										type={isPasswordVisible ? "text" : "password"}
-										value={password}
-										onChange={(e) => setPassword(e.target.value)}
-									/>
-
-									<button
-										className={styles.passwordVisibilityButton}
-										type="button"
-										onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-									>
-										{isPasswordVisible ? (
-											<EyeSlashIcon
-												width={28}
-												height={28}
-											/>
-										) : (
-											<EyeIcon
-												width={28}
-												height={28}
-											/>
-										)}
-									</button>
-								</div>
-							</div>
-						</div>
-
-						<button
-							className={styles.submitButton}
-							type="submit"
-							disabled={isLoggingIn || !password}
-						>
-							Log in
-						</button>
-					</form>
-				</div>
-			</div>
+			<LoginDesktop
+				email={email}
+				password={password}
+				setPassword={setPassword}
+				isLoggingIn={isLoggingIn}
+				handleSubmit={handleSubmit}
+				isPasswordVisible={isPasswordVisible}
+				setIsPasswordVisible={setIsPasswordVisible}
+				navigateToLanding={navigateToLanding}
+			/>
 		</>
 	);
 }

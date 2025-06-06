@@ -2,11 +2,11 @@ import Image from "next/image"
 import styles from "./styles.module.scss"
 import Link from "next/link"
 import { useUser } from "@/app/context/userContext"
-import { useIsMobile } from "@/app/hooks/useIsMobile"
+import { useScreenSize } from "@/app/hooks/useScreenSize"
 
 export default function PostcardFooter() {
 	const { user } = useUser()
-	const isMobile = useIsMobile()
+	const { isMobile } = useScreenSize()
 
 	const scrollToTop = () => {
 		window.scrollTo({

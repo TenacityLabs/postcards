@@ -3,7 +3,7 @@ import styles from "./styles.module.scss"
 import { MONTHS } from "@/constants/date"
 import Image from "next/image"
 import { useMemo } from "react"
-import { useIsMobile } from "@/app/hooks/useIsMobile"
+import { useScreenSize } from "@/app/hooks/useScreenSize"
 import Linkify from "linkify-react"
 
 const cardColors = [
@@ -31,7 +31,7 @@ interface EntryCardProps {
 export default function EntryCard(props: EntryCardProps) {
 	const { entry } = props
 	const { title, date, description, imageUrl, tapePattern, cardColor, hoverRotation } = entry
-	const isMobile = useIsMobile()
+	const { isMobile } = useScreenSize()
 
 	const hasTape = tapePattern !== -1
 	const cardClass = useMemo(() => {

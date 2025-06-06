@@ -6,7 +6,7 @@ import styles from "./styles.module.scss"
 import EntryCard from "@/app/share/[postcardId]/Postcard/EntryCard"
 import Masonry from "react-masonry-css"
 import PostcardFooter from "./footer"
-import { useIsMobile } from "@/app/hooks/useIsMobile"
+import { useScreenSize } from "@/app/hooks/useScreenSize"
 import { useEffect, useState } from "react"
 import PostcardSummary from "./summary"
 import Image from "next/image"
@@ -34,7 +34,7 @@ const skeletonCardHeights = [
 
 export default function SharePostcard() {
 	const { postcard, loading: postcardLoading } = usePostcard()
-	const isMobile = useIsMobile()
+	const { isMobile } = useScreenSize()
 	const [showSummary, setShowSummary] = useState(isMobile)
 	const [showScrollTop, setShowScrollTop] = useState(false)
 

@@ -12,7 +12,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 export default function Dashboard() {
-	const { user, setUser, loading } = useUser()
+	const { user, setUser, loading, logout } = useUser()
 	const [isEditing, setIsEditing] = useState(false)
 
 	const handleDeletePostcard = async (postcardId: string) => {
@@ -96,6 +96,10 @@ export default function Dashboard() {
 						/>
 					))}
 				</div>
+
+				<button onClick={logout}>
+					Logout
+				</button>
 
 			</div>
 		</div>

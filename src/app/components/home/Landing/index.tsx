@@ -74,6 +74,7 @@ export default function Landing(props: LandingProps) {
 			<div className={styles.heroContainer}>
 				<Image
 					src="/images/hero.png"
+					priority
 					alt="Postcard"
 					width={1720}
 					height={641}

@@ -1,6 +1,6 @@
 import { IconProps } from "@/types/icons";
 
-export default function EditIcon(props: IconProps) {
+export default function ArrowLeftIcon(props: IconProps) {
 	const { width, height } = props;
 
 	return (

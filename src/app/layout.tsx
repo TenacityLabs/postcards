@@ -3,6 +3,7 @@ import "./globals.scss";
 import { UserProvider } from "@/app/context/userContext";
 import AuthRouter from "@/app/components/AuthRouter";
 import { Toaster } from "react-hot-toast";
+import { ModalProvider } from "./context/modalContext";
 
 export const metadata: Metadata = {
 	title: "Postcards",
@@ -18,9 +19,11 @@ export default function RootLayout({
 		<html lang="en">
 			<body>
 				<UserProvider>
-					<AuthRouter>
-						{children}
-					</AuthRouter>
+					<ModalProvider>
+						<AuthRouter>
+							{children}
+						</AuthRouter>
+					</ModalProvider>
 				</UserProvider>
 
 				<Toaster

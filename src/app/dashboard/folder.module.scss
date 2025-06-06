@@ -36,6 +36,11 @@
 	.trashIcon {
 		color: $neutral-50;
 		filter: drop-shadow(0px 0px 40px $neutral-950);
+		opacity: 0;
+	}
+
+	.trashIconVisible {
+		opacity: 1;
 	}
 
 	.plusCloud {
@@ -61,5 +66,85 @@
 
 	&:active~.folderButton {
 		transform: scale(0.95);
+	}
+}
+
+.deleteModal {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+
+	background-color: $neutral-50;
+	border-radius: 20px;
+	box-shadow: 4px 4px 15px 0px rgba($neutral-950, 0.15);
+	padding: 36px;
+	max-width: 440px;
+
+	.header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		h3 {
+			color: $neutral-900;
+			font-size: 22px;
+			font-style: normal;
+			font-weight: 700;
+			line-height: normal;
+		}
+
+		.closeButton {
+			background: none;
+			border: none;
+			cursor: pointer;
+
+			color: $neutral-700;
+
+			&:hover {
+				color: $neutral-900;
+			}
+		}
+	}
+
+	.description {
+		color: $neutral-800;
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 150%;
+	}
+
+	.deleteButton {
+		outline: none;
+		border: none;
+		cursor: pointer;
+
+		padding: 8px 16px;
+		border-radius: 10px;
+
+		color: $neutral-50;
+
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		background-color: $error-700;
+		@include transition-normal;
+
+		&:hover {
+			opacity: 0.9
+		}
+
+		&:active {
+			opacity: 0.9;
+			transform: scale(0.95);
+		}
+
+		.label {
+			font-size: 16px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 150%;
+		}
 	}
 }

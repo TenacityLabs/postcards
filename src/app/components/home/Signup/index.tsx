@@ -15,6 +15,7 @@ import { LOCALSTORAGE_JWT_KEY } from "@/constants/auth";
 import EyeIcon from "../../icons/EyeIcon";
 import EyeSlashIcon from "../../icons/EyeSlashIcon";
 import { validateEmail, validatePassword } from "@/utils/auth";
+import CircleXIcon from "../../icons/CircleXIcon";
 
 interface SignupProps {
 	email: string
@@ -107,7 +108,7 @@ export default function Signup(props: SignupProps) {
 							<button
 								onClick={navigateToLanding}
 							>
-								<ArrowLeftRoundedIcon width={24} height={24} />
+								<ArrowLeftRoundedIcon width={20} height={20} />
 							</button>
 							<h1>Sign up</h1>
 						</div>
@@ -116,8 +117,8 @@ export default function Signup(props: SignupProps) {
 							<Image
 								src="/images/stamp.png"
 								alt="Stamp"
-								width={230}
-								height={70}
+								width={170}
+								height={51}
 							/>
 						</div>
 					</div>
@@ -165,16 +166,26 @@ export default function Signup(props: SignupProps) {
 									>
 										{isPasswordVisible ? (
 											<EyeSlashIcon
-												width={36}
-												height={36}
+												width={28}
+												height={28}
 											/>
 										) : (
 											<EyeIcon
-												width={36}
-												height={36}
+												width={28}
+												height={28}
 											/>
 										)}
 									</button>
+								</div>
+							</div>
+
+							<div className={styles.passwordRequirements}>
+								<div className={styles.passwordRequirement}>
+									<CircleXIcon
+										width={36}
+										height={36}
+									/>
+									<span>At least 8 characters</span>
 								</div>
 							</div>
 						</div>
@@ -182,7 +193,7 @@ export default function Signup(props: SignupProps) {
 						<button
 							className={styles.submitButton}
 							type="submit"
-							disabled={!password}
+							disabled={!email || !password || !validatePassword(password)}
 						>
 							Continue
 						</button>

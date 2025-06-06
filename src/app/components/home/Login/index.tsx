@@ -82,7 +82,7 @@ export default function Login(props: LoginProps) {
 							<button
 								onClick={navigateToLanding}
 							>
-								<ArrowLeftRoundedIcon width={24} height={24} />
+								<ArrowLeftRoundedIcon width={20} height={20} />
 							</button>
 							<h1>Log in</h1>
 						</div>
@@ -91,8 +91,8 @@ export default function Login(props: LoginProps) {
 							<Image
 								src="/images/stamp.png"
 								alt="Stamp"
-								width={230}
-								height={70}
+								width={170}
+								height={51}
 							/>
 						</div>
 					</div>
@@ -135,13 +135,13 @@ export default function Login(props: LoginProps) {
 									>
 										{isPasswordVisible ? (
 											<EyeSlashIcon
-												width={36}
-												height={36}
+												width={28}
+												height={28}
 											/>
 										) : (
 											<EyeIcon
-												width={36}
-												height={36}
+												width={28}
+												height={28}
 											/>
 										)}
 									</button>

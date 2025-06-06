@@ -23,6 +23,7 @@
 
 .postcard {
 	width: calc(100vw - 128px);
+	max-width: 1300px;
 
 	background: url("/images/postcard-pattern.svg");
 	background-size: cover;
@@ -34,7 +35,7 @@
 
 .postcardContent {
 	background-color: $paper;
-	padding: 80px;
+	padding: 64px;
 	border-radius: 50px;
 	display: flex;
 	gap: 48px;
@@ -47,10 +48,9 @@
 	justify-content: space-between;
 
 	.navigation {
-		width: 240px;
 		display: flex;
 		align-items: center;
-		gap: 20px;
+		gap: 16px;
 
 		>button {
 			color: $neutral-900;
@@ -68,7 +68,7 @@
 
 		>h1 {
 			color: $neutral-900;
-			font-size: 48px;
+			font-size: 36px;
 			font-style: normal;
 			font-weight: 500;
 			line-height: 150%;
@@ -78,7 +78,7 @@
 }
 
 .divider {
-	background-color: $neutral-700;
+	background-color: $neutral-500;
 	width: 2px;
 	align-self: stretch;
 }
@@ -87,13 +87,13 @@
 	flex-grow: 1;
 	display: flex;
 	flex-direction: column;
-	gap: 48px;
+	gap: 36px;
 
 	.formContent {
 		flex-grow: 1;
 		display: flex;
 		flex-direction: column;
-		gap: 48px;
+		gap: 36px;
 	}
 
 	.formGroup {
@@ -114,7 +114,7 @@
 		.formInput {
 			width: 100%;
 			color: $neutral-800;
-			font-size: 24px;
+			font-size: 20px;
 			font-style: normal;
 			font-weight: 500;
 			line-height: 150%;
@@ -123,7 +123,7 @@
 			background-color: transparent;
 			outline: none;
 			border: none;
-			padding-bottom: 12px;
+			padding-bottom: 10px;
 			border-bottom: 1px solid $neutral-400;
 
 			&::placeholder {
@@ -146,7 +146,7 @@
 
 		.passwordVisibilityButton {
 			position: absolute;
-			right: 0;
+			right: 10px;
 			top: 0;
 
 			background-color: transparent;
@@ -170,20 +170,18 @@
 	}
 
 	.submitButton {
-		margin-top: 64px;
-
 		border-radius: 5px;
 		border: none;
 		outline: none;
 		cursor: pointer;
 
 		display: inline-flex;
-		padding: 10px 48px;
+		padding: 10px 36px;
 		justify-content: center;
 		width: fit-content;
 
 		color: $neutral-50;
-		font-size: 18px;
+		font-size: 16px;
 		font-style: normal;
 		font-weight: 700;
 		line-height: normal;

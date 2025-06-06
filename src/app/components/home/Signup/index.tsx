@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import styles from "../styles.module.scss";
 import Image from "next/image";
 import ArrowLeftRoundedIcon from "@/app/components/icons/ArrowLeftRoundedIcon";
@@ -12,27 +12,9 @@ import { sendAPIRequest } from "@/utils/api";
 import { APIEndpoints, APIMethods } from "@/types/api";
 import { useUser } from "@/app/context/userContext";
 import { LOCALSTORAGE_JWT_KEY } from "@/constants/auth";
-import EyeIcon from "../../icons/EyeIcon";
-import EyeSlashIcon from "../../icons/EyeSlashIcon";
-import { containsLowercaseLetter, containsNumber, containsUppercaseLetter, MINIMUM_PASSWORD_LENGTH, validateEmail, validatePassword } from "@/utils/auth";
-import CircleXIcon from "../../icons/CircleXIcon";
-import CircleCheckIcon from "../../icons/CircleCheckIcon";
-
-const CheckIcon = (isChecked: boolean) => {
-	if (isChecked) {
-		return (
-			<div className={styles.iconChecked}>
-				<CircleCheckIcon width={28} height={28} />
-			</div>
-		)
-	} else {
-		return (
-			<div className={styles.iconUnchecked}>
-				<CircleXIcon width={28} height={28} />
-			</div>
-		)
-	}
-}
+import { validateEmail, validatePassword } from "@/utils/auth";
+import AuthForm from "./AuthForm";
+import InfoForm from "./InfoForm";
 
 interface SignupProps {
 	email: string
@@ -44,16 +26,12 @@ export default function Signup(props: SignupProps) {
 	const { email, setEmail, navigateToLanding } = props
 	const { setUser } = useUser()
 	const [password, setPassword] = useState("");
-	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-	const [isSigningUp, setIsSigningUp] = useState(false);
-	const [isFillingSenderInfo, setIsFillingSenderInfo] = useState(false);
-	const passwordRef = useRef<HTMLInputElement>(null);
+	const [firstName, setFirstName] = useState("");
+	const [lastName, setLastName] = useState("");
+	const [displayName, setDisplayName] = useState("");
 
-	useEffect(() => {
-		if (passwordRef.current) {
-			passwordRef.current.focus()
-		}
-	}, [])
+	const [isFillingSenderInfo, setIsFillingSenderInfo] = useState(false);
+	const [isSigningUp, setIsSigningUp] = useState(false);
 
 	const handleContinue = useCallback((e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -83,9 +61,9 @@ export default function Signup(props: SignupProps) {
 			const response = await sendAPIRequest(APIEndpoints.Signup, APIMethods.POST, {
 				email: email.trim(),
 				password: password.trim(),
-				firstName: "",
-				lastName: "",
-				displayName: ""
+				firstName: firstName.trim(),
+				lastName: lastName.trim(),
+				displayName: displayName.trim()
 			})
 			localStorage.setItem(LOCALSTORAGE_JWT_KEY, response.token)
 			setUser(response.user)
@@ -101,7 +79,7 @@ export default function Signup(props: SignupProps) {
 			}
 			showToast("An error occurred while signing up", Status.ERROR)
 		}
-	}, [email, isSigningUp, password, setUser])
+	}, [email, isSigningUp, password, setUser, firstName, lastName, displayName])
 
 	return (
 		<>
@@ -122,12 +100,22 @@ export default function Signup(props: SignupProps) {
 				<div className={styles.postcardContent}>
 					<div className={styles.navigationContainer}>
 						<div className={styles.navigation}>
-							<button
-								onClick={navigateToLanding}
-							>
-								<ArrowLeftRoundedIcon width={20} height={20} />
-							</button>
-							<h1>Sign up</h1>
+							{isFillingSenderInfo ? (
+								<h1>
+									Sender information
+								</h1>
+							) : (
+								<>
+									<button
+										onClick={navigateToLanding}
+									>
+										<ArrowLeftRoundedIcon width={20} height={20} />
+									</button>
+									<h1>
+										Sign up
+									</h1>
+								</>
+							)}
 						</div>
 
 						<div>
@@ -142,91 +130,28 @@ export default function Signup(props: SignupProps) {
 
 					<div className={styles.divider} />
 
-					<form
-						className={styles.form}
-						onSubmit={handleContinue}
-					>
-						<div className={styles.formContent}>
-							<div className={styles.formGroup}>
-								<div className={styles.formLabel}>
-									EMAIL ADDRESS
-								</div>
-								<input
-									disabled={isSigningUp}
-									className={styles.formInput}
-									placeholder="Enter your email address"
-									value={email}
-									type="email"
-									onChange={(e) => setEmail(e.target.value)}
-								/>
-							</div>
-
-							<div className={styles.formGroup}>
-								<div className={styles.formLabel}>
-									PASSWORD
-								</div>
-								<div className={styles.passwordInputContainer}>
-									<input
-										ref={passwordRef}
-										disabled={isSigningUp}
-										className={styles.passwordInput}
-										placeholder="Enter your password"
-										type={isPasswordVisible ? "text" : "password"}
-										value={password}
-										onChange={(e) => setPassword(e.target.value)}
-									/>
-
-									<button
-										className={styles.passwordVisibilityButton}
-										type="button"
-										onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-									>
-										{isPasswordVisible ? (
-											<EyeSlashIcon
-												width={28}
-												height={28}
-											/>
-										) : (
-											<EyeIcon
-												width={28}
-												height={28}
-											/>
-										)}
-									</button>
-								</div>
-							</div>
-
-							<div className={styles.passwordRequirements}>
-								<div className={styles.requirement}>
-									{CheckIcon(password.length >= MINIMUM_PASSWORD_LENGTH)}
-									<div className={styles.text}>
-										At least 8 characters
-									</div>
-								</div>
-								<div className={styles.requirement}>
-									{CheckIcon(containsLowercaseLetter(password) && containsUppercaseLetter(password))}
-									<div className={styles.text}>
-										Includes a lowercase letter and an uppercase letter
-									</div>
-								</div>
-								<div className={styles.requirement}>
-									{CheckIcon(containsNumber(password))}
-									<div className={styles.text}>
-										Includes a number
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<button
-							className={styles.submitButton}
-							type="submit"
-							disabled={!email || !password || !validatePassword(password)}
-						>
-							Continue
-						</button>
-					</form>
-
+					{isFillingSenderInfo ? (
+						<InfoForm
+							backToAuth={() => setIsFillingSenderInfo(false)}
+							handleSignup={handleSignup}
+							loading={isSigningUp}
+							firstName={firstName}
+							setFirstName={setFirstName}
+							lastName={lastName}
+							setLastName={setLastName}
+							displayName={displayName}
+							setDisplayName={setDisplayName}
+						/>
+					) : (
+						<AuthForm
+							handleContinue={handleContinue}
+							loading={isSigningUp}
+							email={email}
+							setEmail={setEmail}
+							password={password}
+							setPassword={setPassword}
+						/>
+					)}
 				</div>
 			</div>
 		</>

@@ -67,8 +67,9 @@
 		}
 
 		>h1 {
+			max-width: 160px;
 			color: $neutral-900;
-			font-size: 36px;
+			font-size: 32px;
 			font-style: normal;
 			font-weight: 500;
 			line-height: 150%;
@@ -88,6 +89,7 @@
 	display: flex;
 	flex-direction: column;
 	gap: 36px;
+	min-height: 460px;
 
 	.formContent {
 		flex-grow: 1;
@@ -169,6 +171,13 @@
 		}
 	}
 
+	.submitContainer {
+		display: flex;
+		align-items: center;
+		gap: 18px;
+	}
+
+	.backButton,
 	.submitButton {
 		border-radius: 5px;
 		border: none;
@@ -204,6 +213,20 @@
 			background-color: $neutral-400;
 			transform: scale(1);
 			box-shadow: none;
+		}
+	}
+
+	.backButton {
+		background-color: $neutral-300;
+		color: $neutral-800;
+
+		&:hover {
+			background-color: $neutral-400;
+		}
+
+		&:active {
+			background-color: $neutral-400;
+			transform: scale(0.95);
 		}
 	}
 }

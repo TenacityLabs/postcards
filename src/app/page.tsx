@@ -23,6 +23,7 @@ export default function Home() {
 					<Login
 						email={email}
 						navigateToLanding={() => setAuthPage(AuthPage.Landing)}
+						navigateToSignup={() => setAuthPage(AuthPage.Signup)}
 					/>
 				)
 			case AuthPage.Signup:

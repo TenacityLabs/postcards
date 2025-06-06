@@ -45,65 +45,279 @@
 	display: flex;
 	gap: 48px;
 	min-height: 512px;
-}
 
-.navigationContainer {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-
-	.navigation {
+	.navigationContainer {
 		display: flex;
-		align-items: center;
-		gap: 16px;
+		flex-direction: column;
+		justify-content: space-between;
 
-		>button {
-			color: $neutral-900;
-			background-color: transparent;
-			border: none;
-			padding: 0;
-			margin: 0;
-			cursor: pointer;
-			@include transition-normal;
+		.navigation {
+			display: flex;
+			align-items: center;
+			gap: 16px;
 
-			&:hover {
-				transform: translateX(-4px);
+			>button {
+				color: $neutral-900;
+				background-color: transparent;
+				border: none;
+				padding: 0;
+				margin: 0;
+				cursor: pointer;
+				@include transition-normal;
+
+				&:hover {
+					transform: translateX(-4px);
+				}
+			}
+
+			>h1 {
+				max-width: 160px;
+				color: $neutral-900;
+				font-size: 32px;
+				font-style: normal;
+				font-weight: 500;
+				line-height: 150%;
+				letter-spacing: -0.5px;
+			}
+		}
+	}
+
+	.divider {
+		background-color: $neutral-500;
+		width: 2px;
+		align-self: stretch;
+	}
+
+	.form {
+		flex-grow: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 36px;
+		min-height: 460px;
+
+		.formContent {
+			flex-grow: 1;
+			display: flex;
+			flex-direction: column;
+			gap: 36px;
+		}
+
+		.formGroup {
+			display: flex;
+			flex-direction: column;
+			gap: 18px;
+
+			.formLabel {
+				color: $neutral-600;
+				font-size: 14px;
+				font-style: normal;
+				font-weight: 700;
+				line-height: 150%;
+				letter-spacing: -0.15px;
+			}
+
+			.passwordInput,
+			.formInput {
+				width: 100%;
+				color: $neutral-800;
+				font-size: 20px;
+				font-style: normal;
+				font-weight: 500;
+				line-height: 150%;
+				letter-spacing: -0.25px;
+
+				background-color: transparent;
+				outline: none;
+				border: none;
+				padding-bottom: 10px;
+				border-bottom: 1px solid $neutral-400;
+
+				&::placeholder {
+					color: $neutral-500;
+				}
+
+				&.formInputDisabled {
+					cursor: not-allowed;
+				}
+			}
+
+			.passwordInput {
+				padding-right: 48px;
+			}
+
+			.passwordInputContainer {
+				width: 100%;
+				position: relative;
+			}
+
+			.passwordVisibilityButton {
+				position: absolute;
+				right: 10px;
+				top: 0;
+
+				background-color: transparent;
+				border: none;
+				padding: 0;
+				margin: 0;
+				cursor: pointer;
+				@include transition-normal;
+
+				color: $neutral-500;
+
+				&:hover {
+					color: $neutral-800;
+				}
+
+				&:active {
+					color: $neutral-800;
+					transform: scale(0.95);
+				}
 			}
 		}
 
-		>h1 {
-			max-width: 160px;
-			color: $neutral-900;
-			font-size: 32px;
+		.submitContainer {
+			display: flex;
+			align-items: center;
+			gap: 18px;
+		}
+
+		.backButton,
+		.submitButton {
+			border-radius: 5px;
+			border: none;
+			outline: none;
+			cursor: pointer;
+
+			display: inline-flex;
+			padding: 10px 36px;
+			justify-content: center;
+			width: fit-content;
+
+			color: $neutral-50;
+			font-size: 16px;
 			font-style: normal;
-			font-weight: 500;
-			line-height: 150%;
-			letter-spacing: -0.5px;
+			font-weight: 700;
+			line-height: normal;
+
+			@include transition-normal;
+			background-color: $neutral-700;
+
+			&:hover {
+				background-color: $neutral-800;
+			}
+
+			&:active {
+				background-color: $neutral-800;
+				transform: scale(0.95);
+				box-shadow: 4px 4px 20px 0px rgba($neutral-950, 0.1);
+			}
+
+			&:disabled {
+				cursor: not-allowed;
+				background-color: $neutral-400;
+				transform: scale(1);
+				box-shadow: none;
+			}
+		}
+
+		.backButton {
+			background-color: $neutral-300;
+			color: $neutral-800;
+
+			&:hover {
+				background-color: $neutral-400;
+			}
+
+			&:active {
+				background-color: $neutral-400;
+				transform: scale(0.95);
+			}
+		}
+	}
+
+	.passwordRequirements {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+
+		.requirement {
+			display: flex;
+			gap: 12px;
+			align-items: center;
+
+			.iconChecked {
+				color: $success-700;
+			}
+
+			.iconUnchecked {
+				color: $error-700;
+			}
+
+			>.text {
+				color: $neutral-700;
+				font-size: 18px;
+				font-style: normal;
+				font-weight: 500;
+				line-height: 150%;
+				letter-spacing: -0.2px;
+			}
 		}
 	}
 }
 
-.divider {
-	background-color: $neutral-500;
-	width: 2px;
-	align-self: stretch;
-}
+.simpleAuth {
+	width: 100%;
+	max-width: 400px;
 
-.form {
-	flex-grow: 1;
 	display: flex;
+	text-align: center;
 	flex-direction: column;
-	gap: 36px;
-	min-height: 460px;
+	align-items: center;
+	gap: 24px;
 
-	.formContent {
-		flex-grow: 1;
+	.logoContainerMobile {
+		padding-top: 20px;
+		display: flex;
+		gap: 8px;
+
+		background-color: transparent;
+		border: none;
+		outline: none;
+		cursor: pointer;
+
+		h2 {
+			color: $neutral-900;
+			font-size: 28px;
+			font-style: normal;
+			font-weight: 600;
+			line-height: normal;
+		}
+	}
+
+
+	h1 {
+		color: $neutral-900;
+		font-size: 48px;
+		font-style: normal;
+		font-weight: 700;
+		line-height: normal;
+	}
+
+	.form {
+		width: 100%;
 		display: flex;
 		flex-direction: column;
 		gap: 36px;
 	}
 
+	.formContent {
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+	}
+
 	.formGroup {
+		text-align: left;
 		display: flex;
 		flex-direction: column;
 		gap: 18px;
@@ -176,91 +390,83 @@
 		}
 	}
 
-	.submitContainer {
+	.authFooter,
+	.infoFooter {
 		display: flex;
+		flex-direction: column;
 		align-items: center;
 		gap: 18px;
-	}
 
-	.backButton,
-	.submitButton {
-		border-radius: 5px;
-		border: none;
-		outline: none;
-		cursor: pointer;
 
-		display: inline-flex;
-		padding: 10px 36px;
-		justify-content: center;
-		width: fit-content;
+		.backButton,
+		.submitButton {
+			border-radius: 5px;
+			border: none;
+			outline: none;
+			cursor: pointer;
 
-		color: $neutral-50;
-		font-size: 16px;
-		font-style: normal;
-		font-weight: 700;
-		line-height: normal;
+			display: inline-flex;
+			padding: 10px 48px;
+			justify-content: center;
+			width: fit-content;
 
-		@include transition-normal;
-		background-color: $neutral-700;
-
-		&:hover {
-			background-color: $neutral-800;
-		}
-
-		&:active {
-			background-color: $neutral-800;
-			transform: scale(0.95);
-			box-shadow: 4px 4px 20px 0px rgba($neutral-950, 0.1);
-		}
-
-		&:disabled {
-			cursor: not-allowed;
-			background-color: $neutral-400;
-			transform: scale(1);
-			box-shadow: none;
-		}
-	}
-
-	.backButton {
-		background-color: $neutral-300;
-		color: $neutral-800;
-
-		&:hover {
-			background-color: $neutral-400;
-		}
-
-		&:active {
-			background-color: $neutral-400;
-			transform: scale(0.95);
-		}
-	}
-}
-
-.passwordRequirements {
-	display: flex;
-	flex-direction: column;
-	gap: 12px;
-
-	.requirement {
-		display: flex;
-		gap: 12px;
-		align-items: center;
-
-		.iconChecked {
-			color: $success-700;
-		}
-
-		.iconUnchecked {
-			color: $error-700;
-		}
-
-		>.text {
-			color: $neutral-700;
+			color: $neutral-50;
 			font-size: 18px;
 			font-style: normal;
-			font-weight: 500;
-			line-height: 150%;
-			letter-spacing: -0.2px;
+			font-weight: 700;
+			line-height: normal;
+
+			@include transition-normal;
+			background-color: $neutral-700;
+
+			&:hover {
+				background-color: $neutral-800;
+			}
+
+			&:active {
+				background-color: $neutral-800;
+				transform: scale(0.95);
+				box-shadow: 4px 4px 20px 0px rgba($neutral-950, 0.1);
+			}
+
+			&:disabled {
+				cursor: not-allowed;
+				background-color: $neutral-400;
+				transform: scale(1);
+				box-shadow: none;
+			}
+		}
+
+		.backButton {
+			background-color: $neutral-300;
+			color: $neutral-800;
+
+			&:hover {
+				background-color: $neutral-400;
+			}
+
+			&:active {
+				background-color: $neutral-400;
+				transform: scale(0.95);
+			}
+		}
+
+		.link {
+			background-color: transparent;
+			border: none;
+			outline: none;
+			cursor: pointer;
+
+			color: $neutral-600;
+			font-size: 16px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: normal;
+			text-decoration-line: underline;
+
+			&:hover {
+				color: $neutral-800;
+			}
 		}
 	}
 }

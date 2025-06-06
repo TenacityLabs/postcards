@@ -10,15 +10,19 @@ import { APIEndpoints, APIMethods } from "@/types/api";
 import { useUser } from "@/app/context/userContext";
 import { LOCALSTORAGE_JWT_KEY } from "@/constants/auth";
 import LoginDesktop from "./desktop";
+import { useScreenSize } from "@/app/hooks/useScreenSize";
+import LoginMobile from "./mobile";
 
 interface LoginProps {
 	email: string
 	navigateToLanding: () => void
+	navigateToSignup: () => void
 }
 
 export default function Login(props: LoginProps) {
-	const { email, navigateToLanding } = props
+	const { email, navigateToLanding, navigateToSignup } = props
 	const { setUser } = useUser()
+	const { screenWidth } = useScreenSize()
 	const [password, setPassword] = useState("");
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 	const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -58,16 +62,30 @@ export default function Login(props: LoginProps) {
 
 	return (
 		<>
-			<LoginDesktop
-				email={email}
-				password={password}
-				setPassword={setPassword}
-				isLoggingIn={isLoggingIn}
-				handleSubmit={handleSubmit}
-				isPasswordVisible={isPasswordVisible}
-				setIsPasswordVisible={setIsPasswordVisible}
-				navigateToLanding={navigateToLanding}
-			/>
+			{screenWidth > 1000 ? (
+				<LoginDesktop
+					email={email}
+					password={password}
+					setPassword={setPassword}
+					isLoggingIn={isLoggingIn}
+					handleSubmit={handleSubmit}
+					isPasswordVisible={isPasswordVisible}
+					setIsPasswordVisible={setIsPasswordVisible}
+					navigateToLanding={navigateToLanding}
+				/>
+			) : (
+				<LoginMobile
+					email={email}
+					password={password}
+					setPassword={setPassword}
+					isLoggingIn={isLoggingIn}
+					handleSubmit={handleSubmit}
+					isPasswordVisible={isPasswordVisible}
+					setIsPasswordVisible={setIsPasswordVisible}
+					navigateToLanding={navigateToLanding}
+					navigateToSignup={navigateToSignup}
+				/>
+			)}
 		</>
 	);
 }

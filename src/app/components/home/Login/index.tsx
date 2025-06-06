@@ -152,7 +152,7 @@ export default function Login(props: LoginProps) {
 						<button
 							className={styles.submitButton}
 							type="submit"
-							disabled={!password}
+							disabled={isLoggingIn || !password}
 						>
 							Log in
 						</button>

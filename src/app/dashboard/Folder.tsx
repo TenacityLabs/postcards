@@ -5,13 +5,16 @@ import { Postcard } from "@/types/postcard"
 import Image from "next/image"
 import Link from "next/link"
 import { useMemo } from "react"
+import TrashIcon from '../components/icons/TrashIcon'
 
 interface FolderProps {
 	postcard: Postcard
+	isEditing: boolean
+	handleDeletePostcard: () => void
 }
 
 export default function Folder(props: FolderProps) {
-	const { postcard } = props
+	const { postcard, isEditing, handleDeletePostcard } = props
 
 	const dateString = useMemo(() => {
 		const dateObject = new Date(postcard.createdAt)
@@ -23,23 +26,50 @@ export default function Folder(props: FolderProps) {
 
 	return (
 		<div className={styles.container}>
-			<Link
-				href={`/postcard/${postcard._id}/edit`}
-				className={styles.title}
-			>
-				{dateString}
-			</Link>
-			<Link
-				href={`/postcard/${postcard._id}/edit`}
-				className={styles.folderButton}
-			>
-				<Image
-					src={`/images/folders/${FOLDER_IMAGES[postcard.folderPattern]}`}
-					alt="Folder"
-					width={300}
-					height={200}
-				/>
-			</Link>
+			{isEditing ? (
+				<>
+					<button
+						className={styles.title}
+						onClick={handleDeletePostcard}
+					>
+						{dateString}
+					</button>
+					<button
+						className={styles.folderButton}
+						onClick={handleDeletePostcard}
+					>
+						<Image
+							src={`/images/folders/${FOLDER_IMAGES[postcard.folderPattern]}`}
+							alt="Folder"
+							width={300}
+							height={200}
+						/>
+						<div className={styles.trashIcon}>
+							<TrashIcon width={64} height={64} />
+						</div>
+					</button>
+				</>
+			) : (
+				<>
+					<Link
+						href={`/postcard/${postcard._id}/edit`}
+						className={styles.title}
+					>
+						{dateString}
+					</Link>
+					<Link
+						href={`/postcard/${postcard._id}/edit`}
+						className={styles.folderButton}
+					>
+						<Image
+							src={`/images/folders/${FOLDER_IMAGES[postcard.folderPattern]}`}
+							alt="Folder"
+							width={300}
+							height={200}
+						/>
+					</Link>
+				</>
+			)}
 		</div>
 	)
 }

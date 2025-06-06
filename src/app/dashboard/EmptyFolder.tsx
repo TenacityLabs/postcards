@@ -39,7 +39,7 @@ export default function EmptyFolder() {
 						postcards: response.postcards,
 					}
 				})
-			}, 3000)
+			}, 2000)
 		} catch (error) {
 			setCreatingPostcard(false)
 			if (error instanceof AxiosError) {

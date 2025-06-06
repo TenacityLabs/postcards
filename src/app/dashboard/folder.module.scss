@@ -12,6 +12,7 @@
 	border: none;
 	cursor: pointer;
 	position: relative;
+	height: 200px;
 	@include no-drag;
 
 	>* {
@@ -22,14 +23,23 @@
 		backdrop-filter: blur(5px);
 	}
 
+	>.trashIcon,
 	>.plusCloud {
-		color: $neutral-700;
 		position: absolute;
 		top: 55%;
 		left: 50%;
 		transform: translate(-50%, -50%);
 
 		@include transition-normal;
+	}
+
+	.trashIcon {
+		color: $neutral-50;
+		filter: drop-shadow(0px 0px 40px $neutral-950);
+	}
+
+	.plusCloud {
+		color: $neutral-700;
 	}
 
 	&:active {

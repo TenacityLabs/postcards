@@ -4,14 +4,81 @@
 	@include grid-background;
 
 	min-height: 100vh;
+	padding: 64px 72px;
 
 	display: flex;
-	flex-direction: column;
-	align-items: center;
+	justify-content: center;
+}
+
+.container {
+	display: inline-block;
 }
 
 .header {
-	max-width: 1128px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	margin-bottom: 48px;
+
+	.logoContainer {
+		display: flex;
+		align-items: center;
+		padding: 10px;
+		gap: 12px;
+		text-decoration: none;
+
+		>h1 {
+			color: $neutral-900;
+			font-size: 27px;
+			font-style: normal;
+			font-weight: 600;
+			line-height: normal;
+		}
+	}
+
+	.headerBottom {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		>h1 {
+			color: $neutral-900;
+			font-size: 36px;
+			font-style: normal;
+			font-weight: 600;
+			line-height: normal;
+		}
+
+		>button {
+			padding: 8px 12px;
+			border-radius: 5px;
+			display: flex;
+			gap: 10px;
+			border: none;
+			outline: none;
+			cursor: pointer;
+
+			background-color: $neutral-700;
+			@include transition-normal;
+
+			span {
+				color: $neutral-50;
+				font-size: 18px;
+				font-style: normal;
+				font-weight: 700;
+				line-height: normal;
+			}
+
+			&:hover {
+				background-color: $neutral-800;
+			}
+
+			&:active {
+				background-color: $neutral-800;
+				transform: scale(0.95);
+			}
+		}
+	}
 }
 
 .foldersGrid {

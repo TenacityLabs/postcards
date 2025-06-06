@@ -7,34 +7,27 @@ import { sendAPIRequest } from "@/utils/api";
 import { APIEndpoints, APIMethods } from "@/types/api";
 import Folder from './Folder';
 import EmptyFolder from './EmptyFolder';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useState } from 'react';
 
 export default function Dashboard() {
-	const { user, setUser, loading, logout } = useUser()
+	const { user, setUser, loading } = useUser()
+	const [isEditing, setIsEditing] = useState(false)
 
-	const handleCreatePostcard = async () => {
+	const handleDeletePostcard = async (postcardId: string) => {
 		try {
-			const response = await sendAPIRequest(
-				APIEndpoints.CreatePostcard,
-				APIMethods.POST,
-				undefined
-			)
-			ClientLogger.info(`Postcard created: ${JSON.stringify(response)}`)
+			// Optimistically update the user state
 			setUser((prev) => {
 				if (!prev) {
 					return null
 				}
 				return {
 					...prev,
-					postcards: response.postcards,
+					postcards: prev.postcards.filter((postcard) => postcard._id !== postcardId),
 				}
 			})
-		} catch (error) {
-			ClientLogger.error(error)
-		}
-	}
 
-	const handleDeletePostcard = async (postcardId: string) => {
-		try {
 			const response = await sendAPIRequest(
 				APIEndpoints.DeletePostcard,
 				APIMethods.POST,
@@ -63,37 +56,47 @@ export default function Dashboard() {
 
 	return (
 		<div className={styles.page}>
-			<div className={styles.header}>
-				{loading ? (
-					<div className={styles.skeletonHeader} />
-				) : (
-					<h1>
-						Welcome back, {user?.firstName}
-					</h1>
-				)}
-			</div>
+			<div className={styles.container}>
+				<div className={styles.header}>
+					<Link href="/" className={styles.logoContainer}>
+						<Image
+							src="/logos/logo-128.svg"
+							alt="Postcards"
+							width={36}
+							height={36}
+						/>
+						<h1>Postcards</h1>
+					</Link>
 
-			<div>
-				<button onClick={logout}>Logout</button>
-			</div>
-			<div>
-				<button onClick={handleCreatePostcard}>Create New</button>
-			</div>
+					<div className={styles.headerBottom}>
+						{loading ? (
+							<div className={styles.skeletonHeader} />
+						) : (
+							<h1>
+								Welcome back, {user?.firstName}
+							</h1>
+						)}
 
-			{user?.postcards.map((postcard) => (
-				<div key={postcard._id}>
-					<button onClick={() => handleDeletePostcard(postcard._id)}>Delete</button>
+						<button onClick={() => setIsEditing(!isEditing)}>
+							<span>
+								Edit
+							</span>
+						</button>
+					</div>
 				</div>
-			))}
 
-			<div className={styles.foldersGrid}>
-				<EmptyFolder />
-				{user?.postcards.map((postcard) => (
-					<Folder
-						key={postcard._id}
-						postcard={postcard}
-					/>
-				))}
+				<div className={styles.foldersGrid}>
+					<EmptyFolder />
+					{user?.postcards.map((postcard) => (
+						<Folder
+							key={postcard._id}
+							postcard={postcard}
+							isEditing={isEditing}
+							handleDeletePostcard={() => handleDeletePostcard(postcard._id)}
+						/>
+					))}
+				</div>
+
 			</div>
 		</div>
 	);

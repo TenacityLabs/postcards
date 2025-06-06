@@ -1,13 +1,15 @@
 "use client"
 
+import styles from './styles.module.scss'
 import { useUser } from "../context/userContext";
 import { ClientLogger } from "@/utils/clientLogger";
 import { sendAPIRequest } from "@/utils/api";
 import Link from "next/link";
 import { APIEndpoints, APIMethods } from "@/types/api";
+import Folder from './Folder';
 
 export default function Dashboard() {
-	const { user, setUser, logout } = useUser()
+	const { user, setUser, loading, logout } = useUser()
 
 	const handleCreatePostcard = async () => {
 		try {
@@ -55,11 +57,22 @@ export default function Dashboard() {
 		}
 	}
 
+	if (loading || !user) {
+		return null
+	}
+
 	return (
-		<div>
-			<div>
-				Hi {user?.email}
+		<div className={styles.page}>
+			<div className={styles.header}>
+				{loading ? (
+					<div className={styles.skeletonHeader} />
+				) : (
+					<h1>
+						Welcome back, {user?.firstName}
+					</h1>
+				)}
 			</div>
+
 			<div>
 				<button onClick={logout}>Logout</button>
 			</div>
@@ -69,13 +82,20 @@ export default function Dashboard() {
 
 			{user?.postcards.map((postcard) => (
 				<div key={postcard._id}>
-					<Link href={`/postcard/${postcard._id}/edit`}>
-						Postcard {new Date(postcard.createdAt).toLocaleDateString()}
-					</Link>
+					<Folder postcard={postcard} />
 
 					<button onClick={() => handleDeletePostcard(postcard._id)}>Delete</button>
 				</div>
 			))}
+
+			<div className={styles.foldersGrid}>
+				{user?.postcards.map((postcard) => (
+					<Folder
+						key={postcard._id}
+						postcard={postcard}
+					/>
+				))}
+			</div>
 		</div>
 	);
 }

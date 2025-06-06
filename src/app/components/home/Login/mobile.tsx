@@ -40,6 +40,7 @@ export default function LoginMobile(props: LoginMobileProps) {
 						alt="Postcards"
 						width={36}
 						height={36}
+						className={styles.logo}
 					/>
 					<h2>Postcards</h2>
 				</button>

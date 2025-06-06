@@ -14,8 +14,25 @@ import { useUser } from "@/app/context/userContext";
 import { LOCALSTORAGE_JWT_KEY } from "@/constants/auth";
 import EyeIcon from "../../icons/EyeIcon";
 import EyeSlashIcon from "../../icons/EyeSlashIcon";
-import { validateEmail, validatePassword } from "@/utils/auth";
+import { containsLowercaseLetter, containsNumber, containsSpecialCharacter, containsUppercaseLetter, MINIMUM_PASSWORD_LENGTH, validateEmail, validatePassword } from "@/utils/auth";
 import CircleXIcon from "../../icons/CircleXIcon";
+import CircleCheckIcon from "../../icons/CircleCheckIcon";
+
+const CheckIcon = (isChecked: boolean) => {
+	if (isChecked) {
+		return (
+			<div className={styles.iconChecked}>
+				<CircleCheckIcon width={28} height={28} />
+			</div>
+		)
+	} else {
+		return (
+			<div className={styles.iconUnchecked}>
+				<CircleXIcon width={28} height={28} />
+			</div>
+		)
+	}
+}
 
 interface SignupProps {
 	email: string
@@ -180,12 +197,23 @@ export default function Signup(props: SignupProps) {
 							</div>
 
 							<div className={styles.passwordRequirements}>
-								<div className={styles.passwordRequirement}>
-									<CircleXIcon
-										width={36}
-										height={36}
-									/>
-									<span>At least 8 characters</span>
+								<div className={styles.requirement}>
+									{CheckIcon(password.length >= MINIMUM_PASSWORD_LENGTH)}
+									<div className={styles.text}>
+										At least 8 characters
+									</div>
+								</div>
+								<div className={styles.requirement}>
+									{CheckIcon(containsLowercaseLetter(password) && containsUppercaseLetter(password) && containsNumber(password))}
+									<div className={styles.text}>
+										Includes a lowercase letter, an uppercase letter, and a number
+									</div>
+								</div>
+								<div className={styles.requirement}>
+									{CheckIcon(containsSpecialCharacter(password))}
+									<div className={styles.text}>
+										Includes a special character (#, $)
+									</div>
 								</div>
 							</div>
 						</div>

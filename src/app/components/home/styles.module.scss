@@ -207,3 +207,32 @@
 		}
 	}
 }
+
+.passwordRequirements {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+
+	.requirement {
+		display: flex;
+		gap: 12px;
+		align-items: center;
+
+		.iconChecked {
+			color: $success-700;
+		}
+
+		.iconUnchecked {
+			color: $error-700;
+		}
+
+		>.text {
+			color: $neutral-700;
+			font-size: 18px;
+			font-style: normal;
+			font-weight: 500;
+			line-height: 150%;
+			letter-spacing: -0.2px;
+		}
+	}
+}

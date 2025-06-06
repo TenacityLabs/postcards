@@ -39,8 +39,29 @@ export const validateEmail = (email: string) => {
 	return emailRegex.test(email);
 }
 
+export const MINIMUM_PASSWORD_LENGTH = 8;
+
+export const containsLowercaseLetter = (password: string) => {
+	return password.match(/[a-z]/g) !== null;
+}
+
+export const containsUppercaseLetter = (password: string) => {
+	return password.match(/[A-Z]/g) !== null;
+}
+
+export const containsNumber = (password: string) => {
+	return password.match(/[0-9]/g) !== null;
+}
+
+export const containsSpecialCharacter = (password: string) => {
+	const specialCharacters = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '-', '=', '[', ']', '{', '}', ';', ':', '"', '|', ',', '.', '<', '>', '/', '?'];
+	return specialCharacters.some(char => password.includes(char));
+}
+
 export const validatePassword = (password: string) => {
-	// At least 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number, 1 special character
-	const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-	return passwordRegex.test(password);
+	return password.length >= MINIMUM_PASSWORD_LENGTH &&
+		containsLowercaseLetter(password) &&
+		containsSpecialCharacter(password) &&
+		containsUppercaseLetter(password) &&
+		containsNumber(password);
 }

@@ -1,6 +1,10 @@
-import { CARD_COLORS, TAPE_CHANCE, TAPE_PATTERNS } from '@/constants/postcard'
+import { CARD_COLORS, FOLDER_IMAGES, TAPE_CHANCE, TAPE_PATTERNS } from '@/constants/postcard'
 import { validateDate } from '@/utils/date'
 import mongoose, { Schema, Document } from 'mongoose'
+
+const generateRandomFolderPattern = () => {
+	return Math.floor(Math.random() * FOLDER_IMAGES.length)
+}
 
 const generateRandomTapePattern = () => {
 	if (Math.random() < TAPE_CHANCE) {
@@ -95,6 +99,7 @@ export interface IPostcard extends Document {
 	_id: mongoose.Types.ObjectId
 	user: mongoose.Types.ObjectId
 	entries: IEntry[]
+	folderPattern: number
 	createdAt: number
 	updatedAt: number
 }
@@ -110,6 +115,11 @@ const PostcardSchema = new Schema<IPostcard>({
 	entries: {
 		type: [EntrySchema],
 		required: true,
+	},
+	folderPattern: {
+		type: Number,
+		required: true,
+		default: generateRandomFolderPattern,
 	},
 	createdAt: {
 		type: Number,

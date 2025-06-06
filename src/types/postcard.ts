@@ -5,6 +5,7 @@ export interface Postcard {
 	_id: string
 	user: User
 	entries: Entry[]
+	folderPattern: number
 	createdAt: number
 	updatedAt: number
 }

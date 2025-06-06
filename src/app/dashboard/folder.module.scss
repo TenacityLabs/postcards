@@ -1,0 +1,55 @@
+@use '@/app/system.scss' as *;
+
+.container {
+	display: flex;
+	flex-direction: column-reverse;
+	align-items: center;
+	gap: 20px;
+}
+
+.folderButton {
+	background: none;
+	border: none;
+	cursor: pointer;
+	position: relative;
+	@include no-drag;
+
+	>* {
+		@include no-drag;
+	}
+
+	>.folder {
+		backdrop-filter: blur(5px);
+	}
+
+	>.plusCloud {
+		color: $neutral-700;
+		position: absolute;
+		top: 55%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+
+		@include transition-normal;
+	}
+
+	&:active {
+		transform: scale(0.95);
+	}
+}
+
+.title {
+	text-decoration: none;
+	background: none;
+	border: none;
+	cursor: pointer;
+
+	color: $neutral-950;
+	font-size: 20px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+
+	&:active~.folderButton {
+		transform: scale(0.95);
+	}
+}

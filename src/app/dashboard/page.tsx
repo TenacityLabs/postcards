@@ -4,9 +4,9 @@ import styles from './styles.module.scss'
 import { useUser } from "../context/userContext";
 import { ClientLogger } from "@/utils/clientLogger";
 import { sendAPIRequest } from "@/utils/api";
-import Link from "next/link";
 import { APIEndpoints, APIMethods } from "@/types/api";
 import Folder from './Folder';
+import EmptyFolder from './EmptyFolder';
 
 export default function Dashboard() {
 	const { user, setUser, loading, logout } = useUser()
@@ -82,13 +82,12 @@ export default function Dashboard() {
 
 			{user?.postcards.map((postcard) => (
 				<div key={postcard._id}>
-					<Folder postcard={postcard} />
-
 					<button onClick={() => handleDeletePostcard(postcard._id)}>Delete</button>
 				</div>
 			))}
 
 			<div className={styles.foldersGrid}>
+				<EmptyFolder />
 				{user?.postcards.map((postcard) => (
 					<Folder
 						key={postcard._id}

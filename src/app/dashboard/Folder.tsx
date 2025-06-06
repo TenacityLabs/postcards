@@ -1,5 +1,8 @@
+import styles from './folder.module.scss'
 import { MONTHS } from "@/constants/date"
+import { FOLDER_IMAGES } from "@/constants/postcard"
 import { Postcard } from "@/types/postcard"
+import Image from "next/image"
 import Link from "next/link"
 import { useMemo } from "react"
 
@@ -19,9 +22,23 @@ export default function Folder(props: FolderProps) {
 	}, [postcard.createdAt])
 
 	return (
-		<div>
-			<Link href={`/postcard/${postcard._id}/edit`}>
+		<div className={styles.container}>
+			<Link
+				href={`/postcard/${postcard._id}/edit`}
+				className={styles.title}
+			>
 				{dateString}
+			</Link>
+			<Link
+				href={`/postcard/${postcard._id}/edit`}
+				className={styles.folderButton}
+			>
+				<Image
+					src={`/images/folders/${FOLDER_IMAGES[postcard.folderPattern]}`}
+					alt="Folder"
+					width={300}
+					height={200}
+				/>
 			</Link>
 		</div>
 	)

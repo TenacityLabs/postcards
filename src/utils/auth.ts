@@ -53,15 +53,9 @@ export const containsNumber = (password: string) => {
 	return password.match(/[0-9]/g) !== null;
 }
 
-export const containsSpecialCharacter = (password: string) => {
-	const specialCharacters = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '-', '=', '[', ']', '{', '}', ';', ':', '"', '|', ',', '.', '<', '>', '/', '?'];
-	return specialCharacters.some(char => password.includes(char));
-}
-
 export const validatePassword = (password: string) => {
 	return password.length >= MINIMUM_PASSWORD_LENGTH &&
 		containsLowercaseLetter(password) &&
-		containsSpecialCharacter(password) &&
 		containsUppercaseLetter(password) &&
 		containsNumber(password);
 }

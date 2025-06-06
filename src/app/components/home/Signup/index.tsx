@@ -14,7 +14,7 @@ import { useUser } from "@/app/context/userContext";
 import { LOCALSTORAGE_JWT_KEY } from "@/constants/auth";
 import EyeIcon from "../../icons/EyeIcon";
 import EyeSlashIcon from "../../icons/EyeSlashIcon";
-import { containsLowercaseLetter, containsNumber, containsSpecialCharacter, containsUppercaseLetter, MINIMUM_PASSWORD_LENGTH, validateEmail, validatePassword } from "@/utils/auth";
+import { containsLowercaseLetter, containsNumber, containsUppercaseLetter, MINIMUM_PASSWORD_LENGTH, validateEmail, validatePassword } from "@/utils/auth";
 import CircleXIcon from "../../icons/CircleXIcon";
 import CircleCheckIcon from "../../icons/CircleCheckIcon";
 
@@ -47,11 +47,11 @@ export default function Signup(props: SignupProps) {
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 	const [isSigningUp, setIsSigningUp] = useState(false);
 	const [isFillingSenderInfo, setIsFillingSenderInfo] = useState(false);
-	const emailRef = useRef<HTMLInputElement>(null);
+	const passwordRef = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
-		if (emailRef.current) {
-			emailRef.current.focus()
+		if (passwordRef.current) {
+			passwordRef.current.focus()
 		}
 	}, [])
 
@@ -119,113 +119,115 @@ export default function Signup(props: SignupProps) {
 			</button>
 
 			<div className={styles.postcard}>
-				<div className={styles.postcardContent}>
-					<div className={styles.navigationContainer}>
-						<div className={styles.navigation}>
-							<button
-								onClick={navigateToLanding}
-							>
-								<ArrowLeftRoundedIcon width={20} height={20} />
-							</button>
-							<h1>Sign up</h1>
-						</div>
+				<div>
+					<div className={styles.postcardContent}>
+						<div className={styles.navigationContainer}>
+							<div className={styles.navigation}>
+								<button
+									onClick={navigateToLanding}
+								>
+									<ArrowLeftRoundedIcon width={20} height={20} />
+								</button>
+								<h1>Sign up</h1>
+							</div>
 
-						<div>
-							<Image
-								src="/images/stamp.png"
-								alt="Stamp"
-								width={170}
-								height={51}
-							/>
-						</div>
-					</div>
-
-					<div className={styles.divider} />
-
-					<form
-						className={styles.form}
-						onSubmit={handleContinue}
-					>
-						<div className={styles.formContent}>
-							<div className={styles.formGroup}>
-								<div className={styles.formLabel}>
-									EMAIL ADDRESS
-								</div>
-								<input
-									ref={emailRef}
-									disabled={isSigningUp}
-									className={styles.formInput}
-									placeholder="Enter your email address"
-									value={email}
-									type="email"
-									onChange={(e) => setEmail(e.target.value)}
+							<div>
+								<Image
+									src="/images/stamp.png"
+									alt="Stamp"
+									width={170}
+									height={51}
 								/>
 							</div>
-
-							<div className={styles.formGroup}>
-								<div className={styles.formLabel}>
-									PASSWORD
-								</div>
-								<div className={styles.passwordInputContainer}>
-									<input
-										disabled={isSigningUp}
-										className={styles.passwordInput}
-										placeholder="Enter your password"
-										type={isPasswordVisible ? "text" : "password"}
-										value={password}
-										onChange={(e) => setPassword(e.target.value)}
-									/>
-
-									<button
-										className={styles.passwordVisibilityButton}
-										type="button"
-										onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-									>
-										{isPasswordVisible ? (
-											<EyeSlashIcon
-												width={28}
-												height={28}
-											/>
-										) : (
-											<EyeIcon
-												width={28}
-												height={28}
-											/>
-										)}
-									</button>
-								</div>
-							</div>
-
-							<div className={styles.passwordRequirements}>
-								<div className={styles.requirement}>
-									{CheckIcon(password.length >= MINIMUM_PASSWORD_LENGTH)}
-									<div className={styles.text}>
-										At least 8 characters
-									</div>
-								</div>
-								<div className={styles.requirement}>
-									{CheckIcon(containsLowercaseLetter(password) && containsUppercaseLetter(password) && containsNumber(password))}
-									<div className={styles.text}>
-										Includes a lowercase letter, an uppercase letter, and a number
-									</div>
-								</div>
-								<div className={styles.requirement}>
-									{CheckIcon(containsSpecialCharacter(password))}
-									<div className={styles.text}>
-										Includes a special character (#, $)
-									</div>
-								</div>
-							</div>
 						</div>
 
-						<button
-							className={styles.submitButton}
-							type="submit"
-							disabled={!email || !password || !validatePassword(password)}
+						<div className={styles.divider} />
+
+						<form
+							className={styles.form}
+							onSubmit={handleContinue}
 						>
-							Continue
-						</button>
-					</form>
+							<div className={styles.formContent}>
+								<div className={styles.formGroup}>
+									<div className={styles.formLabel}>
+										EMAIL ADDRESS
+									</div>
+									<input
+										disabled={isSigningUp}
+										className={styles.formInput}
+										placeholder="Enter your email address"
+										value={email}
+										type="email"
+										onChange={(e) => setEmail(e.target.value)}
+									/>
+								</div>
+
+								<div className={styles.formGroup}>
+									<div className={styles.formLabel}>
+										PASSWORD
+									</div>
+									<div className={styles.passwordInputContainer}>
+										<input
+											ref={passwordRef}
+											disabled={isSigningUp}
+											className={styles.passwordInput}
+											placeholder="Enter your password"
+											type={isPasswordVisible ? "text" : "password"}
+											value={password}
+											onChange={(e) => setPassword(e.target.value)}
+										/>
+
+										<button
+											className={styles.passwordVisibilityButton}
+											type="button"
+											onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+										>
+											{isPasswordVisible ? (
+												<EyeSlashIcon
+													width={28}
+													height={28}
+												/>
+											) : (
+												<EyeIcon
+													width={28}
+													height={28}
+												/>
+											)}
+										</button>
+									</div>
+								</div>
+
+								<div className={styles.passwordRequirements}>
+									<div className={styles.requirement}>
+										{CheckIcon(password.length >= MINIMUM_PASSWORD_LENGTH)}
+										<div className={styles.text}>
+											At least 8 characters
+										</div>
+									</div>
+									<div className={styles.requirement}>
+										{CheckIcon(containsLowercaseLetter(password) && containsUppercaseLetter(password))}
+										<div className={styles.text}>
+											Includes a lowercase letter and an uppercase letter
+										</div>
+									</div>
+									<div className={styles.requirement}>
+										{CheckIcon(containsNumber(password))}
+										<div className={styles.text}>
+											Includes a number
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<button
+								className={styles.submitButton}
+								type="submit"
+								disabled={!email || !password || !validatePassword(password)}
+							>
+								Continue
+							</button>
+						</form>
+					</div>
 				</div>
 			</div>
 		</>

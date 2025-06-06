@@ -53,29 +53,60 @@
 			padding: 8px 12px;
 			border-radius: 5px;
 			display: flex;
+			align-items: center;
 			gap: 10px;
 			border: none;
 			outline: none;
 			cursor: pointer;
 
-			background-color: $neutral-700;
 			@include transition-normal;
 
-			span {
-				color: $neutral-50;
+			.icon {
+				display: flex;
+				flex-shrink: 0;
+			}
+
+			.text {
 				font-size: 18px;
 				font-style: normal;
 				font-weight: 700;
 				line-height: normal;
 			}
 
-			&:hover {
-				background-color: $neutral-800;
+			&:active {
+				transform: scale(0.95);
 			}
 
-			&:active {
-				background-color: $neutral-800;
-				transform: scale(0.95);
+			&.edit {
+				background-color: $neutral-700;
+
+				.icon {
+					color: $neutral-500;
+				}
+
+				.text {
+					color: $neutral-50;
+				}
+
+				&:hover {
+					background-color: $neutral-800;
+				}
+			}
+
+			&.editing {
+				background-color: $neutral-400;
+
+				.icon {
+					color: $neutral-700;
+				}
+
+				.text {
+					color: $neutral-600;
+				}
+
+				&:hover {
+					background-color: $neutral-500;
+				}
 			}
 		}
 	}

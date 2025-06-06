@@ -12,6 +12,8 @@ import Link from 'next/link';
 import { useCallback, useState } from 'react';
 import { showToast } from '../components/ui/CustomToast';
 import { Status } from '../components/ui/StatusIndicator';
+import EditIcon from '../components/icons/EditIcon';
+import EditingIcon from '../components/icons/EditingIcon';
 
 export default function Dashboard() {
 	const { user, setUser, loading, logout } = useUser()
@@ -97,8 +99,15 @@ export default function Dashboard() {
 							</h1>
 						)}
 
-						<button onClick={handleToggleEditing}>
-							<span>
+						<button onClick={handleToggleEditing} className={isEditing ? styles.editing : styles.edit}>
+							<span className={styles.icon}>
+								{isEditing ? (
+									<EditingIcon width={20} height={20} />
+								) : (
+									<EditIcon width={20} height={20} />
+								)}
+							</span>
+							<span className={styles.text}>
 								Edit
 							</span>
 						</button>

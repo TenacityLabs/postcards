@@ -29,6 +29,7 @@ export default function Home() {
 				return (
 					<Signup
 						email={email}
+						setEmail={setEmail}
 						navigateToLanding={() => setAuthPage(AuthPage.Landing)}
 					/>
 				)

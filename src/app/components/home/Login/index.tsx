@@ -84,7 +84,7 @@ export default function Login(props: LoginProps) {
 							>
 								<ArrowLeftRoundedIcon width={24} height={24} />
 							</button>
-							<h1>Login</h1>
+							<h1>Log in</h1>
 						</div>
 
 						<div>

@@ -15,6 +15,7 @@ export interface SignupRequest {
 	password: string
 	firstName: string
 	lastName: string
+	displayName: string
 }
 
 export interface SignupResponse {

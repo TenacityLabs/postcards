@@ -9,7 +9,7 @@ import { Status } from "@/app/components/ui/StatusIndicator";
 import { APIEndpoints, APIMethods } from "@/types/api";
 import { sendAPIRequest } from "@/utils/api";
 import { ClientLogger } from "@/utils/clientLogger";
-import { validateEmail } from "@/utils/email";
+import { validateEmail } from "@/utils/auth";
 
 interface LandingProps {
 	email: string

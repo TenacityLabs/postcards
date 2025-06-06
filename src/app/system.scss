@@ -88,3 +88,8 @@ $card-8: #F0F9F4;
 		background-color: rgba($neutral-900, 0.3);
 	}
 }
+
+@mixin no-drag {
+	user-select: none;
+	-webkit-user-drag: none;
+}

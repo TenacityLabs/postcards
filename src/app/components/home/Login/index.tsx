@@ -14,6 +14,11 @@ export default function Login(props: LoginProps) {
 	const { email, navigateToLanding } = props
 	const [password, setPassword] = useState("");
 
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault()
+		console.log("submit")
+	}
+
 	return (
 		<>
 			<button
@@ -42,34 +47,52 @@ export default function Login(props: LoginProps) {
 						</div>
 
 						<div>
-							STAMP
+							<Image
+								src="/images/stamp.png"
+								alt="Stamp"
+								width={230}
+								height={70}
+							/>
 						</div>
 					</div>
 
 					<div className={styles.divider} />
 
-					<form className={styles.form}>
-						<div className={styles.formGroup}>
-							<div className={styles.formLabel}>
-								EMAIL ADDRESS
+					<form
+						className={styles.form}
+						onSubmit={handleSubmit}
+					>
+						<div className={styles.formContent}>
+							<div className={styles.formGroup}>
+								<div className={styles.formLabel}>
+									EMAIL ADDRESS
+								</div>
+								<div className={`${styles.formInput} ${styles.formInputDisabled}`}>
+									{email}
+								</div>
 							</div>
-							<div className={`${styles.formInput} ${styles.formInputDisabled}`}>
-								{email}
+
+							<div className={styles.formGroup}>
+								<div className={styles.formLabel}>
+									PASSWORD
+								</div>
+								<input
+									className={styles.formInput}
+									placeholder="Enter your password"
+									type="password"
+									value={password}
+									onChange={(e) => setPassword(e.target.value)}
+								/>
 							</div>
 						</div>
 
-						<div className={styles.formGroup}>
-							<div className={styles.formLabel}>
-								PASSWORD
-							</div>
-							<input
-								className={styles.formInput}
-								placeholder="Enter your password"
-								type="password"
-								value={password}
-								onChange={(e) => setPassword(e.target.value)}
-							/>
-						</div>
+						<button
+							className={styles.submitButton}
+							type="submit"
+							disabled={!password}
+						>
+							Log in
+						</button>
 					</form>
 				</div>
 			</div>

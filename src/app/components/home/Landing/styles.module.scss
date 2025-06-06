@@ -36,6 +36,10 @@
 	display: flex;
 	justify-content: center;
 	overflow-x: hidden;
+
+	>img {
+		@include no-drag;
+	}
 }
 
 .cta {

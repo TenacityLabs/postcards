@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import styles from "./styles.module.scss";
 import Image from "next/image";
 import ArrowRightRoundedIcon from "@/app/components/icons/ArrowRightRoundedIcon";
@@ -47,6 +47,13 @@ export default function Landing(props: LandingProps) {
 		}
 	}
 
+	const handleEmailChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+		if (checkUserLoading) {
+			return
+		}
+		setEmail(e.target.value)
+	}, [checkUserLoading, setEmail])
+
 	return (
 		<>
 			<div className={styles.heading}>
@@ -85,7 +92,7 @@ export default function Landing(props: LandingProps) {
 					type="email"
 					placeholder="Enter your email"
 					value={email}
-					onChange={(e) => setEmail(e.target.value)}
+					onChange={handleEmailChange}
 				/>
 				<button
 					type="submit"

@@ -1,9 +1,19 @@
 "use client"
 
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "../styles.module.scss";
 import Image from "next/image";
 import ArrowLeftRoundedIcon from "@/app/components/icons/ArrowLeftRoundedIcon";
+import { ClientLogger } from "@/utils/clientLogger";
+import { showToast } from "../../ui/CustomToast";
+import { AxiosError } from "axios";
+import { Status } from "../../ui/StatusIndicator";
+import { sendAPIRequest } from "@/utils/api";
+import { APIEndpoints, APIMethods } from "@/types/api";
+import { useUser } from "@/app/context/userContext";
+import { LOCALSTORAGE_JWT_KEY } from "@/constants/auth";
+import EyeIcon from "../../icons/EyeIcon";
+import EyeSlashIcon from "../../icons/EyeSlashIcon";
 
 interface LoginProps {
 	email: string
@@ -12,12 +22,43 @@ interface LoginProps {
 
 export default function Login(props: LoginProps) {
 	const { email, navigateToLanding } = props
+	const { setUser } = useUser()
 	const [password, setPassword] = useState("");
+	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+	const [isLoggingIn, setIsLoggingIn] = useState(false);
+	const passwordRef = useRef<HTMLInputElement>(null);
 
-	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+	useEffect(() => {
+		if (passwordRef.current) {
+			passwordRef.current.focus()
+		}
+	}, [])
+
+	const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		console.log("submit")
-	}
+		if (isLoggingIn) return
+		try {
+			setIsLoggingIn(true)
+
+			const response = await sendAPIRequest(APIEndpoints.Login, APIMethods.POST, {
+				email: email.trim(),
+				password: password.trim()
+			})
+			localStorage.setItem(LOCALSTORAGE_JWT_KEY, response.token)
+			setUser(response.user)
+			showToast("Login successful", Status.SUCCESS)
+		} catch (error) {
+			setIsLoggingIn(false)
+			ClientLogger.error(error)
+			if (error instanceof AxiosError) {
+				if (error.response?.data?.error) {
+					showToast(error.response.data.error, Status.ERROR)
+					return
+				}
+			}
+			showToast("An error occurred while logging in", Status.ERROR)
+		}
+	}, [email, isLoggingIn, password, setUser])
 
 	return (
 		<>
@@ -76,13 +117,35 @@ export default function Login(props: LoginProps) {
 								<div className={styles.formLabel}>
 									PASSWORD
 								</div>
-								<input
-									className={styles.formInput}
-									placeholder="Enter your password"
-									type="password"
-									value={password}
-									onChange={(e) => setPassword(e.target.value)}
-								/>
+								<div className={styles.passwordInputContainer}>
+									<input
+										ref={passwordRef}
+										disabled={isLoggingIn}
+										className={styles.passwordInput}
+										placeholder="Enter your password"
+										type={isPasswordVisible ? "text" : "password"}
+										value={password}
+										onChange={(e) => setPassword(e.target.value)}
+									/>
+
+									<button
+										className={styles.passwordVisibilityButton}
+										type="button"
+										onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+									>
+										{isPasswordVisible ? (
+											<EyeSlashIcon
+												width={36}
+												height={36}
+											/>
+										) : (
+											<EyeIcon
+												width={36}
+												height={36}
+											/>
+										)}
+									</button>
+								</div>
 							</div>
 						</div>
 

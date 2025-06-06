@@ -86,7 +86,7 @@ export default function Landing(props: LandingProps) {
 			</div>
 
 			<form
-				className={styles.cta}
+				className={`${styles.cta} ${checkUserLoading ? styles.disabled : ''}`}
 				onSubmit={handleSubmit}
 			>
 				<input
@@ -94,9 +94,11 @@ export default function Landing(props: LandingProps) {
 					placeholder="Enter your email"
 					value={email}
 					onChange={handleEmailChange}
+					disabled={checkUserLoading}
 				/>
 				<button
 					type="submit"
+					disabled={checkUserLoading}
 				>
 					<ArrowRightRoundedIcon width={16} height={16} />
 				</button>

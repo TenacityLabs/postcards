@@ -6,6 +6,7 @@ export interface IUser extends Document {
 	email: string
 	firstName: string
 	lastName: string
+	displayName: string
 	password: string
 	postcards: mongoose.Types.ObjectId[]
 	createdAt: number
@@ -15,6 +16,7 @@ export interface IUserPopulated extends Document {
 	email: string
 	firstName: string
 	lastName: string
+	displayName: string
 	password: string
 	postcards: IPostcard[]
 	createdAt: number
@@ -30,6 +32,10 @@ const UserSchema = new Schema<IUser>({
 		required: true,
 	},
 	lastName: {
+		type: String,
+		required: true,
+	},
+	displayName: {
 		type: String,
 		required: true,
 	},

@@ -5,6 +5,7 @@ export interface User {
 	email: string
 	firstName: string
 	lastName: string
+	displayName: string
 	postcards: Postcard[]
 	createdAt: number
 }

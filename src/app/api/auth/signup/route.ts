@@ -16,11 +16,11 @@ const JWT_DURATION = process.env.JWT_DURATION || '7d'
 export async function POST(request: Request): Promise<NextResponse<APIResponse<APIEndpoints.Signup> | ErrorResponse>> {
 	try {
 		const body: SignupRequest = await request.json()
-		const { email, password, firstName, lastName } = body
+		const { email, password, firstName, lastName, displayName } = body
 
-		if (!email || !password || !firstName || !lastName) {
+		if (!email || !password || !firstName || !lastName || !displayName) {
 			return NextResponse.json(
-				{ error: 'Email, password, first name, and last name are required' },
+				{ error: 'Email, password, first name, last name, and display name are required' },
 				{ status: 400 }
 			)
 		}
@@ -43,6 +43,7 @@ export async function POST(request: Request): Promise<NextResponse<APIResponse<A
 			password: hashedPassword,
 			firstName,
 			lastName,
+			displayName,
 		})
 
 		const userResponse = await UserModel.findById(newUser._id)

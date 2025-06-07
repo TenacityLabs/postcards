@@ -12,11 +12,11 @@ export const stringToDate = (date: string) => {
 
 export const numberToPrettyDate = (date: number, includeYear = false) => {
 	const dateObj = new Date(date)
-	const month = dateObj.getUTCMonth()
-	const day = dateObj.getUTCDate()
-	const year = dateObj.getUTCFullYear()
+	const month = dateObj.getMonth()
+	const day = dateObj.getDate()
+	const year = dateObj.getFullYear()
 
-	let prettyDate = `${MONTHS.AllCapsShort[month]} ${day}`
+	let prettyDate = `${MONTHS.AllCaps[month]} ${day}`
 	if (includeYear) {
 		prettyDate += `, ${year}`
 	}

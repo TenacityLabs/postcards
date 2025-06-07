@@ -46,7 +46,7 @@ export default function PostcardHeader() {
 						{numberToPrettyWeek(postcard!.createdAt)}
 					</div>
 					<h1 className={styles.title}>
-						{postcard!.user.firstName} {postcard!.user.lastName}&apos;s <b>Postcard</b>
+						{postcard!.user.displayName}&apos;s <b>Postcard</b>
 					</h1>
 				</>
 			)}

@@ -66,7 +66,7 @@ export const Navigation = (props: NavigationProps) => {
 					WEEK OF {numberToPrettyDate(postcard.createdAt)}
 				</Link>
 				<h1 className={styles.title}>
-					{user.firstName} {user.lastName}&apos;s <b>Postcard</b>
+					{user.displayName}&apos;s <b>Postcard</b>
 				</h1>
 			</div>
 			<div className={styles.divider} />

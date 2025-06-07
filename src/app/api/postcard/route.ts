@@ -22,7 +22,7 @@ export async function GET(request: Request): Promise<NextResponse<APIResponse<AP
 		const postcard = await PostcardModel.findById(postcardId)
 			.populate({
 				path: 'user',
-				select: 'firstName lastName',
+				select: 'displayName',
 				model: UserModel,
 			})
 

@@ -3,7 +3,7 @@
 .page {
 	@include grid-background;
 
-	min-height: 100vh;
+	min-height: 100dvh;
 	padding: 48px 24px;
 	display: flex;
 	flex-direction: column;

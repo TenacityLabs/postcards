@@ -3,7 +3,7 @@
 .page {
 	@include grid-background;
 
-	height: 100vh;
+	height: 100dvh;
 
 	display: grid;
 	grid-template-columns: min(400px, 35vw) 1fr;

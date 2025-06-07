@@ -123,7 +123,6 @@ export default function Signup(props: SignupProps) {
 					isSigningUp={isSigningUp}
 					handleSignup={handleSignup}
 					isFillingSenderInfo={isFillingSenderInfo}
-					setIsFillingSenderInfo={setIsFillingSenderInfo}
 					handleContinue={handleContinue}
 					navigateToLogin={navigateToLogin}
 				/>

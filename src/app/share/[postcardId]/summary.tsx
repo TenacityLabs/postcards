@@ -55,7 +55,7 @@ export default function PostcardSummary(props: PostcardSummaryProps) {
 							<div className={styles.title}>
 								You&apos;ve Received <br />
 								<b>
-									{postcard!.user.firstName}&apos;s Postcard
+									{postcard!.user.displayName}&apos;s Postcard
 								</b>
 							</div>
 						</>

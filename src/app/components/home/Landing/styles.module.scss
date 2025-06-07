@@ -84,7 +84,8 @@
 		}
 
 		@media screen and (max-width: 500px) {
-			height: min(40vh, calc(100vh - 450px));
+			display: flex;
+			flex-grow: 1;
 		}
 	}
 }

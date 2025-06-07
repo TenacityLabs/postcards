@@ -8,6 +8,7 @@ import { useUser } from "@/app/context/userContext";
 import { Navigation } from "./navigation";
 import { Calendar } from "./calendar";
 import { useEffect } from "react";
+import Image from "next/image";
 
 interface EditPostcardDesktopProps {
 	onCreateEntry: () => void
@@ -78,16 +79,36 @@ export default function EditPostcardDesktop(props: EditPostcardDesktopProps) {
 						/>
 					</>
 				) : (
-					<div>
-						{postcard?.entries.length ? (
-							<p>
-								No entry found. Create one to get started.
-							</p>
-						) : (
-							<p>
-								Select an entry to start editing.
-							</p>
-						)}
+					<div className={styles.emptyEntryCenter}>
+						<div className={styles.emptyEntryContainer}>
+							{postcard?.entries.length ? (
+								<p>
+									Select an entry to start editing.
+								</p>
+							) : (
+								<>
+									<p>
+										No entry found. Create one to get started.
+									</p>
+
+									<button
+										className={styles.createEntryButton}
+										onClick={onCreateEntry}
+									>
+										Add a new entry
+									</button>
+								</>
+							)}
+
+							<Image
+								src="/images/empty-letter.png"
+								alt="Empty entry"
+								width={643}
+								height={466}
+								priority
+								className={styles.emptyLetterImage}
+							/>
+						</div>
 					</div>
 				)}
 			</div>

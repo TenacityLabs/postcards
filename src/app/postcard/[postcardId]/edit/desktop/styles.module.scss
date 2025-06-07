@@ -120,4 +120,42 @@
 			}
 		}
 	}
+
+	.emptyEntryCenter {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.emptyEntryContainer {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		gap: 24px;
+
+		>p {
+			color: $neutral-800;
+			font-size: 24px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: normal;
+		}
+
+		>button {
+			background: none;
+			border: none;
+			outline: none;
+			cursor: pointer;
+
+			color: $primary-700;
+			font-size: 18px;
+			font-style: normal;
+			font-weight: 500;
+			line-height: normal;
+			text-decoration-line: underline;
+		}
+	}
 }

@@ -1,7 +1,7 @@
 @use '@/app/system.scss' as *;
 
 .page {
-	min-height: 100vh;
+	min-height: 100dvh;
 	@include grid-background;
 	display: flex;
 	flex-direction: column;
@@ -10,7 +10,7 @@
 
 	&.landing {
 		padding: 64px 0;
-		max-height: 100vh;
+		max-height: 100dvh;
 
 		@media screen and (max-width: 500px) {
 			padding: 36px 0;

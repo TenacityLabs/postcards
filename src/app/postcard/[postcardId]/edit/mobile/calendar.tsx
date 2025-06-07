@@ -6,13 +6,20 @@ import ChevronArrowLeftIcon from '@/app/components/icons/ChevronArrowLeftIcon'
 import ChevronArrowRightIcon from '@/app/components/icons/ChevronArrowRightIcon'
 import { MONTHS, WEEKDAYS } from '@/constants/date'
 import { usePostcard } from '@/app/context/postcardContext'
-import { PostcardDate } from '@/types/postcard'
+import { Entry, PostcardDate } from '@/types/postcard'
 import { showToast } from '@/app/components/ui/CustomToast'
 import { Status } from '@/app/components/ui/StatusIndicator'
+import { useModal } from '@/app/context/modalContext'
 
-export const Calendar = () => {
-	const { focusedEntryId, focusedEntry, updateEntry } = usePostcard()
-	const [isCalendarOpen, setIsCalendarOpen] = useState(false)
+interface CalendarModalProps {
+	focusedEntryId: string
+	focusedEntry: Entry
+	updateEntry: (entryId: string, entry: Partial<Entry>) => void
+	hideModal: () => void
+}
+
+const CalendarModal = (props: CalendarModalProps) => {
+	const { focusedEntryId, focusedEntry, updateEntry, hideModal } = props
 	const calendarRef = useRef<HTMLDivElement>(null)
 
 	const [selectingYear, setSelectingYear] = useState(false)
@@ -22,27 +29,7 @@ export const Calendar = () => {
 	const [focusedMonth, setFocusedMonth] = useState((new Date()).getMonth())
 	const [focusedYear, setFocusedYear] = useState((new Date()).getFullYear())
 
-	const actualDate = useMemo(() => {
-		if (!focusedEntry || !focusedEntry.date) {
-			return null
-		}
-		return `${MONTHS.TitleCase[focusedEntry.date.month - 1]} ${focusedEntry.date.day}, ${focusedEntry.date.year}`
-	}, [focusedEntry])
-
-	const selectableYears = useMemo(() => {
-		const currentYear = new Date().getFullYear()
-		const start = currentYear - 97
-		return Array.from({ length: 99 }, (_, i) => start + i)
-	}, [])
-
-	// Refs to scroll to focused year by default
-	const yearGridRef = useRef<HTMLDivElement>(null)
-	const focusedYearButtonRef = useRef<HTMLButtonElement>(null)
-
 	useEffect(() => {
-		if (!isCalendarOpen) {
-			setSelectingYear(false)
-		}
 		if (!focusedEntry?.date) {
 			const today = new Date()
 			setSelectedDate(null)
@@ -54,7 +41,18 @@ export const Calendar = () => {
 		setSelectedDate(postcardDate)
 		setFocusedMonth(postcardDate.month)
 		setFocusedYear(postcardDate.year)
-	}, [focusedEntry?.date, isCalendarOpen])
+	}, [focusedEntry?.date])
+
+	const selectableYears = useMemo(() => {
+		const currentYear = new Date().getFullYear()
+		const start = currentYear - 97
+		return Array.from({ length: 99 }, (_, i) => start + i)
+	}, [])
+
+	// Refs to scroll to focused year by default
+	const yearGridRef = useRef<HTMLDivElement>(null)
+	const focusedYearButtonRef = useRef<HTMLButtonElement>(null)
+
 
 	const calendarDays = useMemo(() => {
 		const daysInMonth = new Date(focusedYear, focusedMonth, 0).getDate()
@@ -110,9 +108,9 @@ export const Calendar = () => {
 				date: null,
 			})
 		}
-		setIsCalendarOpen(false)
+		hideModal()
 		showToast('Date cleared', Status.Success)
-	}, [focusedEntryId, updateEntry])
+	}, [focusedEntryId, updateEntry, hideModal])
 
 	const handleConfirmSelectDate = useCallback(() => {
 		if (selectingYear) {
@@ -124,35 +122,9 @@ export const Calendar = () => {
 				date: selectedDate,
 			})
 		}
-		setIsCalendarOpen(false)
+		hideModal()
 		showToast('Updated date', Status.Success)
-	}, [focusedEntryId, selectedDate, updateEntry, selectingYear])
-
-	const handleCalendarClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
-		e.stopPropagation()
-		setIsCalendarOpen(prev => !prev)
-	}, [])
-
-	useEffect(() => {
-		const handleClickOutside = (event: MouseEvent) => {
-			if (
-				calendarRef.current &&
-				!calendarRef.current.contains(event.target as Node)
-			) {
-				setIsCalendarOpen(false)
-			}
-		}
-
-		if (isCalendarOpen) {
-			document.addEventListener('mousedown', handleClickOutside)
-		} else {
-			document.removeEventListener('mousedown', handleClickOutside)
-		}
-
-		return () => {
-			document.removeEventListener('mousedown', handleClickOutside)
-		}
-	}, [isCalendarOpen])
+	}, [focusedEntryId, selectedDate, updateEntry, selectingYear, hideModal])
 
 	useEffect(() => {
 		if (selectingYear && yearGridRef.current && focusedYearButtonRef.current) {
@@ -167,6 +139,123 @@ export const Calendar = () => {
 		}
 	}, [selectingYear])
 
+
+	return (
+		<div className={styles.calendar} ref={calendarRef}>
+			<div className={styles.header}>
+				<div className={styles.subtitle}>
+					SELECT DATE
+				</div>
+				<div className={styles.titleDate}>
+					{selectedDate ? (
+						`Mon, ${MONTHS.TitleCaseShort[selectedDate.month - 1]} ${selectedDate.day}`
+					) : (
+						'Pick a date'
+					)}
+				</div>
+			</div>
+			<div className={styles.navigator}>
+				<button className={styles.toggleNavigationButton} onClick={() => setSelectingYear(prev => !prev)}>
+					<span>
+						{MONTHS.TitleCase[focusedMonth - 1]} {focusedYear}
+					</span>
+					<span className={`${styles.triangleDown} ${selectingYear ? styles.rotateUp : ''}`}>
+						<TriangleDown width={18} height={18} />
+					</span>
+				</button>
+				{!selectingYear && (
+					<div className={styles.navigationButtons}>
+						<button className={styles.navigationButton} onClick={goToPreviousMonth}>
+							<ChevronArrowLeftIcon width={24} height={24} />
+						</button>
+						<button className={styles.navigationButton} onClick={goToNextMonth}>
+							<ChevronArrowRightIcon width={24} height={24} />
+						</button>
+					</div>
+				)}
+			</div>
+
+			{selectingYear ? (
+				<div className={styles.yearGridContainer}>
+					<div className={styles.yearGrid} ref={yearGridRef}>
+						{selectableYears.map(year => (
+							<div
+								className={styles.yearButtonContainer}
+								key={year}
+							>
+								<button
+									className={`${styles.year} ${year === focusedYear ? styles.focused : ''}`}
+									onClick={() => setFocusedYear(year)}
+									ref={year === focusedYear ? focusedYearButtonRef : null}
+								>
+									{year}
+								</button>
+							</div>
+						))}
+					</div>
+				</div>
+			) : (
+				<div className={styles.calendarGridContainer}>
+					<div className={styles.calendarGrid}>
+						{WEEKDAYS.Single.map((day, index) => (
+							<div key={`${day}-${index}`}>
+								{day}
+							</div>
+						))}
+						{calendarDays.map((day, index) => (
+							<div key={`${focusedYear}-${focusedMonth}-${index}`}>
+								<button
+									className={`${day ? styles.day : styles.emptyDay} ${isSelectedDate(day) ? styles.focused : ''}`}
+									onClick={() => handleSelectDate(day)}
+								>
+									{day}
+								</button>
+							</div>
+						))}
+					</div>
+				</div>
+			)}
+
+			<div className={styles.footer}>
+				<button onClick={hideModal}>
+					Cancel
+				</button>
+
+				<div className={styles.confirmButtons}>
+					<button onClick={handleClearDate}>
+						Clear
+					</button>
+					<button onClick={handleConfirmSelectDate}>
+						OK
+					</button>
+				</div>
+			</div>
+		</div>
+	)
+}
+
+export const Calendar = () => {
+	const { focusedEntryId, focusedEntry, updateEntry } = usePostcard()
+	const { updateModal, hideModal } = useModal()
+
+	const actualDate = useMemo(() => {
+		if (!focusedEntry || !focusedEntry.date) {
+			return null
+		}
+		return `${MONTHS.TitleCase[focusedEntry.date.month - 1]} ${focusedEntry.date.day}, ${focusedEntry.date.year}`
+	}, [focusedEntry])
+
+	const handleCalendarClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+		e.stopPropagation()
+		updateModal(<CalendarModal
+			focusedEntryId={focusedEntryId!}
+			focusedEntry={focusedEntry!}
+			updateEntry={updateEntry}
+			hideModal={hideModal}
+		/>, styles.modalBackground)
+	}, [updateModal, focusedEntryId, focusedEntry, updateEntry])
+
+
 	return (
 		<div className={styles.container}>
 			{/* Use onMouseDown to since event listeners are also mouseDown */}
@@ -178,99 +267,6 @@ export const Calendar = () => {
 					{actualDate ? actualDate : 'Pick a date'}
 				</span>
 			</button>
-
-			{isCalendarOpen && (
-				<div className={styles.calendar} ref={calendarRef}>
-					<div className={styles.header}>
-						<div className={styles.subtitle}>
-							SELECT DATE
-						</div>
-						<div className={styles.titleDate}>
-							{selectedDate ? (
-								`Mon, ${MONTHS.TitleCaseShort[selectedDate.month - 1]} ${selectedDate.day}`
-							) : (
-								'Pick a date'
-							)}
-						</div>
-					</div>
-					<div className={styles.navigator}>
-						<button className={styles.toggleNavigationButton} onClick={() => setSelectingYear(prev => !prev)}>
-							<span>
-								{MONTHS.TitleCase[focusedMonth - 1]} {focusedYear}
-							</span>
-							<span className={`${styles.triangleDown} ${selectingYear ? styles.rotateUp : ''}`}>
-								<TriangleDown width={18} height={18} />
-							</span>
-						</button>
-						{!selectingYear && (
-							<div className={styles.navigationButtons}>
-								<button className={styles.navigationButton} onClick={goToPreviousMonth}>
-									<ChevronArrowLeftIcon width={24} height={24} />
-								</button>
-								<button className={styles.navigationButton} onClick={goToNextMonth}>
-									<ChevronArrowRightIcon width={24} height={24} />
-								</button>
-							</div>
-						)}
-					</div>
-
-					{selectingYear ? (
-						<div className={styles.yearGridContainer}>
-							<div className={styles.yearGrid} ref={yearGridRef}>
-								{selectableYears.map(year => (
-									<div
-										className={styles.yearButtonContainer}
-										key={year}
-									>
-										<button
-											className={`${styles.year} ${year === focusedYear ? styles.focused : ''}`}
-											onClick={() => setFocusedYear(year)}
-											ref={year === focusedYear ? focusedYearButtonRef : null}
-										>
-											{year}
-										</button>
-									</div>
-								))}
-							</div>
-						</div>
-					) : (
-						<div className={styles.calendarGridContainer}>
-							<div className={styles.calendarGrid}>
-								{WEEKDAYS.Single.map((day, index) => (
-									<div key={`${day}-${index}`}>
-										{day}
-									</div>
-								))}
-								{calendarDays.map((day, index) => (
-									<div key={`${focusedYear}-${focusedMonth}-${index}`}>
-										<button
-											className={`${day ? styles.day : styles.emptyDay} ${isSelectedDate(day) ? styles.focused : ''}`}
-											onClick={() => handleSelectDate(day)}
-										>
-											{day}
-										</button>
-									</div>
-								))}
-							</div>
-						</div>
-					)}
-
-					<div className={styles.footer}>
-						<button onClick={() => setIsCalendarOpen(false)}>
-							Cancel
-						</button>
-
-						<div className={styles.confirmButtons}>
-							<button onClick={handleClearDate}>
-								Clear
-							</button>
-							<button onClick={handleConfirmSelectDate}>
-								OK
-							</button>
-						</div>
-					</div>
-				</div>
-			)}
 		</div>
 	)
 }

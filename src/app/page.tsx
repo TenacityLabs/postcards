@@ -32,6 +32,7 @@ export default function Home() {
 						email={email}
 						setEmail={setEmail}
 						navigateToLanding={() => setAuthPage(AuthPage.Landing)}
+						navigateToLogin={() => setAuthPage(AuthPage.Login)}
 					/>
 				)
 			case AuthPage.Landing:

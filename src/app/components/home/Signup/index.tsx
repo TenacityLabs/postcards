@@ -1,9 +1,6 @@
 "use client"
 
 import { useCallback, useState } from "react";
-import styles from "../styles.module.scss";
-import Image from "next/image";
-import ArrowLeftRoundedIcon from "@/app/components/icons/ArrowLeftRoundedIcon";
 import { ClientLogger } from "@/utils/clientLogger";
 import { showToast } from "../../ui/CustomToast";
 import { AxiosError } from "axios";
@@ -13,22 +10,26 @@ import { APIEndpoints, APIMethods } from "@/types/api";
 import { useUser } from "@/app/context/userContext";
 import { LOCALSTORAGE_JWT_KEY } from "@/constants/auth";
 import { validateEmail, validatePassword } from "@/utils/auth";
-import AuthForm from "./AuthForm";
-import InfoForm from "./InfoForm";
+import { useScreenSize } from "@/app/hooks/useScreenSize";
+import SignupDesktop from "./desktop";
+import SignupMobile from "./mobile";
 
 interface SignupProps {
 	email: string
 	setEmail: (email: string) => void
 	navigateToLanding: () => void
+	navigateToLogin: () => void
 }
 
 export default function Signup(props: SignupProps) {
-	const { email, setEmail, navigateToLanding } = props
+	const { email, setEmail, navigateToLanding, navigateToLogin } = props
 	const { setUser } = useUser()
+	const { screenWidth } = useScreenSize()
 	const [password, setPassword] = useState("");
 	const [firstName, setFirstName] = useState("");
 	const [lastName, setLastName] = useState("");
 	const [displayName, setDisplayName] = useState("");
+	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
 	const [isFillingSenderInfo, setIsFillingSenderInfo] = useState(false);
 	const [isSigningUp, setIsSigningUp] = useState(false);
@@ -83,77 +84,50 @@ export default function Signup(props: SignupProps) {
 
 	return (
 		<>
-			<button
-				className={styles.logoContainer}
-				onClick={navigateToLanding}
-			>
-				<Image
-					src="/logos/logo-128.svg"
-					alt="Postcards"
-					width={36}
-					height={36}
+			{screenWidth > 1000 ? (
+				<SignupDesktop
+					navigateToLanding={navigateToLanding}
+					email={email}
+					setEmail={setEmail}
+					firstName={firstName}
+					setFirstName={setFirstName}
+					lastName={lastName}
+					setLastName={setLastName}
+					displayName={displayName}
+					setDisplayName={setDisplayName}
+					password={password}
+					setPassword={setPassword}
+					isPasswordVisible={isPasswordVisible}
+					setIsPasswordVisible={setIsPasswordVisible}
+					isSigningUp={isSigningUp}
+					handleSignup={handleSignup}
+					isFillingSenderInfo={isFillingSenderInfo}
+					setIsFillingSenderInfo={setIsFillingSenderInfo}
+					handleContinue={handleContinue}
 				/>
-				<h2>Postcards</h2>
-			</button>
-
-			<div className={styles.postcard}>
-				<div className={styles.postcardContent}>
-					<div className={styles.navigationContainer}>
-						<div className={styles.navigation}>
-							{isFillingSenderInfo ? (
-								<h1>
-									Sender information
-								</h1>
-							) : (
-								<>
-									<button
-										onClick={navigateToLanding}
-									>
-										<ArrowLeftRoundedIcon width={20} height={20} />
-									</button>
-									<h1>
-										Sign up
-									</h1>
-								</>
-							)}
-						</div>
-
-						<div>
-							<Image
-								src="/images/stamp.png"
-								alt="Stamp"
-								width={170}
-								height={51}
-							/>
-						</div>
-					</div>
-
-					<div className={styles.divider} />
-
-					{isFillingSenderInfo ? (
-						<InfoForm
-							backToAuth={() => setIsFillingSenderInfo(false)}
-							handleSignup={handleSignup}
-							loading={isSigningUp}
-							firstName={firstName}
-							setFirstName={setFirstName}
-							lastName={lastName}
-							setLastName={setLastName}
-							displayName={displayName}
-							setDisplayName={setDisplayName}
-						/>
-					) : (
-						<AuthForm
-							handleContinue={handleContinue}
-							loading={isSigningUp}
-							email={email}
-							setEmail={setEmail}
-							password={password}
-							setPassword={setPassword}
-						/>
-					)}
-				</div>
-			</div>
+			) : (
+				<SignupMobile
+					navigateToLanding={navigateToLanding}
+					email={email}
+					setEmail={setEmail}
+					firstName={firstName}
+					setFirstName={setFirstName}
+					lastName={lastName}
+					setLastName={setLastName}
+					displayName={displayName}
+					setDisplayName={setDisplayName}
+					password={password}
+					setPassword={setPassword}
+					isPasswordVisible={isPasswordVisible}
+					setIsPasswordVisible={setIsPasswordVisible}
+					isSigningUp={isSigningUp}
+					handleSignup={handleSignup}
+					isFillingSenderInfo={isFillingSenderInfo}
+					setIsFillingSenderInfo={setIsFillingSenderInfo}
+					handleContinue={handleContinue}
+					navigateToLogin={navigateToLogin}
+				/>
+			)}
 		</>
 	);
 }

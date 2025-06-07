@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import styles from "../styles.module.scss";
 import EyeSlashIcon from "../../icons/EyeSlashIcon";
 import EyeIcon from "../../icons/EyeIcon";
@@ -31,12 +31,13 @@ interface AuthFormProps {
 	setEmail: (email: string) => void
 	password: string
 	setPassword: (password: string) => void
+	isPasswordVisible: boolean
+	setIsPasswordVisible: (isPasswordVisible: boolean) => void
 }
 
 export default function AuthForm(props: AuthFormProps) {
-	const { handleContinue, loading, email, setEmail, password, setPassword } = props;
+	const { handleContinue, loading, email, setEmail, password, setPassword, isPasswordVisible, setIsPasswordVisible } = props;
 
-	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 	const passwordRef = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {

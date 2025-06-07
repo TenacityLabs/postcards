@@ -82,6 +82,10 @@
 		@media screen and (max-width: 1000px) {
 			height: calc(100vh - 450px);
 		}
+
+		@media screen and (max-width: 500px) {
+			height: min(40vh, calc(100vh - 450px));
+		}
 	}
 }
 

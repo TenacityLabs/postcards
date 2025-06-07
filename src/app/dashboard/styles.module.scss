@@ -60,6 +60,7 @@
 			cursor: pointer;
 
 			@include transition-normal;
+			opacity: 1;
 
 			.icon {
 				display: flex;
@@ -105,7 +106,7 @@
 				}
 
 				&:hover {
-					background-color: $neutral-500;
+					opacity: 0.8;
 				}
 			}
 		}

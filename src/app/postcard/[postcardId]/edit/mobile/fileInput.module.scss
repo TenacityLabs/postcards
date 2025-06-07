@@ -1,0 +1,106 @@
+@use '@/app/system.scss' as *;
+
+.hidden {
+	display: none;
+}
+
+.fileContainer {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.fileInput {
+	position: relative;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	padding: 18px;
+	gap: 12px;
+	cursor: pointer;
+	border-radius: 6px;
+	overflow: hidden;
+
+	box-shadow: 2px 2px 15px 0px rgba($neutral-950, 0.05);
+	border: 2px dashed $neutral-400;
+	background: $neutral-100;
+
+	@include transition-normal;
+
+	&:hover {
+		background: $neutral-300;
+	}
+
+	.fileInputTitle {
+		color: $neutral-600;
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 700;
+		line-height: normal;
+	}
+
+	.fileInputLabel {
+		display: flex;
+		align-items: center;
+		padding: 8px 12px;
+		margin: 0 -12px;
+		gap: 8px;
+
+		color: $neutral-500;
+		font-size: 18px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: normal;
+	}
+
+	.fileInputDelete {
+		display: none;
+	}
+
+	.fileInputPreview {
+		max-width: 500px;
+		@include transition-normal;
+		border-radius: 6px;
+		position: relative;
+
+		.previewImageContainer {
+			height: 35px;
+			background-color: $neutral-200;
+			border-radius: 6px;
+			padding: 5px;
+			margin: -5px;
+			@include transition-normal;
+			opacity: 1;
+
+			&>img {
+				border-radius: 4px;
+			}
+		}
+	}
+}
+
+.deleteButton {
+	color: $neutral-50;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+	border-radius: 6px;
+	padding: 8px 12px;
+	outline: none;
+	cursor: pointer;
+	border: 1px solid rgba($neutral-700, 0.1);
+	@include transition-normal;
+
+	background: $error-700;
+
+	&:hover {
+		opacity: 0.9;
+	}
+
+	&:active {
+		opacity: 0.9;
+		transform: scale(0.98);
+	}
+}

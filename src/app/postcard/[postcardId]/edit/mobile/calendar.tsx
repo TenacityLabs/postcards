@@ -253,7 +253,7 @@ export const Calendar = () => {
 			updateEntry={updateEntry}
 			hideModal={hideModal}
 		/>, styles.modalBackground)
-	}, [updateModal, focusedEntryId, focusedEntry, updateEntry])
+	}, [updateModal, focusedEntryId, focusedEntry, updateEntry, hideModal])
 
 
 	return (

@@ -6,7 +6,7 @@ import Image from "next/image"
 import { useUser } from "@/app/context/userContext"
 import ArrowLeftRoundedIcon from "@/app/components/icons/ArrowLeftRoundedIcon"
 import { usePostcard } from "@/app/context/postcardContext"
-import EditEntryNavigation from "./navigation"
+import EditPostcardNavigation from "./navigation"
 import { useCallback, useEffect, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import { Status, StatusIndicator } from "@/app/components/ui/StatusIndicator"
@@ -19,7 +19,7 @@ interface EditPostcardMobileProps {
 	onCreateEntry: () => void
 	onDeleteEntry: (entryId: string) => void
 	onUploadEntryImage: (file: File) => void
-	onDeleteEntryImage: () => void
+	onDeleteEntryImage: (entryId: string) => void
 }
 
 export default function EditPostcardMobile(props: EditPostcardMobileProps) {
@@ -90,9 +90,13 @@ export default function EditPostcardMobile(props: EditPostcardMobileProps) {
 				</div>
 
 				{focusedEntryId ? (
-					<EditPostcardEntry />
+					<EditPostcardEntry
+						onUploadEntryImage={onUploadEntryImage}
+						onDeleteEntryImage={onDeleteEntryImage}
+						onDeleteEntry={onDeleteEntry}
+					/>
 				) : (
-					<EditEntryNavigation
+					<EditPostcardNavigation
 						onCreateEntry={onCreateEntry}
 					/>
 				)}

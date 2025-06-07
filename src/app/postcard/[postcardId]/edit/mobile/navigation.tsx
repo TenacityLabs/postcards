@@ -1,11 +1,11 @@
 import { usePostcard } from "@/app/context/postcardContext"
 import styles from "./navigation.module.scss"
 
-interface EditEntryNavigationProps {
+interface EditPostcardNavigationProps {
 	onCreateEntry: () => void
 }
 
-export default function EditEntryNavigation(props: EditEntryNavigationProps) {
+export default function EditPostcardNavigation(props: EditPostcardNavigationProps) {
 	const { onCreateEntry } = props
 	const { postcard, setFocusedEntryId } = usePostcard()
 

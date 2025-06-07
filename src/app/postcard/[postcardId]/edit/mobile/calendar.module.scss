@@ -1,0 +1,253 @@
+@use '@/app/system.scss' as *;
+
+@mixin calendar-button {
+	border: none;
+	outline: none;
+	background-color: inherit;
+	cursor: pointer;
+	border-radius: 100px;
+	@include transition-normal;
+
+	&:hover {
+		background-color: rgba($neutral-700, 0.1);
+	}
+
+	&:active {
+		transform: scale(0.95);
+		background-color: rgba($neutral-700, 0.3);
+	}
+}
+
+.container {
+	position: relative;
+}
+
+.calendarButton {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	padding: 14px 18px;
+	gap: 12px;
+
+	border: none;
+	outline: none;
+	background-color: rgba($neutral-700, 0.1);
+	border: 0.5px solid rgba($neutral-700, 0.1);
+	backdrop-filter: blur(2px);
+	border-radius: 6px;
+	cursor: pointer;
+	color: $neutral-500;
+
+	@include transition-normal;
+
+	.date {
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 500;
+		line-height: normal;
+	}
+
+	.icon {
+		margin-top: -1px;
+	}
+
+	&:hover {
+		background-color: rgba($neutral-700, 0.2);
+		color: $neutral-600;
+	}
+
+	&:active {
+		transform: scale(0.95);
+	}
+}
+
+.calendar {
+	z-index: 100;
+	width: 360px;
+	position: absolute;
+	top: 48px;
+	right: 0;
+	border-radius: 28px;
+	background-color: $paper;
+	display: flex;
+	flex-direction: column;
+	box-shadow: 4px 4px 15px 0px rgba($neutral-950, 0.1);
+}
+
+.header {
+	padding: 24px 24px 12px 24px;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+
+	.subtitle {
+		color: $neutral-500;
+		font-family: Figtree;
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 700;
+		line-height: 20px;
+		letter-spacing: 0.1px;
+	}
+
+	.titleDate {
+		color: $neutral-950;
+		font-family: Figtree;
+		font-size: 32px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 40px;
+	}
+}
+
+.navigator {
+	padding: 4px 12px 4px 16px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	.toggleNavigationButton {
+		height: 40px;
+		display: flex;
+		align-items: center;
+		gap: 4px;
+
+		padding: 0 4px 0 8px;
+		color: $neutral-900;
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 500;
+		line-height: 20px;
+		letter-spacing: 0.1px;
+
+		@include calendar-button;
+
+		.triangleDown {
+			height: 18px;
+			@include transition-normal;
+		}
+
+		.rotateUp {
+			transform: rotate(180deg);
+		}
+	}
+
+	.navigationButtons {
+		display: flex;
+
+		.navigationButton {
+			width: 40px;
+			height: 40px;
+			color: $neutral-900;
+
+			@include calendar-button;
+		}
+	}
+}
+
+
+.yearGridContainer,
+.calendarGridContainer {
+	padding-top: 4px;
+	height: 350px;
+}
+
+.calendarGrid {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	gap: 4px;
+	padding: 0 12px;
+	color: $neutral-950;
+	text-align: center;
+
+	>* {
+		height: 44px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.emptyDay,
+	.day {
+		border: none;
+		outline: none;
+		background-color: inherit;
+	}
+
+	.day {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 40px;
+		height: 40px;
+
+		@include calendar-button;
+
+		&.focused {
+			background-color: $neutral-900;
+			color: $neutral-50;
+
+			&:hover {
+				opacity: 0.9;
+			}
+		}
+	}
+}
+
+.yearGrid {
+	overflow-y: scroll;
+	@include simple-scrollbar;
+	height: 100%;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	column-gap: 8px;
+	row-gap: 0;
+	padding: 0 22px;
+	color: $neutral-950;
+	text-align: center;
+
+	.yearButtonContainer {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		padding: 8px 0;
+	}
+
+	.year {
+		padding: 6px 0;
+		width: 72px;
+
+		text-align: center;
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 600;
+		line-height: 24px;
+		letter-spacing: 0.15px;
+		color: $neutral-900;
+
+		@include calendar-button;
+
+		&.focused {
+			background-color: $neutral-900;
+			color: $neutral-50;
+
+			&:hover {
+				opacity: 0.9;
+			}
+		}
+	}
+}
+
+
+.footer {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 8px 12px;
+
+	button {
+		height: 40px;
+		padding: 0 16px;
+		@include calendar-button;
+	}
+}

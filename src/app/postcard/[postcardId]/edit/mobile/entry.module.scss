@@ -9,13 +9,13 @@
 
 .titleInput {
 	width: 100%;
-	padding: 12px;
+	padding: 18px;
 	border-radius: 6px;
 	border: 0.5px solid rgba($neutral-700, 0.1);
 	outline: none;
 	box-shadow: 1px 1px 7.5px rgba($neutral-950, 0.07);
 
-	font-size: 16px;
+	font-size: 18px;
 	font-style: normal;
 	font-weight: 500;
 	line-height: normal;
@@ -35,8 +35,9 @@
 
 	.textAreaLength {
 		position: absolute;
-		bottom: 24px;
-		right: 24px;
+		bottom: 18px;
+		right: 18px;
+		background-color: $neutral-50;
 
 		color: $neutral-400;
 		font-size: 14px;
@@ -57,7 +58,7 @@
 	}
 
 	.textArea {
-		padding: 12px;
+		padding: 18px;
 		border: 0;
 		outline: 0;
 		width: 100%;
@@ -74,8 +75,6 @@
 		border-radius: 6px;
 		border: 0.5px solid rgba($neutral-700, 0.1);
 		box-shadow: 1px 1px 7.5px rgba($neutral-950, 0.07);
-
-		padding: 24px;
 
 		&::placeholder {
 			color: $neutral-400;

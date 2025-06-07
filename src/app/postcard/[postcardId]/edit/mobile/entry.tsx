@@ -1,5 +1,6 @@
 import { usePostcard } from "@/app/context/postcardContext"
 import styles from "./entry.module.scss"
+import { Calendar } from "./calendar"
 
 interface EditPostcardEntryProps {
 }
@@ -19,6 +20,8 @@ export default function EditPostcardEntry(props: EditPostcardEntryProps) {
 				onChange={(e) => updateEntry(focusedEntryId, { title: e.target.value })}
 				className={styles.titleInput}
 			/>
+
+			<Calendar />
 
 			<div className={styles.textAreaContainer}>
 				<textarea

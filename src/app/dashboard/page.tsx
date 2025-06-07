@@ -126,9 +126,11 @@ export default function Dashboard() {
 					))}
 				</div>
 
-				<button onClick={logout}>
-					Logout
-				</button>
+				<div className={styles.logoutButtonContainer}>
+					<button onClick={logout} className={styles.logoutButton}>
+						Logout
+					</button>
+				</div>
 
 			</div>
 		</div>

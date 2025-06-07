@@ -115,6 +115,10 @@ export const Calendar = () => {
 	}, [focusedEntryId, updateEntry])
 
 	const handleConfirmSelectDate = useCallback(() => {
+		if (selectingYear) {
+			setSelectingYear(false)
+			return
+		}
 		if (focusedEntryId && selectedDate) {
 			updateEntry(focusedEntryId, {
 				date: selectedDate,
@@ -122,7 +126,7 @@ export const Calendar = () => {
 		}
 		setIsCalendarOpen(false)
 		showToast('Updated date', Status.Success)
-	}, [focusedEntryId, selectedDate, updateEntry])
+	}, [focusedEntryId, selectedDate, updateEntry, selectingYear])
 
 	const handleCalendarClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
 		e.stopPropagation()

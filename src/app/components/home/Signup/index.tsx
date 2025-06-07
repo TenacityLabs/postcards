@@ -124,6 +124,7 @@ export default function Signup(props: SignupProps) {
 					handleSignup={handleSignup}
 					isFillingSenderInfo={isFillingSenderInfo}
 					handleContinue={handleContinue}
+					backToAuth={() => setIsFillingSenderInfo(false)}
 					navigateToLogin={navigateToLogin}
 				/>
 			)}

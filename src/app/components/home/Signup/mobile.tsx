@@ -5,6 +5,25 @@ import styles from "../styles.module.scss";
 import Image from "next/image";
 import EyeIcon from "../../icons/EyeIcon";
 import EyeSlashIcon from "../../icons/EyeSlashIcon";
+import CircleXIcon from "../../icons/CircleXIcon";
+import CircleCheckIcon from "../../icons/CircleCheckIcon";
+import { containsLowercaseLetter, containsNumber, containsUppercaseLetter, MINIMUM_PASSWORD_LENGTH, validatePassword } from "@/utils/auth";
+
+const CheckIcon = (isChecked: boolean) => {
+	if (isChecked) {
+		return (
+			<div className={styles.iconChecked}>
+				<CircleCheckIcon width={24} height={24} />
+			</div>
+		)
+	} else {
+		return (
+			<div className={styles.iconUnchecked}>
+				<CircleXIcon width={24} height={24} />
+			</div>
+		)
+	}
+}
 
 interface SignupMobileProps {
 	navigateToLanding: () => void
@@ -24,27 +43,26 @@ interface SignupMobileProps {
 	handleSignup: (e: React.FormEvent<HTMLFormElement>) => Promise<void>
 	isFillingSenderInfo: boolean
 	handleContinue: (e: React.FormEvent<HTMLFormElement>) => void
+	backToAuth: () => void
 	navigateToLogin: () => void
 }
 
 export default function SignupMobile(props: SignupMobileProps) {
-	const { navigateToLanding, email, setEmail, firstName, setFirstName, lastName, setLastName, displayName, setDisplayName, password, setPassword, isPasswordVisible, setIsPasswordVisible, isSigningUp, handleSignup, isFillingSenderInfo, handleContinue, navigateToLogin } = props
+	const { navigateToLanding, email, setEmail, firstName, setFirstName, lastName, setLastName, displayName, setDisplayName, password, setPassword, isPasswordVisible, setIsPasswordVisible, isSigningUp, handleSignup, isFillingSenderInfo, handleContinue, backToAuth, navigateToLogin } = props
 	const passwordRef = useRef<HTMLInputElement>(null)
 	const firstNameRef = useRef<HTMLInputElement>(null)
 
 	useEffect(() => {
-		if (passwordRef.current) {
+		if (passwordRef.current && !isFillingSenderInfo) {
 			passwordRef.current.focus()
 		}
-	}, [passwordRef])
+	}, [passwordRef, isFillingSenderInfo])
 
 	useEffect(() => {
-		if (firstNameRef.current) {
+		if (firstNameRef.current && isFillingSenderInfo) {
 			firstNameRef.current.focus()
 		}
-	}, [firstNameRef])
-
-
+	}, [firstNameRef, isFillingSenderInfo])
 
 	return (
 		<>
@@ -121,20 +139,22 @@ export default function SignupMobile(props: SignupMobileProps) {
 							<div className={styles.authFooter}>
 								<div className={styles.submitContainer}>
 									<button
+										className={styles.backButton}
+										type="button"
+										onClick={(e) => {
+											e.preventDefault()
+											backToAuth()
+										}}>
+										Back
+									</button>
+									<button
 										className={styles.submitButton}
 										type="submit"
-										disabled={isSigningUp || !password}
+										disabled={isSigningUp || !firstName || !lastName || !displayName}
 									>
 										Sign up
 									</button>
 								</div>
-
-								<button
-									className={styles.link}
-									onClick={navigateToLogin}
-								>
-									Don&apos;t have an account? Sign up instead.
-								</button>
 							</div>
 						</form>
 					) : (
@@ -184,11 +204,32 @@ export default function SignupMobile(props: SignupMobileProps) {
 												/>
 											) : (
 												<EyeIcon
-													width={28}
-													height={28}
+													width={24}
+													height={24}
 												/>
 											)}
 										</button>
+									</div>
+								</div>
+
+								<div className={styles.passwordRequirements}>
+									<div className={styles.requirement}>
+										{CheckIcon(password.length >= MINIMUM_PASSWORD_LENGTH)}
+										<div className={styles.text}>
+											At least 8 characters
+										</div>
+									</div>
+									<div className={styles.requirement}>
+										{CheckIcon(containsLowercaseLetter(password) && containsUppercaseLetter(password))}
+										<div className={styles.text}>
+											Includes a lowercase letter and an uppercase letter
+										</div>
+									</div>
+									<div className={styles.requirement}>
+										{CheckIcon(containsNumber(password))}
+										<div className={styles.text}>
+											Includes a number
+										</div>
 									</div>
 								</div>
 							</div>
@@ -198,7 +239,7 @@ export default function SignupMobile(props: SignupMobileProps) {
 									<button
 										className={styles.submitButton}
 										type="submit"
-										disabled={isSigningUp || !password}
+										disabled={!email || !password || !validatePassword(password)}
 									>
 										Continue
 									</button>
@@ -208,7 +249,7 @@ export default function SignupMobile(props: SignupMobileProps) {
 									className={styles.link}
 									onClick={navigateToLogin}
 								>
-									Don&apos;t have an account? Sign up instead.
+									Already have an account? Log in instead.
 								</button>
 							</div>
 						</form>

@@ -7,7 +7,7 @@ import { useCallback, useMemo } from "react"
 import TrashIcon from '../components/icons/TrashIcon'
 import { useRouter } from 'next/navigation'
 import { useModal } from '../context/modalContext'
-import { XIcon } from '../components/icons/XIcon'
+import DeleteModal from '../components/ui/DeleteModal'
 
 interface FolderProps {
 	postcard: Postcard
@@ -33,36 +33,14 @@ export default function Folder(props: FolderProps) {
 		hideModal()
 	}, [handleDeletePostcard, hideModal])
 
-	const deletePostcardModal = useMemo(() => {
-		return (
-			<div className={styles.deleteModal}>
-				<div className={styles.header}>
-					<h3>Delete Postcard</h3>
-					<button className={styles.closeButton} onClick={hideModal}>
-						<XIcon width={14} height={14} />
-					</button>
-				</div>
-				<p className={styles.description}>
-					Are you sure you want to delete this Postcard? <br />
-					This action is permanent and cannot be undone.
-				</p>
-
-				<button
-					className={styles.deleteButton}
-					onClick={handleDeletePostcardAndHideModal}
-				>
-					<span className={styles.label}>
-						Yes, delete
-					</span>
-					<TrashIcon width={22} height={22} />
-				</button>
-			</div>
-		)
-	}, [hideModal, handleDeletePostcardAndHideModal])
-
 	const handlePostcardClick = () => {
 		if (isEditing) {
-			updateModal(deletePostcardModal)
+			updateModal(<DeleteModal
+				title="Delete Postcard"
+				description="Are you sure you want to delete this Postcard? This action is permanent and cannot be undone."
+				hideModal={hideModal}
+				handleDeletePostcardAndHideModal={handleDeletePostcardAndHideModal}
+			/>)
 		} else {
 			router.push(`/postcard/${postcard._id}/edit`)
 		}

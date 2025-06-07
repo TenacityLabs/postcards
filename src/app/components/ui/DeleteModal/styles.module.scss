@@ -1,0 +1,94 @@
+@use '@/app/system.scss' as *;
+
+.deleteModal {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+
+	background-color: $neutral-50;
+	border-radius: 20px;
+	box-shadow: 4px 4px 15px 0px rgba($neutral-950, 0.15);
+	padding: 36px;
+	width: calc(100vw - 48px);
+	max-width: 440px;
+
+	@media (max-width: 768px) {
+		gap: 16px;
+	}
+
+	.header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		h3 {
+			color: $neutral-900;
+			font-size: 22px;
+			font-style: normal;
+			font-weight: 700;
+			line-height: normal;
+
+			@media (max-width: 768px) {
+				font-size: 18px;
+			}
+		}
+
+		.closeButton {
+			background: none;
+			border: none;
+			cursor: pointer;
+
+			color: $neutral-700;
+		}
+	}
+
+	.description {
+		color: $neutral-800;
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 150%;
+
+		@media (max-width: 768px) {
+			font-size: 14px;
+		}
+	}
+
+	.deleteButton {
+		outline: none;
+		border: none;
+		cursor: pointer;
+
+		padding: 8px 16px;
+		border-radius: 10px;
+
+		color: $neutral-50;
+
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		background-color: $error-700;
+		@include transition-normal;
+
+		&:hover {
+			opacity: 0.9
+		}
+
+		&:active {
+			opacity: 0.9;
+			transform: scale(0.95);
+		}
+
+		.label {
+			font-size: 16px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 150%;
+
+			@media (max-width: 768px) {
+				font-size: 14px;
+			}
+		}
+	}
+}

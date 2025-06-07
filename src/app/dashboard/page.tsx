@@ -80,7 +80,7 @@ export default function Dashboard() {
 		<div className={styles.page}>
 			<div className={styles.container}>
 				<div className={styles.header}>
-					<Link href="/" className={styles.logoContainer}>
+					<Link href="/dashboard" className={styles.logoContainer}>
 						<Image
 							src="/logos/logo-128.svg"
 							alt="Postcards"

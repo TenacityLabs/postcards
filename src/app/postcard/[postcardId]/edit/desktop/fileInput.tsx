@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import styles from './fileInput.module.scss'
 import Image from 'next/image'
-import CircleXIcon from '../../../components/icons/CircleXIcon'
+import CircleXIcon from '@/app/components/icons/CircleXIcon'
 
 interface FileInputProps {
 	label: string

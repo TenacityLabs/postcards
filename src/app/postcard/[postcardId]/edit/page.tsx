@@ -1,7 +1,5 @@
 "use client"
 
-import styles from "./styles.module.scss"
-import { FileInput } from "@/app/postcard/[postcardId]/edit/fileInput";
 import { usePostcard } from "@/app/context/postcardContext";
 import { IMAGE_MIME_TYPES, MAX_IMAGE_SIZE, PREFERRED_IMAGE_QUALITY, PREFERRED_MAX_WIDTH } from "@/constants/file";
 import { sendAPIRequest } from "@/utils/api";
@@ -12,12 +10,11 @@ import { APIMethods } from "@/types/api";
 import { compressImageToJPEG } from "@/utils/file";
 import { useUser } from "@/app/context/userContext";
 import { useRouter } from "next/navigation";
-import { Navigation } from "./navigation";
-import { Calendar } from "./calendar";
+import EditEntryDesktop from "./desktop";
 
 export default function EditEntry() {
 	const { user, loading: userLoading } = useUser()
-	const { postcard, setPostcard, loading: postcardLoading, focusedEntryId, setFocusedEntryId, focusedEntry, updateEntry } = usePostcard()
+	const { postcard, setPostcard, loading: postcardLoading, focusedEntryId, setFocusedEntryId, updateEntry } = usePostcard()
 	const router = useRouter()
 
 	useEffect(() => {
@@ -208,65 +205,11 @@ export default function EditEntry() {
 	}
 
 	return (
-		<div className={styles.page}>
-			<Navigation
-				onCreateEntry={handleCreateEntry}
-				onDeleteEntry={handleDeleteEntry}
-			/>
-
-			<div className={styles.content}>
-				{focusedEntryId && focusedEntry ? (
-					<>
-						<div className={styles.title}>
-							<input
-								placeholder="Title"
-								value={focusedEntry.title}
-								onChange={(e) => updateEntry(focusedEntryId, { title: e.target.value })}
-								className={styles.titleInput}
-							/>
-
-							<Calendar />
-						</div>
-
-						<div className={styles.textAreaContainer}>
-							<textarea
-								value={focusedEntry.description}
-								onChange={(e) => updateEntry(focusedEntryId, { description: e.target.value })}
-								placeholder="Write text or paste a link here"
-								className={styles.textArea}
-								maxLength={500}
-							/>
-							<div
-								className={`${styles.textAreaLength} ${focusedEntry.description.length >= 500 ?
-									styles.errorLength : focusedEntry.description.length >= 450 ? styles.warningLength : ''}`}
-							>
-								{focusedEntry.description.length}/500 CHARACTERS
-							</div>
-						</div>
-
-						<FileInput
-							label="Upload File"
-							accept={IMAGE_MIME_TYPES.join(',')}
-							labelText={focusedEntry.imageUrl ? focusedEntry.imageName ?? "Unknown file" : 'Click or drag to upload here.'}
-							onUpload={handleUploadEntryImage}
-							onDelete={handleDeleteEntryImage}
-							image={focusedEntry.imageUrl}
-						/>
-					</>
-				) : (
-					<div>
-						{postcard?.entries.length ? (
-							<p>
-								No entry found. Create one to get started.
-							</p>
-						) : (
-							<p>
-								Select an entry to start editing.
-							</p>
-						)}
-					</div>
-				)}
-			</div>
-		</div>
+		<EditEntryDesktop
+			onCreateEntry={handleCreateEntry}
+			onDeleteEntry={handleDeleteEntry}
+			onUploadEntryImage={handleUploadEntryImage}
+			onDeleteEntryImage={handleDeleteEntryImage}
+		/>
 	)
 }

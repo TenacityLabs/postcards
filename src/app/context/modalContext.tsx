@@ -5,7 +5,8 @@ import { clearTimeoutIfExists } from '@/utils'
 import { createContext, useContext, useState, ReactNode, useCallback, useRef, useEffect } from 'react'
 
 interface ModalContextType {
-	updateModal: (content: ReactNode) => void
+	isOpen: boolean
+	updateModal: (content: ReactNode, backgroundClass?: string) => void
 	hideModal: () => void
 }
 
@@ -14,6 +15,7 @@ const ModalContext = createContext<ModalContextType | undefined>(undefined)
 export function ModalProvider({ children }: { children: ReactNode }) {
 	const [isOpen, setIsOpen] = useState(false)
 	const [modal, setModal] = useState<ReactNode | null>(null)
+	const [backgroundClass, setBackgroundClass] = useState<string | null>(null)
 	const openModalRef = useRef<NodeJS.Timeout | null>(null)
 	const modalContentUpdateRef = useRef<NodeJS.Timeout | null>(null)
 
@@ -24,9 +26,12 @@ export function ModalProvider({ children }: { children: ReactNode }) {
 		openModalRef.current = null
 	}, [])
 
-	const updateModal = useCallback((content: ReactNode) => {
+	const updateModal = useCallback((content: ReactNode, backgroundClass?: string) => {
 		clearTimeouts()
 		setModal(content)
+		if (backgroundClass) {
+			setBackgroundClass(backgroundClass)
+		}
 		openModalRef.current = setTimeout(() => {
 			setIsOpen(true)
 		}, 50)
@@ -37,6 +42,7 @@ export function ModalProvider({ children }: { children: ReactNode }) {
 		setIsOpen(false)
 		modalContentUpdateRef.current = setTimeout(() => {
 			setModal(null)
+			setBackgroundClass(null)
 		}, 300)
 	}, [clearTimeouts])
 
@@ -55,6 +61,7 @@ export function ModalProvider({ children }: { children: ReactNode }) {
 		<>
 			<ModalContext.Provider
 				value={{
+					isOpen,
 					updateModal,
 					hideModal,
 				}}
@@ -62,7 +69,7 @@ export function ModalProvider({ children }: { children: ReactNode }) {
 				{children}
 			</ModalContext.Provider>
 			<div
-				className={`${styles.modalContainer} ${isOpen ? styles.open : ''}`}
+				className={`${styles.modalContainer} ${backgroundClass ? backgroundClass : ''} ${isOpen ? styles.open : ''}`}
 				onClick={hideModal}
 			>
 				<div

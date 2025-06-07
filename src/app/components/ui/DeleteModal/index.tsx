@@ -6,11 +6,11 @@ interface DeleteModalProps {
 	title: string
 	description: string
 	hideModal: () => void
-	handleDeletePostcardAndHideModal: () => void
+	handleDelete: () => void
 }
 
 export default function DeleteModal(props: DeleteModalProps) {
-	const { title, description, hideModal, handleDeletePostcardAndHideModal } = props
+	const { title, description, hideModal, handleDelete } = props
 	return (
 		<div className={styles.deleteModal}>
 			<div className={styles.header}>
@@ -25,7 +25,7 @@ export default function DeleteModal(props: DeleteModalProps) {
 
 			<button
 				className={styles.deleteButton}
-				onClick={handleDeletePostcardAndHideModal}
+				onClick={handleDelete}
 			>
 				<span className={styles.label}>
 					Yes, delete

@@ -5,10 +5,12 @@ import ArrowLeftIcon from '@/app/components/icons/ArrowLeftIcon'
 import { usePostcard } from '@/app/context/postcardContext'
 import { useUser } from '@/app/context/userContext'
 import { POSTCARD_SHARE_LINK_PREFIX } from '@/constants/postcard'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import TrashIcon from '@/app/components/icons/TrashIcon'
 import { showToast } from '@/app/components/ui/CustomToast'
 import { Status, StatusIndicator } from '@/app/components/ui/StatusIndicator'
+import DeleteModal from '@/app/components/ui/DeleteModal'
+import { useModal } from '@/app/context/modalContext'
 
 interface NavigationProps {
 	onCreateEntry: () => void
@@ -17,6 +19,7 @@ interface NavigationProps {
 
 export const Navigation = (props: NavigationProps) => {
 	const { onCreateEntry, onDeleteEntry } = props
+	const { updateModal, hideModal } = useModal()
 	const { postcard, focusedEntryId, setFocusedEntryId } = usePostcard()
 	const { user } = useUser()
 
@@ -31,9 +34,18 @@ export const Navigation = (props: NavigationProps) => {
 		showToast('Copied sharing link to clipboard', Status.Success)
 	}
 
-	const handleDeleteEntry = (e: React.MouseEvent<HTMLButtonElement>, entryId: string) => {
-		e.stopPropagation()
+	const handleDeleteEntryAndHide = useCallback((entryId: string) => {
 		onDeleteEntry(entryId)
+		hideModal()
+	}, [onDeleteEntry, hideModal])
+
+	const handleOpenDeleteEntryModal = (entryId: string) => {
+		updateModal(<DeleteModal
+			title="Delete Entry"
+			description="Are you sure you want to delete this entry? This action is permanent and cannot be undone."
+			hideModal={hideModal}
+			handleDelete={() => handleDeleteEntryAndHide(entryId)}
+		/>)
 	}
 
 	if (!postcard || !user) {
@@ -75,7 +87,10 @@ export const Navigation = (props: NavigationProps) => {
 						</span>
 						<button
 							className={styles.deleteButton}
-							onClick={(e) => handleDeleteEntry(e, entry._id)}
+							onClick={(e) => {
+								e.stopPropagation()
+								handleOpenDeleteEntryModal(entry._id)
+							}}
 						>
 							<TrashIcon width={20} height={20} />
 						</button>

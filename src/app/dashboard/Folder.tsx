@@ -39,7 +39,7 @@ export default function Folder(props: FolderProps) {
 				title="Delete Postcard"
 				description="Are you sure you want to delete this Postcard? This action is permanent and cannot be undone."
 				hideModal={hideModal}
-				handleDeletePostcardAndHideModal={handleDeletePostcardAndHideModal}
+				handleDelete={handleDeletePostcardAndHideModal}
 			/>)
 		} else {
 			router.push(`/postcard/${postcard._id}/edit`)

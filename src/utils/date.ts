@@ -32,7 +32,7 @@ export const numberToPrettyWeek = (date: number, includeYear = false) => {
 
 export const getDaysElapsed = (createdAt: number) => {
 	const now = Date.now()
-	return Math.floor((now - createdAt) / (1000 * 60 * 60 * 24))
+	return Math.max(0, Math.floor((now - createdAt) / (1000 * 60 * 60 * 24)))
 }
 
 export const getDurationMessage = (createdAt: number) => {

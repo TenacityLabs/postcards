@@ -81,7 +81,6 @@
 }
 
 .deleteButton {
-	color: $neutral-50;
 	font-size: 16px;
 	font-style: normal;
 	font-weight: 500;
@@ -93,14 +92,15 @@
 	border: 1px solid rgba($neutral-700, 0.1);
 	@include transition-normal;
 
-	background: $error-700;
+	color: $neutral-600;
+	background: $neutral-300;
 
 	&:hover {
-		opacity: 0.9;
+		background: $neutral-400;
 	}
 
 	&:active {
-		opacity: 0.9;
+		background: $neutral-500;
 		transform: scale(0.98);
 	}
 }

@@ -3,6 +3,9 @@ import styles from "./entry.module.scss"
 import { Calendar } from "./calendar"
 import { FileInput } from "./fileInput"
 import { IMAGE_MIME_TYPES } from "@/constants/file"
+import DeleteModal from "@/app/components/ui/DeleteModal"
+import { useModal } from "@/app/context/modalContext"
+import { useCallback } from "react"
 
 interface EditPostcardEntryProps {
 	onUploadEntryImage: (file: File) => void
@@ -13,6 +16,19 @@ interface EditPostcardEntryProps {
 export default function EditPostcardEntry(props: EditPostcardEntryProps) {
 	const { onUploadEntryImage, onDeleteEntryImage, onDeleteEntry } = props
 	const { focusedEntryId, focusedEntry, updateEntry } = usePostcard()
+	const { updateModal, hideModal } = useModal()
+
+	const handleOpenDeleteEntryModal = useCallback(() => {
+		updateModal(<DeleteModal
+			title="Delete entry"
+			description="Are you sure you want to delete this entry? This action cannot be undone."
+			hideModal={hideModal}
+			handleDelete={() => {
+				onDeleteEntry(focusedEntryId!)
+				hideModal()
+			}}
+		/>)
+	}, [focusedEntryId, onDeleteEntry, hideModal, updateModal])
 
 	if (!focusedEntryId || !focusedEntry) {
 		return null
@@ -53,6 +69,13 @@ export default function EditPostcardEntry(props: EditPostcardEntryProps) {
 				onDelete={() => onDeleteEntryImage(focusedEntryId)}
 				image={focusedEntry.imageUrl}
 			/>
+
+			<button
+				className={styles.deleteEntryButton}
+				onClick={handleOpenDeleteEntryModal}
+			>
+				Delete entry
+			</button>
 		</div>
 	)
 }

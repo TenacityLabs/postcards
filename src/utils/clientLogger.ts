@@ -24,6 +24,7 @@ export class ClientLogger {
 	}
 
 	private static log(level: LogLevel, message: string) {
+		if (process.env.NODE_ENV === 'production') return
 		const timestamp = ClientLogger.getTimestamp()
 		console.log(`${timestamp} [${level}] ${message}`)
 	}

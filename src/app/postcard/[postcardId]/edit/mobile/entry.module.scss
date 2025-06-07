@@ -1,0 +1,88 @@
+@use '@/app/system.scss' as *;
+
+.container {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.titleInput {
+	width: 100%;
+	padding: 12px;
+	border-radius: 6px;
+	border: 0.5px solid rgba($neutral-700, 0.1);
+	outline: none;
+	box-shadow: 1px 1px 7.5px rgba($neutral-950, 0.07);
+
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+
+	color: $neutral-800;
+	background-color: $neutral-50;
+
+	&::placeholder {
+		color: $neutral-500;
+	}
+}
+
+.textAreaContainer {
+	position: relative;
+	width: 100%;
+	height: 300px;
+
+	.textAreaLength {
+		position: absolute;
+		bottom: 24px;
+		right: 24px;
+
+		color: $neutral-400;
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 600;
+		line-height: normal;
+
+		@include transition-normal;
+
+		&.warningLength {
+			color: $warning-700;
+		}
+
+		&.errorLength {
+			color: $error-700;
+			font-weight: 800;
+		}
+	}
+
+	.textArea {
+		padding: 12px;
+		border: 0;
+		outline: 0;
+		width: 100%;
+		height: 100%;
+		resize: none;
+
+		color: $neutral-600;
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: normal;
+		background: $neutral-50;
+		outline: none;
+		border-radius: 6px;
+		border: 0.5px solid rgba($neutral-700, 0.1);
+		box-shadow: 1px 1px 7.5px rgba($neutral-950, 0.07);
+
+		padding: 24px;
+
+		&::placeholder {
+			color: $neutral-400;
+		}
+
+		&:focus~.textAreaLength {
+			color: $neutral-600;
+		}
+	}
+}

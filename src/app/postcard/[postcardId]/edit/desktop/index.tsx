@@ -7,18 +7,25 @@ import { IMAGE_MIME_TYPES } from "@/constants/file";
 import { useUser } from "@/app/context/userContext";
 import { Navigation } from "./navigation";
 import { Calendar } from "./calendar";
+import { useEffect } from "react";
 
-interface EditEntryDesktopProps {
+interface EditPostcardDesktopProps {
 	onCreateEntry: () => void
 	onDeleteEntry: (entryId: string) => void
 	onUploadEntryImage: (file: File) => void
 	onDeleteEntryImage: () => void
 }
 
-export default function EditEntryDesktop(props: EditEntryDesktopProps) {
+export default function EditPostcardDesktop(props: EditPostcardDesktopProps) {
 	const { onCreateEntry, onDeleteEntry, onUploadEntryImage, onDeleteEntryImage } = props
 	const { user } = useUser()
-	const { postcard, focusedEntryId, focusedEntry, updateEntry } = usePostcard()
+	const { postcard, focusedEntryId, focusedEntry, setFocusedEntryId, updateEntry } = usePostcard()
+
+	useEffect(() => {
+		if (postcard && postcard.entries.length > 0 && !focusedEntryId) {
+			setFocusedEntryId(postcard.entries[0]._id)
+		}
+	}, [postcard, focusedEntryId, setFocusedEntryId])
 
 	if (!postcard || !user) {
 		return null

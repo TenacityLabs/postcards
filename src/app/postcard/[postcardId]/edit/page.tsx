@@ -10,10 +10,13 @@ import { APIMethods } from "@/types/api";
 import { compressImageToJPEG } from "@/utils/file";
 import { useUser } from "@/app/context/userContext";
 import { useRouter } from "next/navigation";
-import EditEntryDesktop from "./desktop";
+import EditPostcardDesktop from "./desktop";
+import { useScreenSize } from "@/app/hooks/useScreenSize";
+import EditPostcardMobile from "./mobile";
 
 export default function EditEntry() {
 	const { user, loading: userLoading } = useUser()
+	const { screenWidth } = useScreenSize()
 	const { postcard, setPostcard, loading: postcardLoading, focusedEntryId, setFocusedEntryId, updateEntry } = usePostcard()
 	const router = useRouter()
 
@@ -204,12 +207,23 @@ export default function EditEntry() {
 		return null
 	}
 
-	return (
-		<EditEntryDesktop
-			onCreateEntry={handleCreateEntry}
-			onDeleteEntry={handleDeleteEntry}
-			onUploadEntryImage={handleUploadEntryImage}
-			onDeleteEntryImage={handleDeleteEntryImage}
-		/>
-	)
+	if (screenWidth > 1000) {
+		return (
+			<EditPostcardDesktop
+				onCreateEntry={handleCreateEntry}
+				onDeleteEntry={handleDeleteEntry}
+				onUploadEntryImage={handleUploadEntryImage}
+				onDeleteEntryImage={handleDeleteEntryImage}
+			/>
+		)
+	} else {
+		return (
+			<EditPostcardMobile
+				onCreateEntry={handleCreateEntry}
+				onDeleteEntry={handleDeleteEntry}
+				onUploadEntryImage={handleUploadEntryImage}
+				onDeleteEntryImage={handleDeleteEntryImage}
+			/>
+		)
+	}
 }

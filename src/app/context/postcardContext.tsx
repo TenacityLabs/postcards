@@ -53,11 +53,7 @@ export function PostcardProvider({ children }: { children: ReactNode }) {
 					entry.date = entry.date ? new PostcardDate(entry.date as unknown as string) : null
 				})
 				setPostcard(postcard)
-				if (postcard.entries.length > 0) {
-					setFocusedEntryId(postcard.entries[0]._id)
-				} else {
-					setFocusedEntryId(null)
-				}
+				setFocusedEntryId(null)
 			} catch (error) {
 				ClientLogger.error(`Error fetching postcard: ${error}`)
 			} finally {

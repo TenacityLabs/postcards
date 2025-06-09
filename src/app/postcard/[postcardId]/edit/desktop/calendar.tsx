@@ -19,7 +19,7 @@ export const Calendar = () => {
 
 	const [selectedDate, setSelectedDate] = useState<PostcardDate | null>(null)
 	// Month is 0-indexed
-	const [focusedMonth, setFocusedMonth] = useState((new Date()).getMonth())
+	const [focusedMonth, setFocusedMonth] = useState((new Date()).getMonth() + 1)
 	const [focusedYear, setFocusedYear] = useState((new Date()).getFullYear())
 
 	const actualDate = useMemo(() => {
@@ -46,13 +46,13 @@ export const Calendar = () => {
 		if (!focusedEntry?.date) {
 			const today = new Date()
 			setSelectedDate(null)
-			setFocusedMonth(today.getMonth())
+			setFocusedMonth(today.getMonth() + 1)
 			setFocusedYear(today.getFullYear())
 			return
 		}
 		const postcardDate = focusedEntry.date
 		setSelectedDate(postcardDate)
-		setFocusedMonth(postcardDate.month)
+		setFocusedMonth(postcardDate.month + 1)
 		setFocusedYear(postcardDate.year)
 	}, [focusedEntry?.date, isCalendarOpen])
 

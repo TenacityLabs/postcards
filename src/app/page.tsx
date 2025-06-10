@@ -1,55 +1,52 @@
-"use client"
-
-import { useMemo, useState } from "react";
+import Image from "next/image";
 import styles from "./page.module.scss";
-import Landing from "./components/home/Landing";
-import Signup from "./components/home/Signup";
-import Login from "./components/home/Login";
-
-enum AuthPage {
-	Landing = 'landing',
-	Signup = 'signup',
-	Login = 'login',
-}
+import Link from "next/link";
 
 export default function Home() {
-	const [authPage, setAuthPage] = useState<AuthPage>(AuthPage.Landing);
-	const [email, setEmail] = useState("");
-
-	const renderedPage = useMemo(() => {
-		switch (authPage) {
-			case AuthPage.Login:
-				return (
-					<Login
-						email={email}
-						navigateToLanding={() => setAuthPage(AuthPage.Landing)}
-						navigateToSignup={() => setAuthPage(AuthPage.Signup)}
-					/>
-				)
-			case AuthPage.Signup:
-				return (
-					<Signup
-						email={email}
-						setEmail={setEmail}
-						navigateToLanding={() => setAuthPage(AuthPage.Landing)}
-						navigateToLogin={() => setAuthPage(AuthPage.Login)}
-					/>
-				)
-			case AuthPage.Landing:
-				return (
-					<Landing
-						email={email}
-						setEmail={setEmail}
-						navigateToLogin={() => setAuthPage(AuthPage.Login)}
-						navigateToSignup={() => setAuthPage(AuthPage.Signup)}
-					/>
-				)
-		}
-	}, [authPage, email])
-
 	return (
-		<div className={`${styles.page} ${authPage === AuthPage.Landing ? styles.landing : ''}`}>
-			{renderedPage}
+		<div className={styles.page}>
+			<div className={styles.heading}>
+				<div className={styles.logoContainer}>
+					<Image
+						src="/logos/logo-128.svg"
+						alt="Postcards"
+						width={96}
+						height={96}
+						className={styles.logo}
+					/>
+					<h1>Postcards</h1>
+				</div>
+				<h2 className={styles.subtitle}>
+					A simple way to share life updates with loved ones
+				</h2>
+			</div>
+
+			<div className={styles.heroContainer}>
+				<Image
+					src="/images/hero.png"
+					priority
+					alt="Postcard"
+					width={1720}
+					height={641}
+					className={styles.heroImage}
+				/>
+			</div>
+
+			<div className={styles.ctaContainer}>
+				<Link
+					href="/signup"
+					className={styles.signup}
+				>
+					Sign up
+				</Link>
+
+				<Link
+					href="/login"
+					className={styles.login}
+				>
+					Log in
+				</Link>
+			</div>
 		</div>
 	);
 }

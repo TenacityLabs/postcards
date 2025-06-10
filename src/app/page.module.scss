@@ -9,12 +9,142 @@
 	align-items: center;
 	padding: 36px 0;
 
-	&.landing {
-		padding: 64px 0;
-		max-height: 100dvh;
+	padding: 64px 0;
+	max-height: 100dvh;
+
+	@media screen and (max-width: 500px) {
+		padding: 36px 0;
+	}
+}
+
+.heading {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 0 12px;
+	gap: 12px;
+
+	.logoContainer {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+
+		h1 {
+			color: $neutral-900;
+			font-size: 95px;
+			font-style: normal;
+			font-weight: 700;
+			line-height: normal;
+		}
+	}
+
+	.subtitle {
+		text-align: center;
+		color: $neutral-800;
+		font-size: 26px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: normal;
+	}
+
+	@media screen and (max-width: 1000px) {
+		.logoContainer {
+			.logo {
+				width: 76px;
+				height: 76px;
+			}
+
+			h1 {
+				font-size: 72px;
+			}
+		}
+
+		.subtitle {
+			font-size: 20px;
+		}
+	}
+
+	@media screen and (max-width: 500px) {
+		.logoContainer {
+			.logo {
+				width: 48px;
+				height: 48px;
+			}
+
+			h1 {
+				font-size: 48px;
+			}
+		}
+
+		.subtitle {
+			font-size: 18px;
+		}
+	}
+}
+
+.heroContainer {
+	flex-grow: 1;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow-x: hidden;
+
+	.heroImage {
+		height: 50vh;
+		width: auto;
+
+		@include no-drag;
+
+		@media screen and (max-width: 1000px) {
+			height: calc(100dvh - 450px);
+		}
 
 		@media screen and (max-width: 500px) {
-			padding: 36px 0;
+			display: flex;
+			flex-grow: 1;
 		}
+	}
+}
+
+.ctaContainer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 16px;
+
+	.signup,
+	.login {
+		text-decoration: none;
+		padding: 8px 32px;
+		border-radius: 100px;
+
+		font-size: 18px;
+		font-style: normal;
+		font-weight: 500;
+		line-height: 150%;
+		letter-spacing: -0.2px;
+		box-shadow: -3.2px 3.2px 16px 0px rgba($neutral-950, 0.1);
+
+		@include transition-normal;
+
+		&:hover {
+			opacity: 0.8;
+		}
+
+		&:active {
+			opacity: 0.8;
+			transform: scale(0.95);
+		}
+	}
+
+	.signup {
+		color: $neutral-50;
+		background-color: $primary-700;
+	}
+
+	.login {
+		color: $neutral-500;
+		background-color: $neutral-50;
 	}
 }

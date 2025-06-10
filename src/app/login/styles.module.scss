@@ -1,0 +1,562 @@
+@use '@/app/system.scss' as *;
+
+.page {
+	min-height: 100dvh;
+
+	@include grid-background;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 36px 0;
+
+	&.landing {
+		padding: 64px 0;
+		max-height: 100dvh;
+
+		@media screen and (max-width: 500px) {
+			padding: 36px 0;
+		}
+	}
+}
+
+.logoContainer {
+	padding: 10px;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 48px;
+
+
+	background-color: transparent;
+	text-decoration: none;
+	cursor: pointer;
+
+	h2 {
+		color: $neutral-900;
+		font-size: 27px;
+		font-style: normal;
+		font-weight: 600;
+		line-height: normal;
+	}
+}
+
+.postcard {
+	width: calc(100vw - 128px);
+	max-width: 1300px;
+
+	background: url("/images/postcard-pattern.svg");
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	border-radius: 50px;
+	padding: 48px;
+
+	@media screen and (max-width: 1200px) {
+		width: calc(100vw - 80px);
+		padding: 36px;
+	}
+}
+
+.postcardContent {
+	background-color: $paper;
+	padding: 64px;
+	border-radius: 50px;
+	display: flex;
+	gap: 48px;
+	min-height: 512px;
+
+	.navigationContainer {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+
+		.navigation {
+			display: flex;
+			align-items: center;
+			gap: 16px;
+
+			>a {
+				color: $neutral-900;
+				text-decoration: none;
+				@include transition-normal;
+
+				&:hover {
+					transform: translateX(-4px);
+				}
+			}
+
+			>h1 {
+				max-width: 160px;
+				color: $neutral-900;
+				font-size: 32px;
+				font-style: normal;
+				font-weight: 500;
+				line-height: 150%;
+				letter-spacing: -0.5px;
+			}
+		}
+	}
+
+	.divider {
+		background-color: $neutral-500;
+		width: 2px;
+		align-self: stretch;
+	}
+
+	.form {
+		flex-grow: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 36px;
+		min-height: 460px;
+
+		.formContent {
+			flex-grow: 1;
+			display: flex;
+			flex-direction: column;
+			gap: 36px;
+		}
+
+		.formGroup {
+			display: flex;
+			flex-direction: column;
+			gap: 18px;
+
+			.formLabel {
+				color: $neutral-600;
+				font-size: 14px;
+				font-style: normal;
+				font-weight: 700;
+				line-height: 150%;
+				letter-spacing: -0.15px;
+			}
+
+			.passwordInput,
+			.formInput {
+				width: 100%;
+				color: $neutral-800;
+				font-size: 20px;
+				font-style: normal;
+				font-weight: 500;
+				line-height: 150%;
+				letter-spacing: -0.25px;
+
+				background-color: transparent;
+				outline: none;
+				border: none;
+				padding-bottom: 10px;
+				border-bottom: 1px solid $neutral-400;
+
+				&::placeholder {
+					color: $neutral-500;
+				}
+
+				&.formInputDisabled {
+					cursor: not-allowed;
+				}
+			}
+
+			.passwordInput {
+				padding-right: 48px;
+			}
+
+			.passwordInputContainer {
+				width: 100%;
+				position: relative;
+			}
+
+			.passwordVisibilityButton {
+				position: absolute;
+				right: 10px;
+				top: 0;
+
+				background-color: transparent;
+				border: none;
+				padding: 0;
+				margin: 0;
+				cursor: pointer;
+				@include transition-normal;
+
+				color: $neutral-500;
+
+				&:hover {
+					color: $neutral-800;
+				}
+
+				&:active {
+					color: $neutral-800;
+					transform: scale(0.95);
+				}
+			}
+		}
+
+		.submitContainer {
+			display: flex;
+			align-items: center;
+			gap: 18px;
+		}
+
+		.backButton,
+		.submitButton {
+			border-radius: 5px;
+			border: none;
+			outline: none;
+			cursor: pointer;
+
+			display: inline-flex;
+			padding: 10px 36px;
+			justify-content: center;
+			width: fit-content;
+
+			color: $neutral-50;
+			font-size: 16px;
+			font-style: normal;
+			font-weight: 700;
+			line-height: normal;
+
+			@include transition-normal;
+			background-color: $neutral-700;
+
+			&:hover {
+				background-color: $neutral-800;
+			}
+
+			&:active {
+				background-color: $neutral-800;
+				transform: scale(0.95);
+				box-shadow: 4px 4px 20px 0px rgba($neutral-950, 0.1);
+			}
+
+			&:disabled {
+				cursor: not-allowed;
+				background-color: $neutral-400;
+				transform: scale(1);
+				box-shadow: none;
+			}
+		}
+
+		.backButton {
+			background-color: $neutral-300;
+			color: $neutral-800;
+
+			&:hover {
+				background-color: $neutral-400;
+			}
+
+			&:active {
+				background-color: $neutral-400;
+				transform: scale(0.95);
+			}
+		}
+	}
+
+	.passwordRequirements {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+
+		.requirement {
+			display: flex;
+			gap: 12px;
+			align-items: center;
+
+			.iconChecked {
+				color: $success-700;
+			}
+
+			.iconUnchecked {
+				color: $error-700;
+			}
+
+			>.text {
+				color: $neutral-700;
+				font-size: 18px;
+				font-style: normal;
+				font-weight: 500;
+				line-height: 150%;
+				letter-spacing: -0.2px;
+			}
+		}
+	}
+}
+
+.simpleAuth {
+	width: calc(100vw - 36px);
+	max-width: 450px;
+
+	display: flex;
+	text-align: center;
+	flex-direction: column;
+	align-items: center;
+	gap: 24px;
+
+	.logoContainerMobile {
+		padding-top: 20px;
+		display: flex;
+		align-items: center;
+		gap: 8px;
+
+		background-color: transparent;
+		text-decoration: none;
+
+		h2 {
+			color: $neutral-900;
+			font-size: 28px;
+			font-style: normal;
+			font-weight: 600;
+			line-height: normal;
+		}
+
+		@media screen and (max-width: 450px) {
+			gap: 6px;
+
+			.logo {
+				width: 30px;
+				height: 30px;
+			}
+
+			h2 {
+				font-size: 24px;
+			}
+		}
+	}
+
+
+	h1 {
+		color: $neutral-900;
+		font-size: 48px;
+		font-style: normal;
+		font-weight: 700;
+		line-height: normal;
+
+		@media screen and (max-width: 450px) {
+			font-size: 36px;
+		}
+	}
+
+	.form {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		gap: 36px;
+	}
+
+	.formContent {
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+	}
+
+	.formGroup {
+		text-align: left;
+		display: flex;
+		flex-direction: column;
+		gap: 18px;
+
+		@media screen and (max-width: 450px) {
+			gap: 12px;
+		}
+
+		.formLabel {
+			color: $neutral-600;
+			font-size: 14px;
+			font-style: normal;
+			font-weight: 700;
+			line-height: 150%;
+			letter-spacing: -0.15px;
+
+			@media screen and (max-width: 450px) {
+				font-size: 12px;
+			}
+		}
+
+		.passwordInput,
+		.formInput {
+			width: 100%;
+			color: $neutral-800;
+			font-size: 20px;
+			font-style: normal;
+			font-weight: 500;
+			line-height: 150%;
+			letter-spacing: -0.25px;
+
+			background-color: transparent;
+			outline: none;
+			border: none;
+			padding-bottom: 10px;
+			border-bottom: 1px solid $neutral-400;
+
+			@media screen and (max-width: 450px) {
+				font-size: 18px;
+			}
+
+			&::placeholder {
+				color: $neutral-500;
+			}
+
+			&.formInputDisabled {
+				cursor: not-allowed;
+			}
+		}
+
+		.passwordInput {
+			padding-right: 48px;
+		}
+
+		.passwordInputContainer {
+			width: 100%;
+			position: relative;
+		}
+
+		.passwordVisibilityButton {
+			position: absolute;
+			right: 10px;
+			top: 0;
+
+			background-color: transparent;
+			border: none;
+			padding: 0;
+			margin: 0;
+			cursor: pointer;
+			@include transition-normal;
+
+			@media screen and (max-width: 450px) {
+				>svg {
+					width: 24px;
+					height: 24px;
+				}
+			}
+
+			color: $neutral-500;
+
+			&:hover {
+				color: $neutral-800;
+			}
+
+			&:active {
+				color: $neutral-800;
+				transform: scale(0.95);
+			}
+		}
+	}
+
+	.authFooter,
+	.infoFooter {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 18px;
+
+		.submitContainer {
+			display: flex;
+			align-items: center;
+			gap: 18px;
+		}
+
+		.backButton,
+		.submitButton {
+			border-radius: 5px;
+			border: none;
+			outline: none;
+			cursor: pointer;
+
+			display: inline-flex;
+			justify-content: center;
+			width: fit-content;
+
+			color: $neutral-50;
+			font-size: 18px;
+			font-style: normal;
+			font-weight: 700;
+			line-height: normal;
+
+			padding: 10px 48px;
+
+			@media screen and (max-width: 450px) {
+				padding: 10px 36px;
+			}
+
+			@include transition-normal;
+			background-color: $neutral-700;
+
+			&:hover {
+				background-color: $neutral-800;
+			}
+
+			&:active {
+				background-color: $neutral-800;
+				transform: scale(0.95);
+				box-shadow: 4px 4px 20px 0px rgba($neutral-950, 0.1);
+			}
+
+			&:disabled {
+				cursor: not-allowed;
+				background-color: $neutral-400;
+				transform: scale(1);
+				box-shadow: none;
+			}
+		}
+
+		.backButton {
+			background-color: $neutral-300;
+			color: $neutral-800;
+
+			&:hover {
+				background-color: $neutral-400;
+			}
+
+			&:active {
+				background-color: $neutral-400;
+				transform: scale(0.95);
+			}
+		}
+
+		.link {
+			background-color: transparent;
+			border: none;
+			outline: none;
+			cursor: pointer;
+
+			color: $neutral-600;
+			font-size: 16px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: normal;
+			text-decoration-line: underline;
+
+			&:hover {
+				color: $neutral-800;
+			}
+		}
+	}
+
+	.passwordRequirements {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		text-align: left;
+
+		.requirement {
+			display: flex;
+			gap: 10px;
+			align-items: center;
+
+			.iconChecked {
+				color: $success-700;
+			}
+
+			.iconUnchecked {
+				color: $error-700;
+			}
+
+			>.text {
+				color: $neutral-700;
+				font-size: 16px;
+				font-style: normal;
+				font-weight: 500;
+				line-height: 150%;
+				letter-spacing: -0.2px;
+			}
+		}
+	}
+}

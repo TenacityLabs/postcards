@@ -56,33 +56,31 @@ export default function Login() {
 	}, [email, isLoggingIn, password, setUser])
 
 	return (
-		<>
-			<div className={styles.page}>
-				{screenWidth > 1000 ? (
-					<LoginDesktop
-						email={email}
-						setEmail={setEmail}
-						password={password}
-						setPassword={setPassword}
-						isLoggingIn={isLoggingIn}
-						handleSubmit={handleSubmit}
-						isPasswordVisible={isPasswordVisible}
-						setIsPasswordVisible={setIsPasswordVisible}
-					/>
-				) : (
-					<LoginMobile
-						email={email}
-						setEmail={setEmail}
-						password={password}
-						setPassword={setPassword}
-						isLoggingIn={isLoggingIn}
-						handleSubmit={handleSubmit}
-						isPasswordVisible={isPasswordVisible}
-						setIsPasswordVisible={setIsPasswordVisible}
-					/>
-				)}
-			</div>
-		</>
+		<div className={styles.page}>
+			{screenWidth > 1000 ? (
+				<LoginDesktop
+					email={email}
+					setEmail={setEmail}
+					password={password}
+					setPassword={setPassword}
+					isLoggingIn={isLoggingIn}
+					handleSubmit={handleSubmit}
+					isPasswordVisible={isPasswordVisible}
+					setIsPasswordVisible={setIsPasswordVisible}
+				/>
+			) : (
+				<LoginMobile
+					email={email}
+					setEmail={setEmail}
+					password={password}
+					setPassword={setPassword}
+					isLoggingIn={isLoggingIn}
+					handleSubmit={handleSubmit}
+					isPasswordVisible={isPasswordVisible}
+					setIsPasswordVisible={setIsPasswordVisible}
+				/>
+			)}
+		</div>
 	);
 }
 

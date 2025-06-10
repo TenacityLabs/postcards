@@ -14,6 +14,8 @@ import { getDaysElapsed, getDurationMessage } from "@/utils/date"
 import { POSTCARD_SHARE_LINK_PREFIX } from "@/constants/postcard"
 import { showToast } from "@/app/components/ui/CustomToast"
 import EditPostcardEntry from "./entry"
+import CopyIcon from "@/app/components/icons/CopyIcon"
+import PreviewIcon from "@/app/components/icons/PreviewIcon"
 
 interface EditPostcardMobileProps {
 	onCreateEntry: () => void
@@ -108,10 +110,22 @@ export default function EditPostcardMobile(props: EditPostcardMobileProps) {
 							Created {daysElapsed} days ago. {durationMessage.label}
 						</span>
 					</div>
+
+					<Link
+						href={`${POSTCARD_SHARE_LINK_PREFIX}${postcard?._id}`}
+						target="_blank"
+						className={styles.previewLink}
+					>
+						<PreviewIcon width={20} height={20} />
+						<span>
+							Preview
+						</span>
+					</Link>
 					<button
 						className={styles.copyShareLink}
 						onClick={handleCopyShareLink}
 					>
+						<CopyIcon width={20} height={20} />
 						Share Postcard
 					</button>
 				</div>

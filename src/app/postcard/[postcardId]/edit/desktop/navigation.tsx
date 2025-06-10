@@ -11,6 +11,8 @@ import { showToast } from '@/app/components/ui/CustomToast'
 import { Status, StatusIndicator } from '@/app/components/ui/StatusIndicator'
 import DeleteModal from '@/app/components/ui/DeleteModal'
 import { useModal } from '@/app/context/modalContext'
+import CopyIcon from '@/app/components/icons/CopyIcon'
+import PreviewIcon from '@/app/components/icons/PreviewIcon'
 
 interface NavigationProps {
 	onCreateEntry: () => void
@@ -118,13 +120,19 @@ export const Navigation = (props: NavigationProps) => {
 					target="_blank"
 					className={styles.previewLink}
 				>
-					Preview
+					<PreviewIcon width={20} height={20} />
+					<span>
+						Preview
+					</span>
 				</Link>
 				<button
 					className={styles.copyShareLink}
 					onClick={handleCopyShareLink}
 				>
-					Share Postcard
+					<CopyIcon width={20} height={20} />
+					<span>
+						Share Postcard
+					</span>
 				</button>
 			</div>
 		</div>

@@ -20,7 +20,7 @@ interface EditPostcardDesktopProps {
 export default function EditPostcardDesktop(props: EditPostcardDesktopProps) {
 	const { onCreateEntry, onDeleteEntry, onUploadEntryImage, onDeleteEntryImage } = props
 	const { user } = useUser()
-	const { postcard, focusedEntryId, focusedEntry, setFocusedEntryId, updateEntry } = usePostcard()
+	const { postcard, focusedEntryId, focusedEntry, setFocusedEntryId, updateEntry, loading } = usePostcard()
 
 	useEffect(() => {
 		if (postcard && postcard.entries.length > 0 && !focusedEntryId) {
@@ -100,14 +100,16 @@ export default function EditPostcardDesktop(props: EditPostcardDesktopProps) {
 								</>
 							)}
 
-							<Image
-								src="/images/empty-letter.png"
-								alt="Empty entry"
-								width={643}
-								height={466}
-								priority
-								className={styles.emptyLetterImage}
-							/>
+							{!loading && (
+								<Image
+									src="/images/empty-letter.png"
+									alt="Empty entry"
+									width={643}
+									height={466}
+									priority
+									className={styles.emptyLetterImage}
+								/>
+							)}
 						</div>
 					</div>
 				)}

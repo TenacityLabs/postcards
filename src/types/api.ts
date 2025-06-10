@@ -1,4 +1,4 @@
-import { GetUserResponse, LoginRequest, LoginResponse, SignupRequest, SignupResponse, UserExistsResponse, UserExistsRequest } from "./api/auth"
+import { GetUserResponse, LoginRequest, LoginResponse, SignupRequest, SignupResponse } from "./api/auth"
 import { CreateEntryRequest, CreateEntryResponse, CreatePostcardResponse, DeleteEntryImageRequest, DeleteEntryImageResponse, DeleteEntryRequest, DeleteEntryResponse, DeletePostcardRequest, DeletePostcardResponse, EditEntryRequest, EditEntryResponse, GetPostcardRequest, GetPostcardResponse, UploadEntryImageResponse, UploadEntryImageRequest } from "./api/postcard"
 
 export enum APIMethods {
@@ -10,7 +10,6 @@ export enum APIEndpoints {
 	// Auth
 	Login = '/api/auth/login',
 	Signup = '/api/auth/signup',
-	UserExists = '/api/auth/user-exists',
 	GetUser = '/api/user',
 
 	// Postcard
@@ -44,7 +43,6 @@ export interface ApiDataDefinitions {
 	[APIEndpoints.Login]: ApiDataDefinition<APIMethods.POST, LoginRequest, LoginResponse>
 	[APIEndpoints.Signup]: ApiDataDefinition<APIMethods.POST, SignupRequest, SignupResponse>
 	[APIEndpoints.GetUser]: ApiDataDefinition<APIMethods.GET, undefined, GetUserResponse>
-	[APIEndpoints.UserExists]: ApiDataDefinition<APIMethods.POST, UserExistsRequest, UserExistsResponse>
 
 	[APIEndpoints.GetPostcard]: ApiDataDefinition<APIMethods.GET, GetPostcardRequest, GetPostcardResponse>
 	[APIEndpoints.CreatePostcard]: ApiDataDefinition<APIMethods.POST, undefined, CreatePostcardResponse>

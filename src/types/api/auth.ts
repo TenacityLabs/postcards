@@ -26,11 +26,3 @@ export interface SignupResponse {
 export interface GetUserResponse {
 	user: User
 }
-
-export interface UserExistsRequest {
-	email: string
-}
-
-export interface UserExistsResponse {
-	exists: boolean
-}

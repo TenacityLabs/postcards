@@ -113,6 +113,13 @@ export const Navigation = (props: NavigationProps) => {
 						Created {daysElapsed} days ago. {durationMessage.label}
 					</span>
 				</div>
+				<Link
+					href={`${POSTCARD_SHARE_LINK_PREFIX}${postcard?._id}`}
+					target="_blank"
+					className={styles.previewLink}
+				>
+					Preview
+				</Link>
 				<button
 					className={styles.copyShareLink}
 					onClick={handleCopyShareLink}

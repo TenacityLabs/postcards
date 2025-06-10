@@ -194,17 +194,18 @@
 		}
 	}
 
+	.previewLink,
 	.copyShareLink {
+		text-decoration: none;
 		display: block;
 		border: none;
 		cursor: pointer;
+		text-align: center;
 
 		width: 100%;
 		padding: 8px;
 		border-radius: 6px;
-		background-color: $neutral-700;
 
-		color: $neutral-50;
 		font-size: 16px;
 		font-style: normal;
 		font-weight: 700;
@@ -213,13 +214,23 @@
 		@include transition-normal;
 
 		&:hover {
-			background-color: $neutral-800;
+			opacity: 0.8;
 		}
 
 		&:active {
-			background-color: $neutral-800;
+			opacity: 0.8;
 			transform: scale(0.95);
 			box-shadow: 4px 4px 20px 0px rgba($neutral-950, 0.1);
 		}
+	}
+
+	.previewLink {
+		color: $neutral-600;
+		background: $neutral-300;
+	}
+
+	.copyShareLink {
+		color: $neutral-50;
+		background-color: $primary-700;
 	}
 }

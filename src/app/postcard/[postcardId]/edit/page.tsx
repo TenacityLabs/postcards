@@ -111,6 +111,12 @@ export default function EditEntry() {
 		}
 
 		try {
+			// Optimistically update the entry
+			updateEntry(focusedEntryId, {
+				imageUrl: null,
+				imageName: null,
+			})
+
 			await sendAPIRequest(
 				APIEndpoints.DeleteEntryImage,
 				APIMethods.POST,
@@ -119,10 +125,6 @@ export default function EditEntry() {
 					entryId: focusedEntryId,
 				}
 			)
-			updateEntry(focusedEntryId, {
-				imageUrl: null,
-				imageName: null,
-			})
 		} catch (error) {
 			ClientLogger.error(JSON.stringify(error))
 		}

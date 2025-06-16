@@ -24,10 +24,20 @@ export const numberToPrettyDate = (date: number, includeYear = false) => {
 }
 
 export const numberToPrettyWeek = (date: number, includeYear = false) => {
-	// 6 days later
-	const endDate = date + (6 * 24 * 60 * 60 * 1000)
+	const inputDate = new Date(date);
 
-	return `${numberToPrettyDate(date)} - ${numberToPrettyDate(endDate, includeYear)}`
+	// Get day of the week (0 = Sunday, 6 = Saturday)
+	const dayOfWeek = inputDate.getDay();
+
+	// Find the Sunday of the week
+	const sunday = new Date(inputDate);
+	sunday.setDate(inputDate.getDate() - dayOfWeek);
+
+	// Find the Saturday of the week
+	const saturday = new Date(inputDate);
+	saturday.setDate(inputDate.getDate() + (6 - dayOfWeek));
+
+	return `${numberToPrettyDate(sunday.getTime())} - ${numberToPrettyDate(saturday.getTime(), includeYear)}`;
 }
 
 export const getDaysElapsed = (createdAt: number) => {

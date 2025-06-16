@@ -177,12 +177,14 @@
 
 .summary {
 	width: fit-content;
+	min-width: 350px;
 	max-width: calc(100vw - 48px);
 	display: flex;
 	flex-direction: column;
 	gap: 54px;
 
 	@media screen and (max-width: 500px) {
+		min-width: 0;
 		gap: 36px;
 	}
 }
@@ -280,8 +282,9 @@
 }
 
 .skeletonNextButton {
-	padding: 8px 24px;
-	border-radius: 10px;
+	display: inline;
+	padding: 10px 16px;
+	border-radius: 6px;
 	border: 1px solid rgba($neutral-700, 0.1);
 	background: $neutral-800;
 

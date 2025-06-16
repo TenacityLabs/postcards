@@ -62,15 +62,25 @@ export default function PostcardSummary(props: PostcardSummaryProps) {
 					)}
 				</div>
 
-				<div>
-					<button
-						className={loading ? styles.skeletonNextButton : styles.summaryNextButton}
-						onClick={showPostcard}
-						disabled={!loading && !postcard}
-					>
-						LET&apos;S GO →
-					</button>
-				</div>
+				{loading ? (
+					<div>
+						<div
+							className={styles.skeletonNextButton}
+						>
+							LET&apos;S GO →
+						</div>
+					</div>
+				) : (
+					<div>
+						<button
+							className={styles.summaryNextButton}
+							onClick={showPostcard}
+							disabled={!postcard}
+						>
+							LET&apos;S GO →
+						</button>
+					</div>
+				)}
 			</div>
 		</div>
 	)
